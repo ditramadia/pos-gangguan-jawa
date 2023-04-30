@@ -1,4 +1,4 @@
-package com.example.if2210_tb2_nge;
+package com.example.if2210_tb2_nge.components;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;

@@ -1,4 +1,4 @@
-package com.example.if2210_tb2_nge;
+package com.example.if2210_tb2_nge.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
