@@ -11,7 +11,8 @@ module com.example.if2210_tb2_nge {
             requires org.kordamp.bootstrapfx.core;
             requires eu.hansolo.tilesfx;
             requires com.almasb.fxgl.all;
-    
+            requires lombok;
+
     opens com.example.if2210_tb2_nge to javafx.fxml;
     exports com.example.if2210_tb2_nge;
 }

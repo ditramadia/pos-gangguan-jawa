@@ -74,7 +74,8 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>    <dependency>
+    </dependency>
+    <dependency>
       <groupId>com.github.almasb</groupId>
       <artifactId>fxgl</artifactId>
       <version>17.2</version>
@@ -84,6 +85,12 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.26</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -110,6 +117,7 @@
         </configuration>
             </plugin>
       <plugin>
+
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>

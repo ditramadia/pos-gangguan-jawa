@@ -9,9 +9,14 @@ import javafx.util.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javafx.scene.control.*;
+import lombok.Getter;
+import lombok.Setter;
+
+
 
 public class Clock {
-
+    @Getter
+    @Setter
     private Label clockLabel;
     private Timeline clock;
     public Clock(){
@@ -23,9 +28,7 @@ public class Clock {
         clockLabel.setFont(new Font(60));
     }
 
-    public Label getlabel(){
-        return clockLabel;
-    }
+
 
     public void setClock(){
         clock.setCycleCount(Animation.INDEFINITE);
