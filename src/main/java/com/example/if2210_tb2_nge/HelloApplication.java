@@ -7,7 +7,9 @@ import javafx.embed.swing.SwingNode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.PopupWindow;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import java.io.IOException;
@@ -20,16 +22,17 @@ import javafx.geometry.*;
 
 public class HelloApplication extends Application {
     Button button;
-    Label texttt;
+    Clock clock;
+    HomePage homePage;
+    MenuPage menu;
+
     @Override
     public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        stage.setTitle("Hello!");
+        stage.setTitle("JAVAAAAAA");
         BorderPane root = new BorderPane();
 
         MenuBar menuBar = new MenuBar();
-        Menu file = new Menu("File");
-        Menu settings = new Menu ("Settings");
+        Menu file = new Menu("File");        Menu settings = new Menu ("Settings");
 
 
         menuBar.setUseSystemMenuBar(true);
@@ -45,24 +48,41 @@ public class HelloApplication extends Application {
 
         TabPane tabPane = new TabPane();
         Tab tab1 = new Tab("Tab 1");
-        VBox panetab = new VBox();
-        panetab.setAlignment(Pos.TOP_CENTER);
-        Label kel = new Label("NGE");
-        Label clockLabel = new Label();
-
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            LocalTime currentTime = LocalTime.now();
-            clockLabel.setText(currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        }), new KeyFrame(Duration.seconds(1)));
-
-        panetab.getChildren().add(kel);
-        panetab.getChildren().add(clockLabel);
-        tab1.setContent(panetab);
-
-        clock.setCycleCount(Animation.INDEFINITE);
-        clock.play();
+        BorderPane layouttab1 = new BorderPane();
+//
+        homePage = new HomePage();
+        menu = new MenuPage();
+//
+//
+        tab1.setContent(layouttab1);
+//
         tab1.setClosable(false);
+//
+        VBox sideMenu = new VBox();
+        Button button1 = new Button("Button 1");
+        Button button2 = new Button("Button 2");
+        Button button3 = new Button("Button 3");
+        sideMenu.getChildren().addAll(button1,button2,button3);
+        sideMenu.setStyle("-fx-background-color: #ADD8E6;");
+        sideMenu.setAlignment(Pos.TOP_LEFT);
+        sideMenu.setPrefWidth(200);
+        layouttab1.setLeft(sideMenu);
+        StackPane mulscreen = new StackPane();
 
+        mulscreen.getChildren().add(homePage.getlayout());
+        mulscreen.getChildren().add(menu.getlayout());
+        button1.setOnAction(e -> {
+            mulscreen.getChildren().get(0).setVisible(true);
+            mulscreen.getChildren().get(1).setVisible(false);
+        });
+        button2.setOnAction(e -> {
+            mulscreen.getChildren().get(1).setVisible(true);
+            mulscreen.getChildren().get(0).setVisible(false);
+        });
+        layouttab1.setCenter(mulscreen);
+        mulscreen.getChildren().get(1).setVisible(false);
+//
+//
         tabPane.getTabs().add(tab1);
 
 
