@@ -1,13 +1,16 @@
 package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.Clock;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.Button;
 import lombok.Getter;
 
 public class HomePage {
@@ -28,8 +31,10 @@ public class HomePage {
     private Clock clock;
 
     public HomePage(){
-        // layout
+        // tab
         tab = new Tab("Home");
+
+        // layout
         layout = new BorderPane();
         container = new VBox();
         container.setAlignment(Pos.TOP_CENTER);
@@ -64,10 +69,9 @@ public class HomePage {
         // add component to layout
         container.getChildren().add(clock.getClockLabel());
         container.getChildren().add(kel);
-        container.getChildren().addAll(kel1,kel2,kel3,kel4,kel5);
+        container.getChildren().addAll(kel1,kel2,kel3,kel4,kel5,kel6);
         layout.setCenter(container);
         layout.setLeft(sideMenu);
         tab.setContent(layout);
     }
-
 }
