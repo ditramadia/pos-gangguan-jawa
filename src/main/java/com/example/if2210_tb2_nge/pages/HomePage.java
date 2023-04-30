@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.*;
 import javafx.util.Duration;
+import javafx.scene.control.Tab;
+import javafx.scene.control.Button;
 import lombok.Getter;
 
 public class HomePage {
@@ -34,8 +38,10 @@ public class HomePage {
     private boolean isSideMenuOpen = false;
 
     public HomePage(){
-        // layout
+        // tab
         tab = new Tab("Home");
+
+        // layout
         layout = new BorderPane();
         container = new VBox();
         container.setAlignment(Pos.TOP_CENTER);
@@ -91,12 +97,11 @@ public class HomePage {
         // add component to layout
         container.getChildren().add(clock.getClockLabel());
         container.getChildren().add(kel);
-        container.getChildren().addAll(kel1,kel2,kel3,kel4,kel5);
+        container.getChildren().addAll(kel1,kel2,kel3,kel4,kel5,kel6);
         layout.setCenter(container);
         layout.setLeft(sideMenu);
         tab.setContent(layout);
     }
-
 
     private void toggleSideMenu() {
         // Create a new TranslateTransition with a duration of 0.5 seconds
