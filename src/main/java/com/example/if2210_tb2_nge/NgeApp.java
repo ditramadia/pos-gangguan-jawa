@@ -17,27 +17,42 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
 
     @Override
     public void start(Stage stage) throws IOException {
+        // land on homepage
         homePage = new HomePage();
+
         // app
-        stage.setTitle("Gangguan Java");
+        stage.setTitle("Gangguan Jawa");
         BorderPane root = new BorderPane();
 
         // Menu Bar
         MenuBar menuBar = new MenuBar();
+
         Menu file = new Menu("File");
-        Menu settings = new Menu ("Settings");
+        MenuItem importDb = new MenuItem("Import Database");
+        MenuItem exportDb = new MenuItem("Export Database");
+        MenuItem exit = new MenuItem("Exit");
+        file.getItems().addAll(importDb,exportDb,exit);
+
+        Menu plugin = new Menu ("Plugin");
+        MenuItem importPlugin = new MenuItem("Import Plugin");
+        MenuItem removePlugin = new MenuItem("Remove Plugin");
+        plugin.getItems().addAll(importPlugin, removePlugin);
+
+        Menu setting = new Menu("Setting");
+        MenuItem datastore = new MenuItem("Data Store");
+        setting.getItems().addAll(datastore);
+
+        Menu help = new Menu("Help");
+        MenuItem about = new MenuItem("About");
+        MenuItem author = new MenuItem("Author");
+        MenuItem howToUse = new MenuItem("How To Use");
+        help.getItems().addAll(howToUse, about, author);
 
         menuBar.setUseSystemMenuBar(true);
+        menuBar.getMenus().addAll(file,plugin, setting, help);
 
-        menuBar.getMenus().addAll(file,settings);
 
-        MenuItem item1 = new MenuItem("Open");
-        MenuItem item2 = new MenuItem("Save");
-        MenuItem item3 = new MenuItem("Exit");
 
-        file.getItems().addAll(item1,item2,item3);
-
-        // add Tab
 
 
         // Tab Panel
@@ -45,8 +60,6 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         Tab tab1 = homePage.getTab();
         tab1.setClosable(false);
         tabPane.getTabs().add(tab1);
-//        Tab tab2 = new Tab("Nwwwww");
-//        tabPane.getTabs().add(tab2);
 
         homePage.getButton1().setOnAction(this);
 
