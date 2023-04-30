@@ -12,8 +12,4 @@ public class MenuPage {
 
     public MenuPage(){
     }
-
-    public VBox getlayout(){
-        return layout;
-    }
 }

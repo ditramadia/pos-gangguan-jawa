@@ -51,17 +51,13 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         menuBar.setUseSystemMenuBar(true);
         menuBar.getMenus().addAll(file,plugin, setting, help);
 
-
-
-
-
         // Tab Panel
         tabPane = new TabPane();
         Tab tab1 = homePage.getTab();
         tab1.setClosable(false);
         tabPane.getTabs().add(tab1);
 
-        homePage.getButton1().setOnAction(this);
+        homePage.getHomeNavBtn().setOnAction(this);
 
         root.setTop(menuBar);
         root.setCenter(tabPane);
@@ -70,18 +66,14 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         stage.show();
     }
 
-
-
-
     public static void main(String[] args) {
         launch();
     }
 
-//    @Override
     public void handle(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == this.homePage.getButton1()){
-            HomePage temp = new HomePage();
-            tabPane.getTabs().add(temp.getTab());
+        if (actionEvent.getSource() == this.homePage.getHomeNavBtn()){
+            HomePage newHomePage = new HomePage();
+            tabPane.getTabs().add(newHomePage.getTab());
         }
 
     }

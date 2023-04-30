@@ -17,11 +17,13 @@ public class HomePage {
     @Getter
     private VBox sideMenu;
     @Getter
-    private Button button1;
+    private Button homeNavBtn;
     @Getter
-    private Button button2;
+    private Button transactionNavBtn;
     @Getter
-    private Button button3;
+    private Button customerNavBtn;
+    @Getter
+    private Button inventoryNavBtn;
     private BorderPane layout;
     private Clock clock;
 
@@ -32,12 +34,13 @@ public class HomePage {
         container = new VBox();
         container.setAlignment(Pos.TOP_CENTER);
 
-        // side bar
+        // sidebar
         sideMenu = new VBox();
-        button1 = new Button("Button 1");
-        button2 = new Button("Button 2");
-        button3 = new Button("Button 3");
-        sideMenu.getChildren().addAll(button1,button2,button3);
+        homeNavBtn = new Button("Home");
+        transactionNavBtn = new Button("Transaction");
+        customerNavBtn = new Button("Customer");
+        inventoryNavBtn = new Button("Inventory");
+        sideMenu.getChildren().addAll(homeNavBtn,transactionNavBtn,customerNavBtn, inventoryNavBtn);
         sideMenu.setStyle("-fx-background-color: #ADD8E6;");
         sideMenu.setPrefWidth(200);
 
