@@ -124,7 +124,8 @@ public class HelloApplication extends Application {
         JSONObject jsonObj = (JSONObject) obj;
         return jsonObj;
     }
-    public static void addProductToJsonDatabase(String filename, int id, String name, int price, int stock) throws Exception {
+    public static void addProductToJsonDatabase(String filename, int id, String name, int price, int buyPrice,
+                                                int stock, String category, String image) throws Exception {
         // Read existing JSON data from file into a JSONObject
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new FileReader(filename));
@@ -135,7 +136,10 @@ public class HelloApplication extends Application {
         product.put("id", id);
         product.put("name", name);
         product.put("price", price);
+        product.put("buyPrice", buyPrice);
         product.put("stock", stock);
+        product.put("category", category);
+        product.put("image", image);
 
         // Add the new product to the existing JSON data
         JSONArray products = (JSONArray) jsonObj.get("products");
@@ -178,35 +182,62 @@ public class HelloApplication extends Application {
 
         // Write the initial database to a file
         byte[] jsonBytes = initialData.toJSONString().getBytes();
-        Files.write(Paths.get("products.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
+        Files.write(Paths.get("products.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
 
         // Add some products to the database
-        addProductToJsonDatabase("products.json", 1, "kulkas", 100000, 10);
-        addProductToJsonDatabase("products.json", 2, "lemari", 10000, 5);
+        addProductToJsonDatabase("products.json", 1, "Kulkas", 1000000, 800000, 5, "elektronik", "");
+        addProductToJsonDatabase("products.json", 2, "Lemari", 100000, 90000, 10, "perabotan", "");
+        addProductToJsonDatabase("products.json", 3, "Meja", 80000, 75000, 50,"perabotan", "");
+        addProductToJsonDatabase("products.json", 4, "Kursi", 50000, 45000, 60,"perabotan", "");
+        addProductToJsonDatabase("products.json", 5, "Indomie", 3000, 2900, 100, "makanan", "");
+        addProductToJsonDatabase("products.json", 6, "Roti tawar", 18000, 15000, 20,"makanan", "");
+        addProductToJsonDatabase("products.json", 7, "Susu", 15000, 10000, 20,"minuman", "");
+        addProductToJsonDatabase("products.json", 8, "Kopi", 5000, 3000, 50,"minuman", "");
+        addProductToJsonDatabase("products.json", 9, "Sabun", 10000, 5000, 50,"alat mandi", "");
+        addProductToJsonDatabase("products.json", 10, "Shampoo", 8000, 5000, 50,"alat mandi", "");
+        addProductToJsonDatabase("products.json", 11, "Pasta gigi", 20000, 18000, 50,"alat mandi", "");
+        addProductToJsonDatabase("products.json", 12, "Conditioner", 10000, 5000, 50,"alat mandi", "");
+        addProductToJsonDatabase("products.json", 13, "Pisang", 5000, 3000, 20,"buah", "");
+        addProductToJsonDatabase("products.json", 14, "Apel", 5000, 3000, 20,"buah", "");
+        addProductToJsonDatabase("products.json", 15, "Jeruk", 5000, 3000, 20,"buah", "");
+        addProductToJsonDatabase("products.json", 16, "Mangga", 5000, 3000, 20,"buah", "");
+        addProductToJsonDatabase("products.json", 17, "Baju", 50000, 40000, 10,"pakaian", "");
+        addProductToJsonDatabase("products.json", 18, "Celana", 40000, 35000, 10,"pakaian", "");
+        addProductToJsonDatabase("products.json", 19, "Jaket", 100000, 90000, 10,"pakaian", "");
+        addProductToJsonDatabase("products.json", 20, "Sepatu", 200000, 150000, 5,"pakaian", "");
+        addProductToJsonDatabase("products.json", 21, "Tolak angin", 3000, 2500, 30,"obat", "");
+        addProductToJsonDatabase("products.json", 22, "Microlax", 7000, 5000, 15,"obat", "");
+        addProductToJsonDatabase("products.json", 23, "Betadine", 10000, 8000, 20,"obat", "");
+        addProductToJsonDatabase("products.json", 24, "Entrostop", 10000, 9000, 20,"obat", "");
+
+
 
         // Read the database from the file and print the contents
-        JSONObject jsonObj = readJsonFile("products.json");
-        JSONArray productsArray = (JSONArray) jsonObj.get("products");
-        for (Object productObj : productsArray) {
-            JSONObject product = (JSONObject) productObj;
-            System.out.println("id: " + product.get("id"));
-            System.out.println("name: " + product.get("name"));
-            System.out.println("price: " + product.get("price"));
-            System.out.println("stock: " + product.get("stock"));
-            System.out.println();
-        }
-
-        System.out.println("Select products where stock is above 7 and print the contents");
-        // Select products where stock is above 7 and print the contents
-        JSONArray selectedProducts = selectProductsWhereStockIsAbove("products.json", 7);
-        for (Object productObj : selectedProducts) {
-            JSONObject product = (JSONObject) productObj;
-            System.out.println("id: " + product.get("id"));
-            System.out.println("name: " + product.get("name"));
-            System.out.println("price: " + product.get("price"));
-            System.out.println("stock: " + product.get("stock"));
-            System.out.println();
-        }
+//        JSONObject jsonObj = readJsonFile("products.json");
+//        JSONArray productsArray = (JSONArray) jsonObj.get("products");
+//        for (Object productObj : productsArray) {
+//            JSONObject product = (JSONObject) productObj;
+//            System.out.println("id: " + product.get("id"));
+//            System.out.println("name: " + product.get("name"));
+//            System.out.println("price: " + product.get("price"));
+//            System.out.println("stock: " + product.get("stock"));
+//            System.out.println("buy price: " + product.get("buyPrice");
+//            System.out.println("category: " + product.get("category"));
+//            System.out.println("image: " + product.get("image"));
+//        }
+//
+//        System.out.println("Select products where stock is above 7 and print the contents");
+//        // Select products where stock is above 7 and print the contents
+//        JSONArray selectedProducts = selectProductsWhereStockIsAbove("products.json", 7);
+//        for (Object productObj : selectedProducts) {
+//            JSONObject product = (JSONObject) productObj;
+//            System.out.println("id: " + product.get("id"));
+//            System.out.println("name: " + product.get("name"));
+//            System.out.println("price: " + product.get("price"));
+//            System.out.println("stock: " + product.get("stock"));
+//            System.out.println();
+//        }
 
         launch();
     }
