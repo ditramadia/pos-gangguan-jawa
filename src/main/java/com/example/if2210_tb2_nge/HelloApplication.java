@@ -19,6 +19,14 @@ import javafx.util.Duration;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import javafx.geometry.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+
 
 public class HelloApplication extends Application {
     Button button;
@@ -103,8 +111,34 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    public static void writeJsonSimpleDemo(String filename) throws Exception {
+        JSONObject sampleObject = new JSONObject();
+        sampleObject.put("name", "Stackabuser");
+        sampleObject.put("age", 35);
 
-    public static void main(String[] args) {
+        JSONArray messages = new JSONArray();
+        messages.add("Hey!");
+        messages.add("What's up?!");
+
+        sampleObject.put("messages", messages);
+
+        byte[] jsonBytes = sampleObject.toJSONString().getBytes();
+
+        Files.write(Paths.get(filename), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
+    }
+
+    public static JSONObject readJsonFile(String filename) throws Exception {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(filename));
+        JSONObject jsonObj = (JSONObject) obj;
+        String name = (String) jsonObj.get("name");
+        System.out.println("Name: " + name);
+        return jsonObj;
+    }
+
+    public static void main(String[] args) throws Exception {
+        writeJsonSimpleDemo("example.json");
+        readJsonFile("example.json");
         launch();
     }
 }
