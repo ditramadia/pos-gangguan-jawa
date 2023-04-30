@@ -58,6 +58,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         tabPane.getTabs().add(tab1);
 
         homePage.getHomeNavBtn().setOnAction(this);
+        homePage.getCustomerNavBtn().setOnAction(actionEvent -> handleHomeButton());
 
         root.setTop(menuBar);
         root.setCenter(tabPane);
@@ -71,11 +72,20 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
     }
 
     public void handle(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == this.homePage.getHomeNavBtn()){
-            HomePage newHomePage = new HomePage();
-            tabPane.getTabs().add(newHomePage.getTab());
+        if (actionEvent.getSource() instanceof Button) {
+            Button button = (Button) actionEvent.getSource();
+            String buttonText = button.getText();
+            if (buttonText.equals("Home")) {
+                HomePage newHomePage = new HomePage();
+                newHomePage.getHomeNavBtn().setOnAction(this);
+                tabPane.getTabs().add(newHomePage.getTab());
+            }
         }
-
     }
+
+    private void handleHomeButton() {
+        handle(new ActionEvent(homePage.getHomeNavBtn(), null));
+    }
+
 }
 
