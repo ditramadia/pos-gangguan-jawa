@@ -1,6 +1,10 @@
 package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.Clock;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.control.*;
+import javafx.util.Duration;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Button;
 import lombok.Getter;
@@ -29,6 +35,7 @@ public class HomePage {
     private Button inventoryNavBtn;
     private BorderPane layout;
     private Clock clock;
+    private boolean isSideMenuOpen = false;
 
     public HomePage(){
         // tab
@@ -41,13 +48,34 @@ public class HomePage {
 
         // sidebar
         sideMenu = new VBox();
+        sideMenu.setPrefWidth(0); // set the initial width
         homeNavBtn = new Button("Home");
         transactionNavBtn = new Button("Transaction");
         customerNavBtn = new Button("Customer");
         inventoryNavBtn = new Button("Inventory");
         sideMenu.getChildren().addAll(homeNavBtn,transactionNavBtn,customerNavBtn, inventoryNavBtn);
         sideMenu.setStyle("-fx-background-color: #ADD8E6;");
-        sideMenu.setPrefWidth(200);
+
+        // Animation Side Menu
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(sideMenu.prefWidthProperty(), 0);
+        KeyFrame kf = new KeyFrame(Duration.millis(200), kv);
+        timeline.getKeyFrames().add(kf);
+
+        Timeline openTimeline = new Timeline();
+        KeyValue openKV = new KeyValue(sideMenu.prefWidthProperty(), 200);
+        KeyFrame openKF = new KeyFrame(Duration.millis(200), openKV);
+        openTimeline.getKeyFrames().add(openKF);
+        sideMenu.setOnMouseEntered(event ->{
+                sideMenu.setVisible(true);
+                double newWidth = 200; // the new width
+                sideMenu.setPrefWidth(0); // reset the width to 0 before animating
+                openTimeline.play();
+        });
+        sideMenu.setOnMouseExited(event-> {
+            timeline.play();
+        });
+
 
         // clock
         clock = new Clock();
@@ -74,4 +102,21 @@ public class HomePage {
         layout.setLeft(sideMenu);
         tab.setContent(layout);
     }
+
+    private void toggleSideMenu() {
+        // Create a new TranslateTransition with a duration of 0.5 seconds
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), sideMenu);
+
+        if (isSideMenuOpen) {
+            // Close the side menu
+            translateTransition.setToX(-200); // Move the side menu to the left
+        } else {
+            // Open the side menu
+            translateTransition.setToX(0); // Move the side menu back to its original position
+        }
+
+        translateTransition.play(); // Play the animation
+        isSideMenuOpen = !isSideMenuOpen; // Toggle the side menu state
+    }
+
 }

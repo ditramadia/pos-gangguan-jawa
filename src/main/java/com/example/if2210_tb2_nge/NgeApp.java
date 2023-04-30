@@ -85,7 +85,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 tabPane.getTabs().add(newMenuPage.getTab());
             }
         }
-
     }
+
 }
 
