@@ -85,13 +85,13 @@ public class HomePage {
         // author name and nim
         Label kel1 = new Label("Kelvin Rayhan A.       13521005");
         Label kel2 = new Label("Ditra R. Amadia         13521019");
-        Label kel3 = new Label("Varraz Hazzandra A.   13521020");
-        Label kel4 = new Label("Bernardus Willson     13521021");
-        Label kel5 = new Label("Raditya Naufal A.     13521022");
+        Label kel3 = new Label("Varraz Hazzandra A.  13521020");
+        Label kel4 = new Label("Bernardus Willson      13521021");
+        Label kel5 = new Label("Raditya Naufal A.       13521022");
         Label kel6 = new Label("Kenny Benaya N,       13521023");
         Label kel = new Label("Gangguan Jawa");
-        VBox.setMargin(kel,new Insets(80, 10 ,0 ,10));
-        VBox.setMargin(kel1,new Insets(50, 10 ,0 ,10));
+        VBox.setMargin(kel,new Insets(80, 0 ,0 ,0));
+        VBox.setMargin(kel1,new Insets(50, 0 ,0 ,0));
         kel.setFont(new Font(40));
 
         // add component to layout

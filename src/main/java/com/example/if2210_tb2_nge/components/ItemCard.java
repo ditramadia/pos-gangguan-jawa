@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import lombok.Getter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,6 +49,9 @@ public class ItemCard extends Control{
                 }
                 itemName = new Label((String) product.get("name"));
                 cardContainer.getChildren().add(itemName);
+                itemName.setFont(new Font("Arial", 20));
+                cardContainer.setAlignment(Pos.TOP_CENTER);
+                VBox.setMargin(itemName, new Insets(20,0,0,0));
 //                imageUrl = (String) product.get("image");
 
             }
@@ -60,12 +64,12 @@ public class ItemCard extends Control{
         imageView.setFitWidth(100);
         imageView.setStyle("-fx-background-radius: 8;");
         cardContainer.getChildren().add(imageView);
-        VBox.setMargin(imageView, new Insets(30,0,0,70));
+        VBox.setMargin(imageView, new Insets(20,0,0,0));
 
 
         // view detail button
         viewDetailBtn = new Button("View details");
-        VBox.setMargin(viewDetailBtn, new Insets(50, 0,0,60));
+        VBox.setMargin(viewDetailBtn, new Insets(30, 0,0,0));
 //        viewDetailBtn.setSkin(new MyButtonSkin(viewDetailBtn));
         File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style/buttonstyle.css");
         String cssUrl = cssFile.toURI().toURL().toExternalForm();
