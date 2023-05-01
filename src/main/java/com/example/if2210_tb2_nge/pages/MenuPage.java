@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.ItemController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,20 +12,26 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import lombok.Getter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class MenuPage {
     @Getter
     private Tab tab;
+    private GridPane cardLayout;
     private BorderPane pageContainer;
     private VBox contentContainer;
     private Label header;
     private SearchBar searchBar;
     private Button newItemBtn;
     private ScrollPane scrollContainer;
-    private GridPane cardContainer;
 
-    public MenuPage(){
+    private int column = 0;
+    private int row = 1;
+
+    public MenuPage() throws Exception {
         // tab
         tab = new Tab("Inventory");
 
@@ -37,6 +44,9 @@ public class MenuPage {
 
         // header
         header = new Label("INVENTORY");
+        header.setFont(new Font(30));
+        header.setPrefHeight(100);
+        header.setPrefWidth(300);
         BorderPane.setAlignment(header, Pos.TOP_CENTER);
         pageContainer.setTop(header);
 
@@ -47,29 +57,36 @@ public class MenuPage {
         // scroll container
         scrollContainer = new ScrollPane();
         contentContainer.getChildren().add(scrollContainer);
+        // cards container
+        cardLayout = new GridPane();
+        cardLayout.setStyle("-fx-padding: 10;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: #83695A;");
+        scrollContainer.setContent(cardLayout);
 
         // teruntuk mas kelvin, silakan buat container cards
-        ItemCard itemCard = new ItemCard();
-        ItemCard itemCard1 = new ItemCard();
-        ItemCard itemCard2 = new ItemCard();
-        ItemCard itemCard3 = new ItemCard();
-        ItemCard itemCard4 = new ItemCard();
-        ItemCard itemCard5 = new ItemCard();
-        ItemCard itemCard6 = new ItemCard();
-        ItemCard itemCard7 = new ItemCard();
-        VBox card = itemCard.getCardContainer();
+        ItemController datas = new ItemController();
+        JSONObject jsonObj = datas.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
+        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
+        for (Object itemsObj : itemsArray) {
+            JSONObject product = (JSONObject) itemsObj;
+            Long id = (Long) product.get("id");
+            ItemCard itemCard8 = new ItemCard(id.intValue());
+            GridPane.setMargin(itemCard8.getCardContainer(), new Insets(30));
+            cardLayout.add(itemCard8.getCardContainer(), column++, row);
+
+            if (column == 6){
+                row++;
+                column = 0;
+            }
+        }
+
 
         // cards container
-        cardContainer = new GridPane();
-        cardContainer.add(itemCard.getCardContainer(),0,0);
-        cardContainer.add(itemCard1.getCardContainer(),0,1);
-        cardContainer.add(itemCard2.getCardContainer(),0,2);
-        cardContainer.add(itemCard3.getCardContainer(),0,3);
-        cardContainer.add(itemCard4.getCardContainer(),0,4);
-        cardContainer.add(itemCard5.getCardContainer(),0,5);
-        cardContainer.add(itemCard6.getCardContainer(),0,6);
-        cardContainer.add(itemCard7.getCardContainer(),0,7);
-        scrollContainer.setContent(cardContainer);
+
 //        GridPane.setMargin(card, new Insets(10));
 
 
@@ -79,5 +96,6 @@ public class MenuPage {
         pageContainer.setBottom(newItemBtn);
 
         tab.setContent(pageContainer);
+
     }
 }
