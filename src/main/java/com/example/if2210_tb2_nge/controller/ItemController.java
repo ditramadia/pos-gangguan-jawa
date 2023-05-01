@@ -66,7 +66,7 @@ public class ItemController {
 
         // Write the initial database to a file
         byte[] jsonBytes = initialData.toJSONString().getBytes();
-        Files.write(Paths.get("Items.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+        Files.write(Paths.get("src/main/java/com/example/if2210_tb2_nge/database/Items.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
                 StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
     }
 
