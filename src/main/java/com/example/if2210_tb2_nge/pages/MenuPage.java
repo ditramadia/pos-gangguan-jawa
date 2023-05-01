@@ -3,12 +3,15 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Label;
@@ -17,9 +20,11 @@ import lombok.Getter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class MenuPage {
+public class MenuPage implements EventHandler<ActionEvent> {
     @Getter
     private Tab tab;
+    private StackPane mulscreens;
+    private ItemDetailPage itemDetailPage;
     private GridPane cardLayout;
     private BorderPane pageContainer;
     private VBox contentContainer;
@@ -35,12 +40,19 @@ public class MenuPage {
         // tab
         tab = new Tab("Inventory");
 
+        // pages container
+        mulscreens = new StackPane();
+        itemDetailPage = new ItemDetailPage();
+
         // page container
         pageContainer = new BorderPane();
 
         // content container
         contentContainer = new VBox();
         pageContainer.setCenter(contentContainer);
+        mulscreens.getChildren().add(pageContainer);
+        mulscreens.getChildren().add(itemDetailPage.getPageContainer());
+        mulscreens.getChildren().get(1).setVisible(false);
 
         // header
         header = new Label("INVENTORY");
@@ -75,6 +87,17 @@ public class MenuPage {
             JSONObject product = (JSONObject) itemsObj;
             Long id = (Long) product.get("id");
             ItemCard itemCard8 = new ItemCard(id.intValue());
+
+            itemCard8.getViewDetailBtn().setOnAction(e -> {
+                try {
+                    itemDetailPage.loadData(id.intValue());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                mulscreens.getChildren().get(0).setVisible(false);
+                mulscreens.getChildren().get(1).setVisible(true);
+            });
+
             GridPane.setMargin(itemCard8.getCardContainer(), new Insets(30));
             cardLayout.add(itemCard8.getCardContainer(), column++, row);
 
@@ -94,8 +117,16 @@ public class MenuPage {
         newItemBtn = new Button("New Item");
         BorderPane.setAlignment(newItemBtn, Pos.BOTTOM_RIGHT);
         pageContainer.setBottom(newItemBtn);
+        tab.setContent(mulscreens);
 
-        tab.setContent(pageContainer);
+    }
 
+    @Override
+    public void handle(ActionEvent actionEvent) {
+
+
+        System.out.println("View Detail Button Clicked");
+        mulscreens.getChildren().get(0).setVisible(false);
+        mulscreens.getChildren().get(1).setVisible(true);
     }
 }
