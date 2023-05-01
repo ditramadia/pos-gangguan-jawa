@@ -59,7 +59,7 @@ public class MenuPage implements EventHandler<ActionEvent> {
         header.setFont(new Font(30));
         header.setPrefHeight(100);
         header.setPrefWidth(300);
-        BorderPane.setAlignment(header, Pos.TOP_CENTER);
+        pageContainer.setAlignment(header, Pos.CENTER);
         pageContainer.setTop(header);
 
         // search bar
@@ -80,8 +80,33 @@ public class MenuPage implements EventHandler<ActionEvent> {
         scrollContainer.setContent(cardLayout);
 
         // teruntuk mas kelvin, silakan buat container cards
-        ItemController datas = new ItemController();
-        JSONObject jsonObj = datas.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
+        this.updateCard();
+
+
+        // cards container
+
+//        GridPane.setMargin(card, new Insets(10));
+
+
+        // new item button
+        newItemBtn = new Button("New Item");
+        BorderPane.setAlignment(newItemBtn, Pos.BOTTOM_RIGHT);
+        pageContainer.setBottom(newItemBtn);
+        tab.setContent(mulscreens);
+
+    }
+
+    @Override
+    public void handle(ActionEvent actionEvent) {
+
+
+        System.out.println("View Detail Button Clicked");
+        mulscreens.getChildren().get(0).setVisible(false);
+        mulscreens.getChildren().get(1).setVisible(true);
+    }
+
+    public void updateCard() throws Exception {
+        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
         JSONArray itemsArray = (JSONArray) jsonObj.get("items");
         for (Object itemsObj : itemsArray) {
             JSONObject product = (JSONObject) itemsObj;
@@ -106,27 +131,5 @@ public class MenuPage implements EventHandler<ActionEvent> {
                 column = 0;
             }
         }
-
-
-        // cards container
-
-//        GridPane.setMargin(card, new Insets(10));
-
-
-        // new item button
-        newItemBtn = new Button("New Item");
-        BorderPane.setAlignment(newItemBtn, Pos.BOTTOM_RIGHT);
-        pageContainer.setBottom(newItemBtn);
-        tab.setContent(mulscreens);
-
-    }
-
-    @Override
-    public void handle(ActionEvent actionEvent) {
-
-
-        System.out.println("View Detail Button Clicked");
-        mulscreens.getChildren().get(0).setVisible(false);
-        mulscreens.getChildren().get(1).setVisible(true);
     }
 }

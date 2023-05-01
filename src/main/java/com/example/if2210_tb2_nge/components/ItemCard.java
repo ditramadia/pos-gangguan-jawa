@@ -28,7 +28,9 @@ public class ItemCard extends Control{
 
     public ItemCard(int i) throws Exception {
         // card container
-        cardContainer = new VBox();
+        cardContainer = new VBox();cardContainer.setStyle("-fx-background-color: #D7CDC7; -fx-background-radius: 20");
+        cardContainer.setPrefWidth(250);
+        cardContainer.setPrefHeight(250);
         cardContainer.setStyle("-fx-background-color: #D7CDC7; -fx-background-radius: 20");
         cardContainer.setPrefWidth(250);
         cardContainer.setPrefHeight(250);

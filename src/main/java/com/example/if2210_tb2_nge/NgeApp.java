@@ -1,5 +1,6 @@
 package com.example.if2210_tb2_nge;
 
+import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
 import com.example.if2210_tb2_nge.pages.MenuPage;
 import javafx.animation.FadeTransition;
@@ -29,6 +30,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         homePage = new HomePage();
         homePage.getHomeNavBtn().setOnAction(this);
         homePage.getInventoryNavBtn().setOnAction(this);
+        homePage.getCustomerNavBtn().setOnAction(this);
 
         // app
         stage.setTitle("Gangguan Jawa");
@@ -65,9 +67,9 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         menuBar.getMenus().addAll(file,plugin, setting, help);
         // Tab Panel
         tabPane = new TabPane();
-//        tabPane.setStyle("-fx-tab-min-width: 100; -fx-tab-max-width: 100; -fx-tab-min-height: 30; -fx-tab-max-height: 30; -fx-background-color: #FFFFFF; -fx-tab-background-color: #CCCCCC; -fx-tab-text-color: white;");
+        tabPane.setStyle("-fx-tab-min-width: 100; -fx-tab-max-width: 100; -fx-tab-min-height: 30; -fx-tab-max-height: 30; -fx-tab-background-radius: 20px; -fx-background-color: #FFFFFF; -fx-tab-background-color: #CCCCCC; -fx-tab-text-color: white;");
 
-        File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style/style.css");
+        File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style.css");
         String cssUrl = cssFile.toURI().toURL().toExternalForm();
 
 //        tabPane.setStyle("-fx-background-color: #D7CDC7");
@@ -105,14 +107,14 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
     }
 
     public void handle(ActionEvent actionEvent) {
-        if (actionEvent.getSource() instanceof Button)
-        {
+        if (actionEvent.getSource() instanceof Button) {
             Button button = (Button) actionEvent.getSource();
             if (button.getText() == "Home") {
                 HomePage newHomePage = new HomePage();
                 newHomePage.getHomeNavBtn().setOnAction(this);
                 newHomePage.getInventoryNavBtn().setOnAction(this);
                 tabPane.getTabs().add(newHomePage.getTab());
+                tabPane.getSelectionModel().select(newHomePage.getTab());
             } else if (button.getText() == "Inventory") {
                 MenuPage newMenuPage = null;
                 try {
@@ -120,7 +122,29 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                Tab newTab = newMenuPage.getTab();
+                MenuPage finalNewMenuPage = newMenuPage;
+                newTab.setOnSelectionChanged(event -> {
+                    if (newTab.isSelected()) {
+                        // Call a function from MenuPage
+                        try {
+                            finalNewMenuPage.updateCard();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
                 tabPane.getTabs().add(newMenuPage.getTab());
+                tabPane.getSelectionModel().select(newMenuPage.getTab());
+            } else if (button.getText().trim().equals("Customer")) {
+                CustomerPage newCustomerPage = null;
+                try {
+                    newCustomerPage = new CustomerPage();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                tabPane.getTabs().add(newCustomerPage.getTab());
+                tabPane.getSelectionModel().select(newCustomerPage.getTab());
             }
         }
     }

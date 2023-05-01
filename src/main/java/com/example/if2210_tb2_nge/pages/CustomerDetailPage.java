@@ -10,20 +10,18 @@ import lombok.Getter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.net.MalformedURLException;
-
-public class ItemDetailPage {
+public class CustomerDetailPage {
     @Getter
     private BorderPane pageContainer;
     private VBox contentContainer;
     private Label title;
     private Label name;
     private Label price;
-    private Label stock;
+    private Label telephone;
     private Label buyPrice;
     private Label category;
 
-    public ItemDetailPage() {
+    public CustomerDetailPage() {
         pageContainer = new BorderPane();
         contentContainer = new VBox();
         pageContainer.setCenter(contentContainer);
@@ -31,14 +29,14 @@ public class ItemDetailPage {
         title = new Label("ITEM DETAILS");
         name = new Label("Name: ");
         price = new Label("Price: ");
-        stock = new Label("Stock: ");
+        telephone = new Label("Stock: ");
         buyPrice = new Label("Buy Price: ");
         category = new Label("Category: ");
 
         contentContainer.getChildren().add(title);
         contentContainer.getChildren().add(name);
         contentContainer.getChildren().add(price);
-        contentContainer.getChildren().add(stock);
+        contentContainer.getChildren().add(telephone);
         contentContainer.getChildren().add(buyPrice);
         contentContainer.getChildren().add(category);
     }
@@ -54,7 +52,7 @@ public class ItemDetailPage {
             if (Integer.parseInt(product.get("id").toString()) == id) {
                 name.setText("Name: " + product.get("name").toString());
                 price.setText("Price: " + product.get("price").toString());
-                stock.setText("Stock: " + product.get("stock").toString());
+                telephone.setText("Stock: " + product.get("stock").toString());
                 buyPrice.setText("Buy Price: " + product.get("buyPrice").toString());
                 category.setText("Category: " + product.get("category").toString());
             }
