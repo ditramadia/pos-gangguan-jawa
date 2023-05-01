@@ -7,14 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Tab;
-import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import lombok.Getter;
 import org.json.simple.JSONArray;
@@ -39,6 +36,9 @@ public class MenuPage implements EventHandler<ActionEvent> {
     public MenuPage() throws Exception {
         // tab
         tab = new Tab("Inventory");
+        tab.setStyle("-fx-background-radius: 10 10 0 0;");
+        TabPane tabPane = new TabPane();
+        tabPane.getTabs().add(tab);
 
         // pages container
         mulscreens = new StackPane();

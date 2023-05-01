@@ -16,45 +16,41 @@ public class CustomerDetailPage {
     private VBox contentContainer;
     private Label title;
     private Label name;
-    private Label price;
-    private Label telephone;
-    private Label buyPrice;
-    private Label category;
+    private Label noTelp;
+    private Label vip;
+    private Label active;
 
     public CustomerDetailPage() {
         pageContainer = new BorderPane();
         contentContainer = new VBox();
         pageContainer.setCenter(contentContainer);
 
-        title = new Label("ITEM DETAILS");
+        title = new Label("CUSTOMER DETAILS");
         name = new Label("Name: ");
-        price = new Label("Price: ");
-        telephone = new Label("Stock: ");
-        buyPrice = new Label("Buy Price: ");
-        category = new Label("Category: ");
+        noTelp = new Label("Telephone: ");
+        vip = new Label("VIP: ");
+        active = new Label("Active: ");
 
         contentContainer.getChildren().add(title);
         contentContainer.getChildren().add(name);
-        contentContainer.getChildren().add(price);
-        contentContainer.getChildren().add(telephone);
-        contentContainer.getChildren().add(buyPrice);
-        contentContainer.getChildren().add(category);
+        contentContainer.getChildren().add(noTelp);
+        contentContainer.getChildren().add(vip);
+        contentContainer.getChildren().add(active);
     }
 
     public void loadData(int id) throws Exception {
         // load data from database
         // set data to labels
 
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
+        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
+        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
         for (Object itemsObj : itemsArray) {
             JSONObject product = (JSONObject) itemsObj;
             if (Integer.parseInt(product.get("id").toString()) == id) {
                 name.setText("Name: " + product.get("name").toString());
-                price.setText("Price: " + product.get("price").toString());
-                telephone.setText("Stock: " + product.get("stock").toString());
-                buyPrice.setText("Buy Price: " + product.get("buyPrice").toString());
-                category.setText("Category: " + product.get("category").toString());
+                noTelp.setText("Telephone: " + product.get("noTelp").toString());
+                vip.setText("VIP: " + product.get("vip").toString());
+                active.setText("Active: " + product.get("active").toString());
             }
         }
 

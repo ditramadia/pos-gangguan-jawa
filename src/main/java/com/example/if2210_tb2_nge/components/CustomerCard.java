@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 public class CustomerCard {
     @Getter
     private HBox cardContainer;
+    @Getter
     private Label customerName;
     @Getter
     private Button viewDetailBtn;
@@ -23,12 +24,12 @@ public class CustomerCard {
         cardContainer.setPrefWidth(800);
         cardContainer.setPrefHeight(50);
 
-        customerName = new Label("AAAAAA");
+        customerName = new Label();
         customerName.setFont(new Font(18));
         HBox.setMargin(customerName, new Insets(20,0,10,10));
 
         viewDetailBtn = new Button("Lihat Detail");
-        HBox.setMargin(viewDetailBtn, new Insets(10,0,10,600));
+        HBox.setMargin(viewDetailBtn, new Insets(10,0,10,0));
 
         File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style/buttonstyle.css");
         String cssUrl = cssFile.toURI().toURL().toExternalForm();
