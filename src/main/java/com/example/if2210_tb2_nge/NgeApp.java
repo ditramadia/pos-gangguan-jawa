@@ -118,7 +118,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             } else if (button.getText() == "Inventory") {
                 MenuPage newMenuPage = null;
                 try {
-                    newMenuPage = new MenuPage();
+                    newMenuPage =  new MenuPage();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

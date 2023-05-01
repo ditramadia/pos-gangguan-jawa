@@ -124,6 +124,11 @@
       <artifactId>json-ktx</artifactId>
       <version>1.0.2</version>
     </dependency>
+      <dependency>
+          <groupId>com.exadel.flamingo.javafx</groupId>
+          <artifactId>flamingo-javafx</artifactId>
+          <version>1.5.0</version>
+      </dependency>
   </dependencies>
 
   <build>
