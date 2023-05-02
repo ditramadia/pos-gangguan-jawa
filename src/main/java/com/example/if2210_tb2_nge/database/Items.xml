@@ -1,0 +1,20 @@
+<items>
+    <item>
+        <id>1</id>
+        <name>Kulkas</name>
+        <category>elektronik</category>
+        <price>1000000</price>
+        <buyPrice>800000</buyPrice>
+        <stock>5</stock>
+        <image>https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/01/28/2114811954.jpg</image>
+    </item>
+    <item>
+        <id>2</id>
+        <name>Lemari</name>
+        <category>perabotan</category>
+        <price>100000</price>
+        <buyPrice>90000</buyPrice>
+        <stock>10</stock>
+        <image>none</image>
+    </item>
+</items>
