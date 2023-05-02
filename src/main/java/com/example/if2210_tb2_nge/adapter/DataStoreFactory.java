@@ -19,17 +19,17 @@ public class DataStoreFactory {
     }
 
     public static void main(String[] args) {
-        String fileName = "src/main/java/com/example/if2210_tb2_nge/database/Items.json";
-        String format = "json";
-        DataStore dataStore = DataStoreFactory.getDataStore(fileName, format);
+        String xmlFileName = "src/main/java/com/example/if2210_tb2_nge/database/Itemss.json";
+        String jsonFileName = "src/main/java/com/example/if2210_tb2_nge/database/Items.xml";
+        String formatTo = "json";
+        String formatFrom = "xml";
 
-        // Baca data dari file
-        Object obj = dataStore.load();
+        // Load data from JSON file
+        DataStore dataStore = DataStoreFactory.getDataStore(jsonFileName, formatFrom);
+        Object data = dataStore.load();
 
-        // Cetak data
-        System.out.println(obj);
-
-
-
+        // Save data to XML file
+        dataStore = DataStoreFactory.getDataStore(xmlFileName, formatTo);
+        dataStore.save(data);
     }
 }
