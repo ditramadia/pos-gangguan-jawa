@@ -91,31 +91,31 @@ public class CustomerPage {
     }
 
     public void updateCard() throws Exception {
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
-        for (Object itemsObj : itemsArray) {
-            JSONObject product = (JSONObject) itemsObj;
-            if (product.get("name") == null) {
-                continue;
-            }
-            Long id = (Long) product.get("id");
-            CustomerCard newCustomerCard = new CustomerCard();
-            cardContent.getChildren().add(newCustomerCard.getCardContainer());
-            newCustomerCard.getCustomerName().setText((String) product.get("name"));
-
-            newCustomerCard.getViewDetailBtn().setOnAction(e -> {
-                try {
-                    customerDetailPage.loadData(id.intValue());
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-                mulscreens.getChildren().get(0).setVisible(false);
-                mulscreens.getChildren().get(1).setVisible(true);
-            });
-
-//            GridPane.setMargin(newCustomerCard.getCardContainer(), new Insets(30));
-//            cardLayout.add(newCustomerCard.getCardContainer(), column++, row);
-        }
+//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
+//        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
+//        for (Object itemsObj : itemsArray) {
+//            JSONObject product = (JSONObject) itemsObj;
+//            if (product.get("name") == null) {
+//                continue;
+//            }
+//            Long id = (Long) product.get("id");
+//            CustomerCard newCustomerCard = new CustomerCard();
+//            cardContent.getChildren().add(newCustomerCard.getCardContainer());
+//            newCustomerCard.getCustomerName().setText((String) product.get("name"));
+//
+//            newCustomerCard.getViewDetailBtn().setOnAction(e -> {
+//                try {
+//                    customerDetailPage.loadData(id.intValue());
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//                mulscreens.getChildren().get(0).setVisible(false);
+//                mulscreens.getChildren().get(1).setVisible(true);
+//            });
+//
+////            GridPane.setMargin(newCustomerCard.getCardContainer(), new Insets(30));
+////            cardLayout.add(newCustomerCard.getCardContainer(), column++, row);
+//        }
     }
 
 }
