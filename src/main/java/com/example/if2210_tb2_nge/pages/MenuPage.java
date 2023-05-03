@@ -44,6 +44,7 @@ public class MenuPage implements EventHandler<ActionEvent> {
         mulscreens = new StackPane();
         itemDetailPage = new ItemDetailPage();
 
+
         // page container
         pageContainer = new BorderPane();
 
@@ -64,7 +65,7 @@ public class MenuPage implements EventHandler<ActionEvent> {
 
         // search bar
         searchBar = new SearchBar();
-//        contentContainer.getChildren().add(searchBar.getSearchBarContainer());
+        contentContainer.getChildren().add(searchBar.getSearchBarContainer());
 
         // scroll container
         scrollContainer = new ScrollPane();
@@ -94,16 +95,23 @@ public class MenuPage implements EventHandler<ActionEvent> {
         pageContainer.setBottom(newItemBtn);
         tab.setContent(mulscreens);
 
+        itemDetailPage.getBackBtn().setOnAction(e -> {
+            itemDetailPage.resetPage();
+            mulscreens.getChildren().get(0).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+        });
+
     }
 
     @Override
     public void handle(ActionEvent actionEvent) {
 
 
-        System.out.println("View Detail Button Clicked");
+
         mulscreens.getChildren().get(0).setVisible(false);
         mulscreens.getChildren().get(1).setVisible(true);
     }
+
 
     public void updateCard() throws Exception {
         JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");

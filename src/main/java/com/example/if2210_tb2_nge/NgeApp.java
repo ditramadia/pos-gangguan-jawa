@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -44,6 +46,23 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         Menu file = new Menu("File");
 //        file.setStyle("-fx-background-color: black; -fx-text-fill: white;");
         MenuItem importDb = new MenuItem("Import Database");
+        importDb.setOnAction(e -> {
+            DirectoryChooser fileChooser = new DirectoryChooser();
+            fileChooser.setTitle("Select Folder");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+            // Set the file chooser to select only directories
+
+            // Show the dialog and get the selected folder
+            File selectedFolder = fileChooser.showDialog(stage);
+            if (selectedFolder != null) {
+                // Do something with the selected folder
+                System.out.println("Selected folder: " + selectedFolder.getAbsolutePath());
+            }
+
+        });
+
+
         MenuItem exportDb = new MenuItem("Export Database");
         MenuItem exit = new MenuItem("Exit");
         file.getItems().addAll(importDb,exportDb,exit);
