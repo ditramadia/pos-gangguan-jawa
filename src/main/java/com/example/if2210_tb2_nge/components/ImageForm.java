@@ -12,8 +12,11 @@ public class ImageForm extends Control {
     private StackPane imageContainer;
     private ImageView image;
     private Button editBtn;
+    @Getter
+    private String imgUrl;
 
     public ImageForm(String imgPath) {
+        this.imgUrl = imgPath;
         // image container
         imageContainer = new StackPane();
 

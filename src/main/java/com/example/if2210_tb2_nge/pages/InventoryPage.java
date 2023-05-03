@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -64,6 +65,18 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             mulscreens.getChildren().get(0).setVisible(true);
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(false);
+        });
+        newItemPage.getSaveBtn().setOnAction(e -> {
+            try {
+                ItemController.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
+                newItemPage.resetPage();
+                mulscreens.getChildren().get(0).setVisible(true);
+                mulscreens.getChildren().get(1).setVisible(false);
+                mulscreens.getChildren().get(2).setVisible(false);
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         // page container

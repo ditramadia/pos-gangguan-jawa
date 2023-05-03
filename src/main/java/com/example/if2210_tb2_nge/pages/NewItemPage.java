@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
+import com.example.if2210_tb2_nge.controller.ItemController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,13 +15,20 @@ public class NewItemPage {
     @Getter
     private VBox pageContainer;
     private Label header;
+    @Getter
     private ImageForm itemImage;
+    @Getter
     private TextFieldForm nameForm;
+    @Getter
     private TextFieldForm categoryForm;
     private HBox horizontalTextFormContainer;
+    @Getter
     private TextFieldForm priceForm;
+    @Getter
     private TextFieldForm buyPriceForm;
+    @Getter
     private TextFieldForm stockForm;
+    @Getter
     private Button saveBtn;
     @Getter
     private Button backBtn;

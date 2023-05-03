@@ -65,7 +65,7 @@ public class ItemController {
         try {
             Integer lastId = 0;
             for (Map<String, Object> item : items) {
-                if (Integer.parseInt(item.get("id").toString()) > 0) {
+                if (Integer.parseInt(item.get("id").toString()) > lastId) {
                     lastId = Integer.parseInt(item.get("id").toString());
                 }
             }
