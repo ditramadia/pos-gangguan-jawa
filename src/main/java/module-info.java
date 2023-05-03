@@ -15,6 +15,7 @@ module com.example.if2210_tb2_nge {
     requires json.simple;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.xml;
+    requires com.google.gson;
 
     opens com.example.if2210_tb2_nge to javafx.fxml;
     exports com.example.if2210_tb2_nge;
