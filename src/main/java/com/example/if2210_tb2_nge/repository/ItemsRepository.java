@@ -16,7 +16,11 @@ public class ItemsRepository {
         Gson gson = new Gson();
         Map<String, List<Map<String, Object>>> data = gson.fromJson(json, Map.class);
         List<Map<String, Object>> itemsList = data.get("items");
-        items = itemsList;
+        if (itemsList == null) {
+        }
+        else {
+            items = itemsList;
+        }
     }
 
     public static Object saveItems() {

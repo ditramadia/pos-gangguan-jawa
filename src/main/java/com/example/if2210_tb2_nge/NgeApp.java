@@ -75,13 +75,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
                             Object data = dataStore.load();
 
+                            // save data to repository
                             try {
-                                String json = new ObjectMapper().writeValueAsString(data);
-                                Gson gson = new Gson();
-                                Map<String, List<Map<String, Object>>> dataMap = gson.fromJson(json, Map.class);
-                                ItemsRepository.setItemsRepository(dataMap);
-                            } catch (JsonProcessingException jsonProcessingException) {
-
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
                             }
                         }
                         else if (file.getName().endsWith(".xml")) {
