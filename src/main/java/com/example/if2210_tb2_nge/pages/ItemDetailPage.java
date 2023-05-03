@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.Map;
+
 public class ItemDetailPage {
     @Getter
     private VBox pageContainer;
@@ -91,6 +93,15 @@ public class ItemDetailPage {
         // back button
         backBtn = new Button("Back");
         pageContainer.getChildren().add(backBtn);
+    }
+
+    public void readData(Integer id) throws Exception {
+        Map<String, Object> item = ItemController.getItem(id);
+        nameForm.setValue(item.get("name").toString());
+        priceForm.setValue(item.get("price").toString().substring(0, item.get("price").toString().length() - 2));
+        buyPriceForm.setValue(item.get("buyPrice").toString().substring(0, item.get("buyPrice").toString().length() - 2));
+        stockForm.setValue(item.get("stock").toString().substring(0, item.get("stock").toString().length() - 2));
+        categoryForm.setValue(item.get("category").toString());
     }
 
     public void resetPage() {

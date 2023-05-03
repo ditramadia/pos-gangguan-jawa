@@ -171,10 +171,12 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             ItemCard itemCard = new ItemCard(id.intValue());
 
             // add the action to the view detail button
+            Double finalId = id;
             itemCard.getViewDetailBtn().setOnAction(e -> {
                 try {
                     // load the item detail page
                     mulscreens.getChildren().get(0).setVisible(false);
+                    itemDetailPage.readData(finalId.intValue());
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {

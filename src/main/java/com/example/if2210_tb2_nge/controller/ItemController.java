@@ -22,6 +22,22 @@ public class ItemController {
         ItemsRepository.setItemsRepository(Map.of("items", items));
     }
 
+    public static Map<String, Object> getItem(Integer id) throws Exception {
+        List<Map<String, Object>> items = ItemsRepository.getItems();
+        for (Map<String, Object> item : items) {
+            Double Id;
+            try {
+                Id = (Double) item.get("id");
+            } catch (Exception e) {
+                Id = Double.parseDouble((String) item.get("id"));
+            }
+            if (Id.intValue() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
 //    public static void deleteItemsJSON(Integer idItem) throws  Exception {
 //        JSONObject jsonObj = readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
 //        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
