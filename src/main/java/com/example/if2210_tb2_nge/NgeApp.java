@@ -32,6 +32,9 @@ import java.util.Map;
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
     TabPane tabPane;
+    String itemsFileName;
+    String customersFileName;
+    String transactionsFileName;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -49,6 +52,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         // load default repository
         try {
             DataStore defaultDataStore = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/repository/Items.json", "json");
+            this.itemsFileName = "Items";
             Object defaultData = defaultDataStore.load();
             ItemsRepository.setItemsRepository(defaultData);
             ItemsRepository.printItems();
@@ -79,11 +83,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 File[] files = selectedFolder.listFiles();
                 for (File file : files) {
                     if (file.isFile()) {
-                        Path RepoPath = Paths.get("src/main/java/com/example/if2210_tb2_nge/repository/");
                         // choose file that has .json extension
                         if (file.getName().endsWith(".json")) {
                             System.out.println("JSON file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
+                            this.itemsFileName = file.getName().substring(0, file.getName().length() - 5);
                             Object data = dataStore.load();
 
                             // save data to repository
@@ -112,6 +116,13 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
 
 
         MenuItem exportDb = new MenuItem("Export Database");
+        exportDb.setOnAction(e -> {
+            DataStore dataStore = DataStoreFactory.getDataStore("saves/" + this.itemsFileName + ".xml", "xml");
+            Object data = ItemsRepository.saveItems();
+            dataStore.save(data);
+        });
+
+
         MenuItem exit = new MenuItem("Exit");
         directory.getItems().addAll(importDb,exportDb,exit);
 
