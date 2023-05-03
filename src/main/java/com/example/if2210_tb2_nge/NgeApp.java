@@ -2,6 +2,8 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
+import com.example.if2210_tb2_nge.entity.Customers;
+import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
 import com.example.if2210_tb2_nge.pages.MenuPage;
@@ -77,70 +79,35 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             System.out.println("JSON file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
                             Object data = dataStore.load();
-                            // convert Object to String
-                            String json = null;
-                            try {
-                                json = new ObjectMapper().writeValueAsString(data);
-                            } catch (JsonProcessingException ex) {
-                                throw new RuntimeException(ex);
-                            }
 
-                            Gson gson = new Gson();
-                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
-                            try {
-                                List<Map<String, Object>> items = dataz.get("items");
-                                for (Map<String, Object> item : items) {
-                                    System.out.println(item);
-                                }
-                            } catch (Exception exc) {
-
-                            }
+                            Items items = new Items(data);
+                            Customers customers = new Customers(data);
+                            items.printItems();
+                            customers.printCustomers();
                         }
                         else if (file.getName().endsWith(".xml")) {
                             System.out.println("XML file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
                             Object data = dataStore.load();
-                            // convert Object to String
-                            String json = null;
-                            try {
-                                json = new ObjectMapper().writeValueAsString(data);
-                            } catch (JsonProcessingException ex) {
-                                throw new RuntimeException(ex);
-                            }
 
-                            Gson gson = new Gson();
-                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
-                            try {
-                                List<Map<String, Object>> items = dataz.get("items");
-                                for (Map<String, Object> item : items) {
-                                    System.out.println(item.get("name"));
-                                }
-                            } catch (Exception exc) {
-
-                            }
+                            Items items = new Items(data);
+                            Customers customers = new Customers(data);
+                            items.printItems();
+                            customers.printCustomers();
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
                             Object data = dataStore.load();
-                            // convert Object to String
-                            String json = null;
-                            try {
-                                json = new ObjectMapper().writeValueAsString(data);
-                            } catch (JsonProcessingException ex) {
-                                throw new RuntimeException(ex);
-                            }
 
-                            Gson gson = new Gson();
-                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
-                            try {
-                                List<Map<String, Object>> items = dataz.get("items");
-                                for (Map<String, Object> item : items) {
-                                    System.out.println(item.get("name"));
-                                }
-                            } catch (Exception exc) {
+                            Items items = new Items(data);
+                            Customers customers = new Customers(data);
+                            items.printItems();
+                            customers.printCustomers();
 
-                            }
+                            //save from items to json
+                            DataStore dataStore1 = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/database/itemsss.json", "json");
+                            dataStore1.save(items.getItems());
                         }
                     }
                 }
