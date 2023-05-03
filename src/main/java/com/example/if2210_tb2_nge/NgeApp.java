@@ -102,11 +102,24 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
                             Object data = dataStore.load();
 
+                            // save data to repository
+                            try {
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
                             Object data = dataStore.load();
+
+                            // save data to repository
+                            try {
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
                 }

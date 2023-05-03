@@ -162,7 +162,12 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         List<Map<String, Object>> items = ItemsRepository.getItems();
         for (Map<String, Object> item : items) {
             // create a new ItemCard
-            Double id = (Double) item.get("id");
+            Double id;
+            try {
+                id = (Double) item.get("id");
+            } catch (Exception e) {
+                id = Double.parseDouble((String) item.get("id"));
+            }
             ItemCard itemCard = new ItemCard(id.intValue());
 
             // add the action to the view detail button
