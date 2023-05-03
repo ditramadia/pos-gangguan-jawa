@@ -57,6 +57,18 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(false);
         });
+        itemDetailPage.getDeleteBtn().setOnAction(e -> {
+            try {
+                ItemController.deleteItems(itemDetailPage.getItemId());
+                itemDetailPage.resetPage();
+                mulscreens.getChildren().get(0).setVisible(true);
+                mulscreens.getChildren().get(1).setVisible(false);
+                mulscreens.getChildren().get(2).setVisible(false);
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // new item page
         newItemPage = new NewItemPage();

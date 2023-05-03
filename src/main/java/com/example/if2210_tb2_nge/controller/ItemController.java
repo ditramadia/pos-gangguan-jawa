@@ -38,21 +38,22 @@ public class ItemController {
         return null;
     }
 
-//    public static void deleteItemsJSON(Integer idItem) throws  Exception {
-//        JSONObject jsonObj = readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-//
-//        for (int i = 0; i < itemsArray.size(); i++) {
-//            JSONObject item = (JSONObject) itemsArray.get(i);
-//            if (Integer.parseInt(item.get("id").toString()) == idItem) {
-//                itemsArray.remove(i);
-//                break;
-//            }
-//        }
-//
-//        byte[] jsonBytes = jsonObj.toJSONString().getBytes();
-//        Files.write(Paths.get("src/main/java/com/example/if2210_tb2_nge/database/Items.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
-//    }
+    public static void deleteItems(Integer id) throws Exception {
+        List<Map<String, Object>> items = ItemsRepository.getItems();
+        for (Map<String, Object> item : items) {
+            Double Id;
+            try {
+                Id = (Double) item.get("id");
+            } catch (Exception e) {
+                Id = Double.parseDouble((String) item.get("id"));
+            }
+            if (Id.intValue() == id) {
+                items.remove(item);
+                break;
+            }
+        }
+        ItemsRepository.setItemsRepository(Map.of("items", items));
+    }
 
 //    public static void updateItemsJSON(int idItem, String name, int price, int buyPrice,
 //                                                int stock, String category, String image) throws  Exception {

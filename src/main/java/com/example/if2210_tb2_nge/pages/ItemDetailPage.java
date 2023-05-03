@@ -36,6 +36,8 @@ public class ItemDetailPage {
     @Getter
     private Button backBtn;
     private Boolean isEditMode;
+    @Getter
+    private Integer itemId;
 
     public ItemDetailPage() {
         isEditMode = false;
@@ -97,6 +99,7 @@ public class ItemDetailPage {
 
     public void readData(Integer id) throws Exception {
         Map<String, Object> item = ItemController.getItem(id);
+        this.itemId = id;
         nameForm.setValue(item.get("name").toString());
         priceForm.setValue(item.get("price").toString().substring(0, item.get("price").toString().length() - 2));
         buyPriceForm.setValue(item.get("buyPrice").toString().substring(0, item.get("buyPrice").toString().length() - 2));
