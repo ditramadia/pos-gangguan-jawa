@@ -10,22 +10,13 @@ import java.util.Map;
 public class ItemsRepository {
     private static List<Map<String, Object>> items;
 
-    public static void setItemsRepository(Object obj) {
+    public static void setItemsRepository(Object obj) throws JsonProcessingException {
         String json = null;
-        try {
-            json = new ObjectMapper().writeValueAsString(obj);
-        } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
-        }
-
+        json = new ObjectMapper().writeValueAsString(obj);
         Gson gson = new Gson();
         Map<String, List<Map<String, Object>>> data = gson.fromJson(json, Map.class);
-        try {
-            List<Map<String, Object>> itemsList = data.get("items");
-            items = itemsList;
-        } catch (Exception exc) {
-
-        }
+        List<Map<String, Object>> itemsList = data.get("items");
+        items = itemsList;
     }
 
     public static Object saveItems() {
@@ -37,13 +28,8 @@ public class ItemsRepository {
     }
 
     public static void printItems() {
-        try {
-            for (Map<String, Object> item : items) {
-                System.out.println(item.get("name"));
-            }
-        }
-        catch (Exception exc) {
-
+        for (Map<String, Object> item : items) {
+            System.out.println(item.get("name"));
         }
     }
 }

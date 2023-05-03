@@ -6,6 +6,9 @@ import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
 import com.example.if2210_tb2_nge.pages.InventoryPage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +24,8 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
@@ -70,24 +75,30 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
                             Object data = dataStore.load();
 
-                            ItemsRepository.setItemsRepository(data);
-                            ItemsRepository.printItems();
+                            try {
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException jsonProcessingException) {
+                            }
                         }
                         else if (file.getName().endsWith(".xml")) {
                             System.out.println("XML file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
                             Object data = dataStore.load();
 
-                            ItemsRepository.setItemsRepository(data);
-                            ItemsRepository.printItems();
+                            try {
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException jsonProcessingException) {
+                            }
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
                             Object data = dataStore.load();
 
-                            ItemsRepository.setItemsRepository(data);
-                            ItemsRepository.printItems();
+                            try {
+                                ItemsRepository.setItemsRepository(data);
+                            } catch (JsonProcessingException jsonProcessingException) {
+                            }
                         }
                     }
                 }
