@@ -25,6 +25,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
     private Tab tab;
     private StackPane mulscreens;
     private ItemDetailPage itemDetailPage;
+    private NewItemPage newItemPage;
     private GridPane cardLayout;
     private BorderPane pageContainer;
     private VBox contentContainer;
@@ -45,8 +46,25 @@ public class InventoryPage implements EventHandler<ActionEvent> {
 
         // pages container
         mulscreens = new StackPane();
-        itemDetailPage = new ItemDetailPage();
+        tab.setContent(mulscreens);
 
+        // item detail page
+        itemDetailPage = new ItemDetailPage();
+        itemDetailPage.getBackBtn().setOnAction(e -> {
+            itemDetailPage.resetPage();
+            mulscreens.getChildren().get(0).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+            mulscreens.getChildren().get(2).setVisible(false);
+        });
+
+        // new item page
+        newItemPage = new NewItemPage();
+        newItemPage.getBackBtn().setOnAction(e -> {
+            newItemPage.resetPage();
+            mulscreens.getChildren().get(0).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+            mulscreens.getChildren().get(2).setVisible(false);
+        });
 
         // page container
         pageContainer = new BorderPane();
@@ -57,6 +75,8 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         mulscreens.getChildren().add(pageContainer);
         mulscreens.getChildren().add(itemDetailPage.getPageContainer());
         mulscreens.getChildren().get(1).setVisible(false);
+        mulscreens.getChildren().add(newItemPage.getPageContainer());
+        mulscreens.getChildren().get(2).setVisible(false);
 
         // header
         header = new Label("INVENTORY");
@@ -85,6 +105,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         // scroll container
         scrollContainer = new ScrollPane();
         contentContainer.getChildren().add(scrollContainer);
+
         // cards container
         cardLayout = new GridPane();
         cardLayout.setStyle("-fx-padding: 10;" +
@@ -94,38 +115,25 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                 "-fx-border-radius: 5;" +
                 "-fx-border-color: #83695A;");
         scrollContainer.setContent(cardLayout);
-
-        // teruntuk mas kelvin, silakan buat container cards
         this.updateCard();
-
-
-        // cards container
-
-//        GridPane.setMargin(card, new Insets(10));
-
 
         // new item button
         newItemBtn = new Button("New Item");
+        newItemBtn.setOnAction(e -> {
+            mulscreens.getChildren().get(0).setVisible(false);
+            mulscreens.getChildren().get(1).setVisible(false);
+            mulscreens.getChildren().get(2).setVisible(true);
+        });
         BorderPane.setAlignment(newItemBtn, Pos.BOTTOM_RIGHT);
         pageContainer.setBottom(newItemBtn);
-        tab.setContent(mulscreens);
-
-        itemDetailPage.getBackBtn().setOnAction(e -> {
-            itemDetailPage.resetPage();
-            mulscreens.getChildren().get(0).setVisible(true);
-            mulscreens.getChildren().get(1).setVisible(false);
-        });
-
     }
 
     @Override
     public void handle(ActionEvent actionEvent) {
-
-
         mulscreens.getChildren().get(0).setVisible(false);
         mulscreens.getChildren().get(1).setVisible(true);
+        mulscreens.getChildren().get(2).setVisible(false);
     }
-
 
     public void updateCard() throws Exception {
         // create a new GridPane
@@ -148,9 +156,9 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             itemCard.getViewDetailBtn().setOnAction(e -> {
                 try {
                     // load the item detail page
-//                itemDetailPage.loadData(id.intValue());
                     mulscreens.getChildren().get(0).setVisible(false);
                     mulscreens.getChildren().get(1).setVisible(true);
+                    mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
