@@ -1,0 +1,18 @@
+.tab {
+    -fx-padding: 0px 5px -2px 5px;
+    -fx-background-insets: 0 -20 0 0;
+    -fx-background-color: #83695A;
+    -fx-text-fill: #c4d8de;
+
+}
+.tab:selected {
+    -fx-border-color:#8C7466;
+    -fx-background-color: white;
+    -fx-text-fill: red;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: #8C7466;
+    -fx-text-fill: red;
+    -fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);
+}
