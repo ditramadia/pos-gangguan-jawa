@@ -1,18 +1,16 @@
-package com.example.if2210_tb2_nge.entity;
+package com.example.if2210_tb2_nge.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
-public class Items {
-    private List<Map<String, Object>> items;
+public class ItemsRepository {
+    private static List<Map<String, Object>> items;
 
-    public Items(Object obj) {
+    public static void setItemsRepository(Object obj) {
         String json = null;
         try {
             json = new ObjectMapper().writeValueAsString(obj);
@@ -23,18 +21,22 @@ public class Items {
         Gson gson = new Gson();
         Map<String, List<Map<String, Object>>> data = gson.fromJson(json, Map.class);
         try {
-            List<Map<String, Object>> items = data.get("items");
-            this.items = items;
+            List<Map<String, Object>> itemsList = data.get("items");
+            items = itemsList;
         } catch (Exception exc) {
 
         }
     }
 
-    public Object getItems() {
+    public static Object saveItems() {
         return Map.of("items", items);
     }
 
-    public void printItems() {
+    public static List<Map<String, Object>> getItems() {
+        return items;
+    }
+
+    public static void printItems() {
         try {
             for (Map<String, Object> item : items) {
                 System.out.println(item.get("name"));

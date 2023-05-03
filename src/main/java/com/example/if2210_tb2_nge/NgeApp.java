@@ -2,14 +2,10 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
-import com.example.if2210_tb2_nge.entity.Customers;
-import com.example.if2210_tb2_nge.entity.Items;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
-import com.example.if2210_tb2_nge.pages.MenuPage;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.example.if2210_tb2_nge.pages.InventoryPage;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -18,19 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
@@ -53,7 +43,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         MenuBar menuBar = new MenuBar();
         menuBar.setStyle("-fx-background-color: #8C7466");
 
-        Menu directory =  new Menu("Directory");
+        Menu directory =  new Menu("File");
 //        file.setStyle("-fx-background-color: black; -fx-text-fill: white;");
         MenuItem importDb = new MenuItem("Import Database");
         importDb.setOnAction(e -> {
@@ -80,34 +70,24 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
                             Object data = dataStore.load();
 
-                            Items items = new Items(data);
-                            Customers customers = new Customers(data);
-                            items.printItems();
-                            customers.printCustomers();
+                            ItemsRepository.setItemsRepository(data);
+                            ItemsRepository.printItems();
                         }
                         else if (file.getName().endsWith(".xml")) {
                             System.out.println("XML file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
                             Object data = dataStore.load();
 
-                            Items items = new Items(data);
-                            Customers customers = new Customers(data);
-                            items.printItems();
-                            customers.printCustomers();
+                            ItemsRepository.setItemsRepository(data);
+                            ItemsRepository.printItems();
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
                             Object data = dataStore.load();
 
-                            Items items = new Items(data);
-                            Customers customers = new Customers(data);
-                            items.printItems();
-                            customers.printCustomers();
-
-                            //save from items to json
-                            DataStore dataStore1 = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/database/itemsss.json", "json");
-                            dataStore1.save(items.getItems());
+                            ItemsRepository.setItemsRepository(data);
+                            ItemsRepository.printItems();
                         }
                     }
                 }
@@ -188,14 +168,14 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 tabPane.getTabs().add(newHomePage.getTab());
                 tabPane.getSelectionModel().select(newHomePage.getTab());
             } else if (button.getText() == "Inventory") {
-                MenuPage newMenuPage = null;
+                InventoryPage newMenuPage = null;
                 try {
-                    newMenuPage =  new MenuPage();
+                    newMenuPage =  new InventoryPage();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 Tab newTab = newMenuPage.getTab();
-                MenuPage finalNewMenuPage = newMenuPage;
+                InventoryPage finalNewMenuPage = newMenuPage;
                 newTab.setOnSelectionChanged(event -> {
                     if (newTab.isSelected()) {
                         // Call a function from MenuPage

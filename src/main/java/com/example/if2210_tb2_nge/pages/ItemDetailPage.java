@@ -107,7 +107,7 @@ public class ItemDetailPage {
                     try {
 //                        updateData(id);
                         // refresh page
-                        loadData(id);
+//                        loadData(id);
                         nameField.setEditable(false);
                         stockField.setEditable(false);
                         priceField.setEditable(false);
@@ -132,23 +132,23 @@ public class ItemDetailPage {
         contentContainer.getChildren().add(backBtn);
     }
 
-    public void loadData(int id) throws Exception {
-        this.id = id;
-
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-        for (Object itemsObj : itemsArray) {
-            JSONObject product = (JSONObject) itemsObj;
-            if (Integer.parseInt(product.get("id").toString()) == id) {
-                nameField.setText(product.get("name").toString());
-                priceField.setText(product.get("price").toString());
-                stockField.setText(product.get("stock").toString());
-                buyPrice.setText("Buy Price: " + product.get("buyPrice").toString());
-                category.setText("Category: " + product.get("category").toString());
-            }
-        }
-
-    }
+//    public void loadData(int id) throws Exception {
+//        this.id = id;
+//
+//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
+//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
+//        for (Object itemsObj : itemsArray) {
+//            JSONObject product = (JSONObject) itemsObj;
+//            if (Integer.parseInt(product.get("id").toString()) == id) {
+//                nameField.setText(product.get("name").toString());
+//                priceField.setText(product.get("price").toString());
+//                stockField.setText(product.get("stock").toString());
+//                buyPrice.setText("Buy Price: " + product.get("buyPrice").toString());
+//                category.setText("Category: " + product.get("category").toString());
+//            }
+//        }
+//
+//    }
 
     public void resetPage(){
         nameField.setEditable(false);

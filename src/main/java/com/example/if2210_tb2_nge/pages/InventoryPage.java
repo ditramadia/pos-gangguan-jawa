@@ -2,7 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
-import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,10 +14,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
-public class MenuPage implements EventHandler<ActionEvent> {
+import java.util.List;
+import java.util.Map;
+
+public class InventoryPage implements EventHandler<ActionEvent> {
     @Getter
     private Tab tab;
     private StackPane mulscreens;
@@ -33,7 +34,7 @@ public class MenuPage implements EventHandler<ActionEvent> {
     private int column = 0;
     private int row = 1;
 
-    public MenuPage() throws Exception {
+    public InventoryPage() throws Exception {
         // tab
         tab = new Tab("Inventory");
         tab.setStyle("-fx-background-radius: 10 10 0 0;");
@@ -114,16 +115,14 @@ public class MenuPage implements EventHandler<ActionEvent> {
 
 
     public void updateCard() throws Exception {
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-        for (Object itemsObj : itemsArray) {
-            JSONObject product = (JSONObject) itemsObj;
-            Long id = (Long) product.get("id");
+        List<Map<String, Object>> items = ItemsRepository.getItems();
+        for (Map<String, Object> item : items) {
+            Double id = (Double) item.get("id");
             ItemCard itemCard8 = new ItemCard(id.intValue());
 
             itemCard8.getViewDetailBtn().setOnAction(e -> {
                 try {
-                    itemDetailPage.loadData(id.intValue());
+//                    itemDetailPage.loadData(id.intValue());
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
