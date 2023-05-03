@@ -3,6 +3,7 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import lombok.Getter;
 
 import java.util.List;
@@ -67,6 +69,18 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         // search bar
         searchBar = new SearchBar();
         contentContainer.getChildren().add(searchBar.getSearchBarContainer());
+        searchBar.getSearchField().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if the text field has lost focus
+            PauseTransition pause = new PauseTransition(Duration.millis(10));
+            pause.setOnFinished(event -> {
+                try {
+                    this.updateCard();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            pause.play();
+        });
 
         // scroll container
         scrollContainer = new ScrollPane();
@@ -108,35 +122,58 @@ public class InventoryPage implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
 
 
-
         mulscreens.getChildren().get(0).setVisible(false);
         mulscreens.getChildren().get(1).setVisible(true);
     }
 
 
     public void updateCard() throws Exception {
+        // create a new GridPane
+        GridPane newCardLayout = new GridPane();
+        newCardLayout.setStyle("-fx-padding: 10;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: #83695A;");
+
+        // get the items and iterate over them
         List<Map<String, Object>> items = ItemsRepository.getItems();
         for (Map<String, Object> item : items) {
+            // create a new ItemCard
             Double id = (Double) item.get("id");
-            ItemCard itemCard8 = new ItemCard(id.intValue());
+            ItemCard itemCard = new ItemCard(id.intValue());
 
-            itemCard8.getViewDetailBtn().setOnAction(e -> {
+            // add the action to the view detail button
+            itemCard.getViewDetailBtn().setOnAction(e -> {
                 try {
-//                    itemDetailPage.loadData(id.intValue());
+                    // load the item detail page
+//                itemDetailPage.loadData(id.intValue());
+                    mulscreens.getChildren().get(0).setVisible(false);
+                    mulscreens.getChildren().get(1).setVisible(true);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-                mulscreens.getChildren().get(0).setVisible(false);
-                mulscreens.getChildren().get(1).setVisible(true);
             });
 
-            GridPane.setMargin(itemCard8.getCardContainer(), new Insets(30));
-            cardLayout.add(itemCard8.getCardContainer(), column++, row);
-
-            if (column == 6){
-                row++;
-                column = 0;
+            // check if the search field is empty or if the item name matches the search field
+            if (searchBar.getSearchField().getText().isEmpty() ||
+                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
+                // add the card to the new card layout
+                GridPane.setMargin(itemCard.getCardContainer(), new Insets(30));
+                newCardLayout.add(itemCard.getCardContainer(), column++, row);
+                if (column == 6) {
+                    row++;
+                    column = 0;
+                }
             }
         }
+
+        // set the new card layout as the content of the scroll container
+        scrollContainer.setContent(newCardLayout);
+
+        // reset the column and row counts
+        column = 0;
+        row = 1;
     }
 }

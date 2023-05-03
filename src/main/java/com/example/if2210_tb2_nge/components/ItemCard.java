@@ -25,6 +25,7 @@ public class ItemCard extends Control{
     private String imageUrl;
     private Image image;
     private ImageView imageView;
+    @Getter
     private Label itemName;
     @Getter
     private Button viewDetailBtn;

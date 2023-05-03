@@ -9,6 +9,7 @@ import lombok.Getter;
 public class SearchBar extends Control {
     @Getter
     private HBox searchBarContainer;
+    @Getter
     private TextField searchField;
 
     public SearchBar() {
