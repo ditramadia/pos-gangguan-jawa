@@ -23,6 +23,15 @@ public class XMLAdapter implements DataStore {
     }
 
     @Override
+    public void save(Object obj, Path path) {
+        try {
+            xmlMapper.writeValue(Files.newBufferedWriter(path), obj);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Object load() {
         try {
             return xmlMapper.readValue(Files.newBufferedReader(path), Object.class);

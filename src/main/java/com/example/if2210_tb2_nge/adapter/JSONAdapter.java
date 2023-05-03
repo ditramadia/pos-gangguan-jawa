@@ -23,6 +23,15 @@ public class JSONAdapter implements DataStore {
     }
 
     @Override
+    public void save(Object obj, Path path) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(path))) {
+            oos.writeObject(obj);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Object load() {
         try {
             return objectMapper.readValue(Files.newBufferedReader(path), Object.class);

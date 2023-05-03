@@ -20,6 +20,15 @@ public class OBJAdapter implements DataStore {
     }
 
     @Override
+    public void save(Object obj, Path path) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(path))) {
+            oos.writeObject(obj);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Object load() {
         try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))) {
             return ois.readObject();

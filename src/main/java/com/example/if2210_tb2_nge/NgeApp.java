@@ -21,6 +21,8 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
@@ -38,6 +40,14 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         stage.setTitle("Gangguan Jawa");
         BorderPane root = new BorderPane();
 //        root.setStyle("-fx-background-color: #8C7466");
+
+        // load default repository
+        try {
+            DataStore defaultDataStore = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/repository/Items.json", "json");
+            Object defaultData = defaultDataStore.load();
+            ItemsRepository.setItemsRepository(defaultData);
+            ItemsRepository.printItems();
+        } catch (Exception e) {}
 
         // Menu Bar
         MenuBar menuBar = new MenuBar();
@@ -64,6 +74,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 File[] files = selectedFolder.listFiles();
                 for (File file : files) {
                     if (file.isFile()) {
+                        Path RepoPath = Paths.get("src/main/java/com/example/if2210_tb2_nge/repository/");
                         // choose file that has .json extension
                         if (file.getName().endsWith(".json")) {
                             System.out.println("JSON file: " + file.getAbsolutePath());
