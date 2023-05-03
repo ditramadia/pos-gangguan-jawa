@@ -56,6 +56,11 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             mulscreens.getChildren().get(0).setVisible(true);
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(false);
+            try {
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
         itemDetailPage.getDeleteBtn().setOnAction(e -> {
             try {
@@ -77,6 +82,11 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             mulscreens.getChildren().get(0).setVisible(true);
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(false);
+            try {
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
         newItemPage.getSaveBtn().setOnAction(e -> {
             try {

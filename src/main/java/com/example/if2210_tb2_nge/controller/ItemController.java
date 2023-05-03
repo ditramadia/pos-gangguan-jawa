@@ -55,27 +55,28 @@ public class ItemController {
         ItemsRepository.setItemsRepository(Map.of("items", items));
     }
 
-//    public static void updateItemsJSON(int idItem, String name, int price, int buyPrice,
-//                                                int stock, String category, String image) throws  Exception {
-//        JSONObject jsonObj = readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-//
-//        for (Object o : itemsArray) {
-//            JSONObject item = (JSONObject) o;
-//            if (Integer.parseInt(item.get("id").toString()) == idItem) {
-//                item.put("name", name);
-//                item.put("price", price);
-//                item.put("buyPrice", buyPrice);
-//                item.put("stock", stock);
-//                item.put("category", category);
+    public static void updateItems(Integer id, String name, Integer price, Integer buyPrice,
+                                   Integer stock, String category) throws Exception {
+        List<Map<String, Object>> items = ItemsRepository.getItems();
+        for (Map<String, Object> item : items) {
+            Double Id;
+            try {
+                Id = (Double) item.get("id");
+            } catch (Exception e) {
+                Id = Double.parseDouble((String) item.get("id"));
+            }
+            if (Id.intValue() == id) {
+                item.put("name", name);
+                item.put("price", price);
+                item.put("buyPrice", buyPrice);
+                item.put("stock", stock);
+                item.put("category", category);
 //                item.put("image", image);
-//                break;
-//            }
-//        }
-//
-//        byte[] jsonBytes = jsonObj.toJSONString().getBytes();
-//        Files.write(Paths.get("src/main/java/com/example/if2210_tb2_nge/database/Items.json"), jsonBytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
-//    }
+                break;
+            }
+        }
+        ItemsRepository.setItemsRepository(Map.of("items", items));
+    }
 
     public static Integer getLastIdItems() throws Exception {
         List<Map<String, Object>> items = ItemsRepository.getItems();

@@ -117,15 +117,19 @@ public class ItemDetailPage {
 
     public void toggleEditMode() {
         if (isEditMode) {
-          isEditMode = false;
-          saveBtn.setText(new String("Edit"));
-          saveBtn.setOnAction(e -> toggleEditMode());
-          itemImage.setIsDisable(true);
-          nameForm.setIsDisable(true);
-          categoryForm.setIsDisable(true);
-          priceForm.setIsDisable(true);
-          buyPriceForm.setIsDisable(true);
-          stockForm.setIsDisable(true);
+            isEditMode = false;
+            saveBtn.setText(new String("Edit"));
+            try {
+                this.updateData();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            itemImage.setIsDisable(true);
+            nameForm.setIsDisable(true);
+            categoryForm.setIsDisable(true);
+            priceForm.setIsDisable(true);
+            buyPriceForm.setIsDisable(true);
+            stockForm.setIsDisable(true);
         } else {
             isEditMode = true;
             saveBtn.setText(new String("Save"));
@@ -136,6 +140,10 @@ public class ItemDetailPage {
             buyPriceForm.setIsDisable(false);
             stockForm.setIsDisable(false);
         }
+    }
+
+    public void updateData() throws Exception {
+        ItemController.updateItems(itemId, nameForm.getValue(), Integer.parseInt(priceForm.getValue()), Integer.parseInt(buyPriceForm.getValue()), Integer.parseInt(stockForm.getValue()), categoryForm.getValue());
     }
 }
 
