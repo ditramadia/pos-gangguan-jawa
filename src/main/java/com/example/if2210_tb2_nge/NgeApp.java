@@ -1,8 +1,13 @@
 package com.example.if2210_tb2_nge;
 
+import com.example.if2210_tb2_nge.adapter.DataStore;
+import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
 import com.example.if2210_tb2_nge.pages.MenuPage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +26,9 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
@@ -43,21 +51,99 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         MenuBar menuBar = new MenuBar();
         menuBar.setStyle("-fx-background-color: #8C7466");
 
-        Menu file = new Menu("File");
+        Menu directory =  new Menu("Directory");
 //        file.setStyle("-fx-background-color: black; -fx-text-fill: white;");
         MenuItem importDb = new MenuItem("Import Database");
         importDb.setOnAction(e -> {
-            DirectoryChooser fileChooser = new DirectoryChooser();
-            fileChooser.setTitle("Select Folder");
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Select Folder");
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
             // Set the file chooser to select only directories
 
             // Show the dialog and get the selected folder
-            File selectedFolder = fileChooser.showDialog(stage);
+            File selectedFolder = directoryChooser.showDialog(stage);
+
             if (selectedFolder != null) {
                 // Do something with the selected folder
                 System.out.println("Selected folder: " + selectedFolder.getAbsolutePath());
+
+                //print all files in the folder
+                File[] files = selectedFolder.listFiles();
+                for (File file : files) {
+                    if (file.isFile()) {
+                        // choose file that has .json extension
+                        if (file.getName().endsWith(".json")) {
+                            System.out.println("JSON file: " + file.getAbsolutePath());
+                            DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
+                            Object data = dataStore.load();
+                            // convert Object to String
+                            String json = null;
+                            try {
+                                json = new ObjectMapper().writeValueAsString(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+                            Gson gson = new Gson();
+                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
+                            try {
+                                List<Map<String, Object>> items = dataz.get("items");
+                                for (Map<String, Object> item : items) {
+                                    System.out.println(item);
+                                }
+                            } catch (Exception exc) {
+
+                            }
+                        }
+                        else if (file.getName().endsWith(".xml")) {
+                            System.out.println("XML file: " + file.getAbsolutePath());
+                            DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
+                            Object data = dataStore.load();
+                            // convert Object to String
+                            String json = null;
+                            try {
+                                json = new ObjectMapper().writeValueAsString(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+                            Gson gson = new Gson();
+                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
+                            try {
+                                List<Map<String, Object>> items = dataz.get("items");
+                                for (Map<String, Object> item : items) {
+                                    System.out.println(item.get("name"));
+                                }
+                            } catch (Exception exc) {
+
+                            }
+                        }
+                        else {
+                            System.out.println("OBJ file: " + file.getAbsolutePath());
+                            DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
+                            Object data = dataStore.load();
+                            // convert Object to String
+                            String json = null;
+                            try {
+                                json = new ObjectMapper().writeValueAsString(data);
+                            } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+                            Gson gson = new Gson();
+                            Map<String, List<Map<String, Object>>> dataz = gson.fromJson(json, Map.class);
+                            try {
+                                List<Map<String, Object>> items = dataz.get("items");
+                                for (Map<String, Object> item : items) {
+                                    System.out.println(item.get("name"));
+                                }
+                            } catch (Exception exc) {
+
+                            }
+                        }
+                    }
+                }
             }
 
         });
@@ -65,7 +151,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
 
         MenuItem exportDb = new MenuItem("Export Database");
         MenuItem exit = new MenuItem("Exit");
-        file.getItems().addAll(importDb,exportDb,exit);
+        directory.getItems().addAll(importDb,exportDb,exit);
 
         Menu plugin = new Menu ("Plugin");
         MenuItem importPlugin = new MenuItem("Import Plugin");
@@ -83,7 +169,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         help.getItems().addAll(howToUse, about, author);
 
         menuBar.setUseSystemMenuBar(true);
-        menuBar.getMenus().addAll(file,plugin, setting, help);
+        menuBar.getMenus().addAll(directory,plugin, setting, help);
         // Tab Panel
         tabPane = new TabPane();
         tabPane.setStyle("-fx-tab-min-width: 100; -fx-tab-max-width: 100; -fx-tab-min-height: 30; -fx-tab-max-height: 30; -fx-tab-background-radius: 20px; -fx-background-color: #FFFFFF; -fx-tab-background-color: #CCCCCC; -fx-tab-text-color: white;");
