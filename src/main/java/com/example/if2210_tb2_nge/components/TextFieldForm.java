@@ -10,6 +10,7 @@ public class TextFieldForm extends Control {
     @Getter
     private VBox formContainer;
     private Label label;
+    @Getter
     private TextField inputField;
 
     public TextFieldForm(String labelStr, String placeholderStr, Integer width) {
@@ -33,4 +34,12 @@ public class TextFieldForm extends Control {
     }
 
     public void setValue(String value) {inputField.setText(value);}
+
+    public void setIsDisable(Boolean isDisable) {
+        if (isDisable) {
+            inputField.setDisable(true);
+        } else {
+            inputField.setDisable(false);
+        }
+    }
 }

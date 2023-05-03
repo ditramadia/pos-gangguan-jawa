@@ -11,6 +11,7 @@ public class ImageForm extends Control {
     @Getter
     private StackPane imageContainer;
     private ImageView image;
+    @Getter
     private Button editBtn;
     @Getter
     private String imgUrl;
@@ -29,5 +30,13 @@ public class ImageForm extends Control {
         // edit button
         editBtn = new Button("Edit");
         imageContainer.getChildren().add(editBtn);
+    }
+
+    public void setIsDisable(Boolean isDisable) {
+        if (isDisable) {
+            editBtn.setVisible(false);
+        } else {
+            editBtn.setVisible(true);
+        }
     }
 }

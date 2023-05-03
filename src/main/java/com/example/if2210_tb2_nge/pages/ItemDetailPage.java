@@ -1,172 +1,127 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ImageForm;
+import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.ItemController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import lombok.Getter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.net.MalformedURLException;
 
 public class ItemDetailPage {
     @Getter
-    private BorderPane pageContainer;
-    private VBox contentContainer;
-    private HBox textContainer;
-    private HBox stockPrice;
-    private Label title;
-    private Label name;
-    private Label price;
-    private Label stock;
-    private Label buyPrice;
-    private Label category;
-    private Label line;
-    private Label stockEdit;
-    private Label priceEdit;
-    private TextField nameField;
-    private TextField stockField;
-    private TextField priceField;
-    private Button updateBtn;
+    private VBox pageContainer;
+    private Label header;
+    @Getter
+    private ImageForm itemImage;
+    @Getter
+    private TextFieldForm nameForm;
+    @Getter
+    private TextFieldForm categoryForm;
+    private HBox horizontalTextFormContainer;
+    @Getter
+    private TextFieldForm priceForm;
+    @Getter
+    private TextFieldForm buyPriceForm;
+    @Getter
+    private TextFieldForm stockForm;
+    private Button saveBtn;
+    @Getter
+    private Button deleteBtn;
     @Getter
     private Button backBtn;
-
-    private Integer id;
-    private boolean editMode = false;
-
+    private Boolean isEditMode;
 
     public ItemDetailPage() {
-        pageContainer = new BorderPane();
-        contentContainer = new VBox();
-        pageContainer.setCenter(contentContainer);
-        textContainer = new HBox();
-        stockPrice = new HBox();
-        textContainer.setAlignment(Pos.CENTER);
-        textContainer.setPrefHeight(50);
-        stockPrice.setAlignment(Pos.TOP_CENTER);
-        stockPrice.setPrefHeight(50);
+        isEditMode = false;
 
-        title = new Label("ITEM DETAILS");
-        title.setFont(new Font(60));
-        title.setPrefHeight(70);
-        title.setPrefWidth(500);
-        name = new Label("Name: ");
-        price = new Label("Price: ");
-        stock = new Label("Stock: ");
-        buyPrice = new Label("Buy Price: ");
-        category = new Label("Category: ");
-        line = new Label("--------------------------------------------------");
-        stockEdit = new Label("Edit Stock: ");
-        priceEdit = new Label("Edit Price: ");
+        // page container
+        pageContainer = new VBox();
 
-        contentContainer.setAlignment(Pos.TOP_CENTER);
+        // header
+        header = new Label("ITEM DETAILS");
+        pageContainer.getChildren().add(header);
 
-        nameField = new TextField();
-        nameField.setPrefWidth(500);
-        nameField.setPrefHeight(30);
-        stockField = new TextField();
-        nameField.setPrefWidth(250);
-        nameField.setPrefHeight(50);
-        priceField = new TextField();
-        nameField.setPrefWidth(250);
-        nameField.setPrefHeight(50);
+        // images
+        itemImage = new ImageForm("https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/01/28/2114811954.jpg");
+        itemImage.setIsDisable(true);
+        pageContainer.getChildren().add(itemImage.getImageContainer());
 
-        nameField.setEditable(false);
-        stockField.setEditable(false);
-        priceField.setEditable(false);
+        // name form
+        nameForm = new TextFieldForm("Name", "", 200);
+        nameForm.setIsDisable(true);
+        pageContainer.getChildren().add(nameForm.getFormContainer());
 
-        contentContainer.getChildren().add(title);
-        contentContainer.getChildren().add(name);
-        contentContainer.getChildren().add(price);
-        contentContainer.getChildren().add(stock);
-        contentContainer.getChildren().add(buyPrice);
-        contentContainer.getChildren().add(category);
+        // category form
+        categoryForm = new TextFieldForm("Category", "", 200);
+        categoryForm.setIsDisable(true);
+        pageContainer.getChildren().add(categoryForm.getFormContainer());
 
-        contentContainer.getChildren().add(line);
+        // horizontal text form container
+        horizontalTextFormContainer = new HBox();
+        pageContainer.getChildren().add(horizontalTextFormContainer);
 
-        textContainer.getChildren().addAll(name,nameField);
-        contentContainer.getChildren().add(textContainer);
+        // price form
+        priceForm = new TextFieldForm("Price", "", 266);
+        priceForm.setIsDisable(true);
+        horizontalTextFormContainer.getChildren().add(priceForm.getFormContainer());
 
-        stockPrice.getChildren().addAll(stock,stockField,price,priceField);
+        // buy price form
+        buyPriceForm = new TextFieldForm("Buy Price", "", 266);
+        buyPriceForm.setIsDisable(true);
+        horizontalTextFormContainer.getChildren().add(buyPriceForm.getFormContainer());
 
-        contentContainer.getChildren().add(stockPrice);
+        // stock form
+        stockForm = new TextFieldForm("Stock", "", 266);
+        stockForm.setIsDisable(true);
+        horizontalTextFormContainer.getChildren().add(stockForm.getFormContainer());
 
-        updateBtn = new Button("Edit");
-        updateBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if(editMode == true) {
-                    try {
-//                        updateData(id);
-                        // refresh page
-//                        loadData(id);
-                        nameField.setEditable(false);
-                        stockField.setEditable(false);
-                        priceField.setEditable(false);
-                        updateBtn.setText("Edit");
-                        editMode = false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    updateBtn.setText("Update");
-                    nameField.setEditable(true);
-                    stockField.setEditable(true);
-                    priceField.setEditable(true);
-                    editMode = true;
-                }
-            }
-        });
+        // save edit button
+        saveBtn = new Button("Edit");
+        saveBtn.setOnAction(e -> toggleEditMode());
+        pageContainer.getChildren().add(saveBtn);
 
+        // delete button
+        deleteBtn = new Button("Delete");
+        pageContainer.getChildren().add(deleteBtn);
+
+        // back button
         backBtn = new Button("Back");
-        contentContainer.getChildren().add(updateBtn);
-        contentContainer.getChildren().add(backBtn);
+        pageContainer.getChildren().add(backBtn);
     }
 
-//    public void loadData(int id) throws Exception {
-//        this.id = id;
-//
-//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-//        for (Object itemsObj : itemsArray) {
-//            JSONObject product = (JSONObject) itemsObj;
-//            if (Integer.parseInt(product.get("id").toString()) == id) {
-//                nameField.setText(product.get("name").toString());
-//                priceField.setText(product.get("price").toString());
-//                stockField.setText(product.get("stock").toString());
-//                buyPrice.setText("Buy Price: " + product.get("buyPrice").toString());
-//                category.setText("Category: " + product.get("category").toString());
-//            }
-//        }
-//
-//    }
-
-    public void resetPage(){
-        nameField.setEditable(false);
-        stockField.setEditable(false);
-        priceField.setEditable(false);
-        updateBtn.setText("Edit");
-        editMode = false;
+    public void resetPage() {
+        nameForm.setValue("");
+        categoryForm.setValue("");
+        priceForm.setValue("");
+        buyPriceForm.setValue("");
+        stockForm.setValue("");
     }
 
-    public void updateData(int id) throws Exception {
-//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-//        for (Object itemsObj : itemsArray) {
-//            JSONObject item = (JSONObject) itemsObj;
-//            if (Integer.parseInt(item.get("id").toString()) == id) {
-//                ItemController.updateItemsJSON(id, item.get("name").toString(), Integer.parseInt(priceField.getText()), Integer.parseInt(item.get("buyPrice").toString()), Integer.parseInt(stockField.getText()), item.get("category").toString(), item.get("image").toString()) ;
-//                break;
-//            }
-//        }
+    public void toggleEditMode() {
+        if (isEditMode) {
+          isEditMode = false;
+          saveBtn.setText(new String("Edit"));
+          saveBtn.setOnAction(e -> toggleEditMode());
+          itemImage.setIsDisable(true);
+          nameForm.setIsDisable(true);
+          categoryForm.setIsDisable(true);
+          priceForm.setIsDisable(true);
+          buyPriceForm.setIsDisable(true);
+          stockForm.setIsDisable(true);
+        } else {
+            isEditMode = true;
+            saveBtn.setText(new String("Save"));
+            itemImage.setIsDisable(false);
+            nameForm.setIsDisable(false);
+            categoryForm.setIsDisable(false);
+            priceForm.setIsDisable(false);
+            buyPriceForm.setIsDisable(false);
+            stockForm.setIsDisable(false);
+        }
     }
 }
+
