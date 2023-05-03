@@ -76,8 +76,12 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             Object data = dataStore.load();
 
                             try {
-                                ItemsRepository.setItemsRepository(data);
+                                String json = new ObjectMapper().writeValueAsString(data);
+                                Gson gson = new Gson();
+                                Map<String, List<Map<String, Object>>> dataMap = gson.fromJson(json, Map.class);
+                                ItemsRepository.setItemsRepository(dataMap);
                             } catch (JsonProcessingException jsonProcessingException) {
+
                             }
                         }
                         else if (file.getName().endsWith(".xml")) {
@@ -85,20 +89,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "xml");
                             Object data = dataStore.load();
 
-                            try {
-                                ItemsRepository.setItemsRepository(data);
-                            } catch (JsonProcessingException jsonProcessingException) {
-                            }
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "obj");
                             Object data = dataStore.load();
-
-                            try {
-                                ItemsRepository.setItemsRepository(data);
-                            } catch (JsonProcessingException jsonProcessingException) {
-                            }
                         }
                     }
                 }
