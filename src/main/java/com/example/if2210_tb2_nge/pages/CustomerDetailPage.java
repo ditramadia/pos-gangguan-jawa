@@ -42,17 +42,16 @@ public class CustomerDetailPage {
         // load data from database
         // set data to labels
 
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
-        for (Object itemsObj : itemsArray) {
-            JSONObject product = (JSONObject) itemsObj;
-            if (Integer.parseInt(product.get("id").toString()) == id) {
-                name.setText("Name: " + product.get("name").toString());
-                noTelp.setText("Telephone: " + product.get("noTelp").toString());
-                vip.setText("VIP: " + product.get("vip").toString());
-                active.setText("Active: " + product.get("active").toString());
-            }
-        }
-
+//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
+//        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
+//        for (Object itemsObj : itemsArray) {
+//            JSONObject product = (JSONObject) itemsObj;
+//            if (Integer.parseInt(product.get("id").toString()) == id) {
+//                name.setText("Name: " + product.get("name").toString());
+//                noTelp.setText("Telephone: " + product.get("noTelp").toString());
+//                vip.setText("VIP: " + product.get("vip").toString());
+//                active.setText("Active: " + product.get("active").toString());
+//            }
+//        }
     }
 }

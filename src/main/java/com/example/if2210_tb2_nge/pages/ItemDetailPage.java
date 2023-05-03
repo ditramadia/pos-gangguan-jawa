@@ -159,14 +159,14 @@ public class ItemDetailPage {
     }
 
     public void updateData(int id) throws Exception {
-        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
-        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
-        for (Object itemsObj : itemsArray) {
-            JSONObject item = (JSONObject) itemsObj;
-            if (Integer.parseInt(item.get("id").toString()) == id) {
-                ItemController.updateItemsJSON(id, item.get("name").toString(), Integer.parseInt(priceField.getText()), Integer.parseInt(item.get("buyPrice").toString()), Integer.parseInt(stockField.getText()), item.get("category").toString(), item.get("image").toString()) ;
-                break;
-            }
-        }
+//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Items.json");
+//        JSONArray itemsArray = (JSONArray) jsonObj.get("items");
+//        for (Object itemsObj : itemsArray) {
+//            JSONObject item = (JSONObject) itemsObj;
+//            if (Integer.parseInt(item.get("id").toString()) == id) {
+//                ItemController.updateItemsJSON(id, item.get("name").toString(), Integer.parseInt(priceField.getText()), Integer.parseInt(item.get("buyPrice").toString()), Integer.parseInt(stockField.getText()), item.get("category").toString(), item.get("image").toString()) ;
+//                break;
+//            }
+//        }
     }
 }
