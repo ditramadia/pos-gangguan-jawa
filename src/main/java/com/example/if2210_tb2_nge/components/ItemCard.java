@@ -1,6 +1,5 @@
 package com.example.if2210_tb2_nge.components;
 
-import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,8 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.util.List;
