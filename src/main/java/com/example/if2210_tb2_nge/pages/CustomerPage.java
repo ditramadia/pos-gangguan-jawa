@@ -99,7 +99,7 @@ public class CustomerPage {
         for (Customers customer : customers) {
             // create a new ItemCard
             Integer id = customer.getId();
-            if (customer.getName() != null) {
+            if (customer.getName() != "") {
                 CustomerCard customerCard = new CustomerCard(id);
 
                 // add the action to the view detail button

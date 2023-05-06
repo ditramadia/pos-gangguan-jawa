@@ -1,6 +1,7 @@
 package com.example.if2210_tb2_nge.repository;
 
 import com.example.if2210_tb2_nge.entity.Customers;
+import com.example.if2210_tb2_nge.entity.Items;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -33,8 +34,16 @@ public class CustomersRepository {
                 }
                 String name = (String) customer.get("name");
                 String noTelp = (String) customer.get("noTelp");
-                Boolean vip = (Boolean) customer.get("vip");
-                Boolean active = (Boolean) customer.get("active");
+                Boolean vip;
+                Boolean active;
+                try {
+                    vip = Boolean.parseBoolean((String) customer.get("vip"));
+                    active = Boolean.parseBoolean((String) customer.get("active"));
+                }
+                catch (Exception e) {
+                    vip = (Boolean) customer.get("vip");
+                    active = (Boolean) customer.get("active");
+                }
                 Customers newCustomer = new Customers(id.intValue(), name, noTelp, vip, active);
                 customers.add(newCustomer);
             }
@@ -42,6 +51,19 @@ public class CustomersRepository {
     }
 
     public static Object saveCustomers() {
-        return Map.of("customers", customers);
+        // convert List of Items to hashmap
+        List<Map<String, Object>> customersList = new ArrayList<>();
+        for (Customers customer : customers) {
+            Map<String, Object> customerMap = Map.of(
+                    "id", customer.getId(),
+                    "name", customer.getName(),
+                    "noTelp", customer.getNoTelp(),
+                    "vip", customer.getVip(),
+                    "active", customer.getActive()
+            );
+            customersList.add(customerMap);
+        }
+        Map<String, List<Map<String, Object>>> data = Map.of("customers", customersList);
+        return data;
     }
 }
