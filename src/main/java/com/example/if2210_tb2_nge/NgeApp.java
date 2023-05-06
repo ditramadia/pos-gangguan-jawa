@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
+import com.example.if2210_tb2_nge.pages.MenuPage;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
@@ -34,7 +35,6 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
     TabPane tabPane;
     String itemsFileName;
-    String CustomerFileName;
     String customersFileName;
     String transactionsFileName;
 
@@ -45,6 +45,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         homePage.getHomeNavBtn().setOnAction(this);
         homePage.getInventoryNavBtn().setOnAction(this);
         homePage.getCustomerNavBtn().setOnAction(this);
+        homePage.getTransactionNavBtn().setOnAction(this);
 
         // app
         stage.setTitle("Gangguan Jawa");
@@ -57,14 +58,12 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             this.itemsFileName = "Items";
             Object defaultData = defaultDataStore.load();
             ItemsRepository.setItemsRepository(defaultData);
-            ItemsRepository.printItems();
         } catch (Exception e) {}
         try {
             DataStore defaultDataStore = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/repository/Customers.json", "json");
-            this.CustomerFileName = "Customers";
+            this.customersFileName = "Customers";
             Object defaultData = defaultDataStore.load();
             CustomersRepository.setCustomersRepository(defaultData);
-            CustomersRepository.printCustomers();
         } catch (Exception e) {}
 
         // Menu Bar
@@ -96,17 +95,18 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                         if (file.getName().endsWith(".json")) {
                             System.out.println("JSON file: " + file.getAbsolutePath());
                             DataStore dataStore = DataStoreFactory.getDataStore(file.getAbsolutePath(), "json");
-                            this.itemsFileName = file.getName().substring(0, file.getName().length() - 5);
                             Object data = dataStore.load();
 
                             // save data to repository
                             try {
                                 ItemsRepository.setItemsRepository(data);
+                                this.itemsFileName = file.getName().substring(0, file.getName().length() - 5);
                             } catch (JsonProcessingException ex) {
                                 throw new RuntimeException(ex);
                             }
                             try {
                                 CustomersRepository.setCustomersRepository(data);
+                                this.customersFileName = file.getName().substring(0, file.getName().length() - 5);
                             } catch (JsonProcessingException ex){
                                 throw new RuntimeException(ex);
                             }
@@ -154,9 +154,22 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
 
         MenuItem exportDb = new MenuItem("Export Database");
         exportDb.setOnAction(e -> {
-            DataStore dataStore = DataStoreFactory.getDataStore("saves/" + this.itemsFileName + ".xml", "xml");
-            Object data = ItemsRepository.saveItems();
-            dataStore.save(data);
+            try {
+                DataStore dataStore = DataStoreFactory.getDataStore("saves/Items.xml", "xml");
+                Object data = ItemsRepository.saveItems();
+                dataStore.save(data);
+            }
+            catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                DataStore dataStore1 = DataStoreFactory.getDataStore("saves/Customers.xml", "xml");
+                Object data1 = CustomersRepository.saveCustomers();
+                dataStore1.save(data1);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+
         });
 
 
@@ -258,8 +271,28 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                CustomerPage finalNewCustomerPage = newCustomerPage;
+                newCustomerPage.getTab().setOnSelectionChanged(event -> {
+                    if (finalNewCustomerPage.getTab().isSelected()) {
+                        // Call a function from MenuPage
+                        try {
+                            finalNewCustomerPage.updateCard();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
                 tabPane.getTabs().add(newCustomerPage.getTab());
                 tabPane.getSelectionModel().select(newCustomerPage.getTab());
+            } else if (button.getText().trim().equals("Transaction")) {
+                MenuPage newMenuPage = null;
+                try {
+                    newMenuPage = new MenuPage();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                tabPane.getTabs().add(newMenuPage.getTab());
+                tabPane.getSelectionModel().select(newMenuPage.getTab());
             }
         }
     }

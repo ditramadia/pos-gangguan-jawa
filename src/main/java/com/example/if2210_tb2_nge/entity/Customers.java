@@ -10,34 +10,31 @@ import java.util.List;
 import java.util.Map;
 
 public class Customers {
-    private List<Map<String, Object>> customers;
+    @Getter
+    @Setter
+    private Integer id;
+    @Getter
+    @Setter
+    private String name;
+    @Getter
+    @Setter
+    private String noTelp;
+    @Getter
+    @Setter
+    private Integer points;
+    @Getter
+    @Setter
+    private Boolean vip;
+    @Getter
+    @Setter
+    private Boolean active;
 
-    public Customers(Object obj) {
-        String json = null;
-        try {
-            json = new ObjectMapper().writeValueAsString(obj);
-        } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        Gson gson = new Gson();
-        Map<String, List<Map<String, Object>>> data = gson.fromJson(json, Map.class);
-        try {
-            List<Map<String, Object>> customers = data.get("customers");
-            this.customers = customers;
-        } catch (Exception exc) {
-
-        }
-    }
-
-    public void printCustomers() {
-        try {
-            for (Map<String, Object> customer : customers) {
-                System.out.println(customer.get("name"));
-            }
-        }
-        catch (Exception exc) {
-
-        }
+    public Customers(Integer id, String name, String noTelp, Integer points, Boolean vip, Boolean active) {
+        this.id = id;
+        this.name = name;
+        this.noTelp = noTelp;
+        this.points = points;
+        this.vip = vip;
+        this.active = active;
     }
 }

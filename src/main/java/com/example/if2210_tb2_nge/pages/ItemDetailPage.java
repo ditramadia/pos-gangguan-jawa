@@ -3,6 +3,8 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.entity.Items;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
 
 public class ItemDetailPage {
@@ -97,16 +100,6 @@ public class ItemDetailPage {
         pageContainer.getChildren().add(backBtn);
     }
 
-    public void readData(Integer id) throws Exception {
-        Map<String, Object> item = ItemController.getItem(id);
-        this.itemId = id;
-        nameForm.setValue(item.get("name").toString());
-        priceForm.setValue(item.get("price").toString().substring(0, item.get("price").toString().length() - 2));
-        buyPriceForm.setValue(item.get("buyPrice").toString().substring(0, item.get("buyPrice").toString().length() - 2));
-        stockForm.setValue(item.get("stock").toString().substring(0, item.get("stock").toString().length() - 2));
-        categoryForm.setValue(item.get("category").toString());
-    }
-
     public void resetPage() {
         nameForm.setValue("");
         categoryForm.setValue("");
@@ -155,7 +148,29 @@ public class ItemDetailPage {
     }
 
     public void updateData() throws Exception {
-        ItemController.updateItems(itemId, nameForm.getValue(), Integer.parseInt(priceForm.getValue()), Integer.parseInt(buyPriceForm.getValue()), Integer.parseInt(stockForm.getValue()), categoryForm.getValue());
+        ItemController.getItemInstance().setName(nameForm.getValue());
+        ItemController.getItemInstance().setCategory(categoryForm.getValue());
+        ItemController.getItemInstance().setPrice(Integer.parseInt(priceForm.getValue()));
+        ItemController.getItemInstance().setBuyPrice(Integer.parseInt(buyPriceForm.getValue()));
+        ItemController.getItemInstance().setStock(Integer.parseInt(stockForm.getValue()));
+        ItemController.getItemInstance().setImage(itemImage.getImgUrl());
+        ItemsRepository.updateItems(ItemController.getItemInstance());
+    }
+
+    public void readData(Integer id) throws Exception {
+        itemId = id;
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            if (item.getId() == id) {
+                ItemController.setItemInstance(itemId);
+                nameForm.setValue(item.getName());
+                categoryForm.setValue(item.getCategory());
+                priceForm.setValue(item.getPrice().toString());
+                buyPriceForm.setValue(item.getBuyPrice().toString());
+                stockForm.setValue(item.getStock().toString());
+                break;
+            }
+        }
     }
 }
 

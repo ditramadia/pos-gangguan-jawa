@@ -1,15 +1,16 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.CustomerCard;
 import com.example.if2210_tb2_nge.components.ItemCard;
+import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -22,6 +23,7 @@ import org.json.simple.JSONObject;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CustomerPage {
     @Getter
@@ -33,6 +35,7 @@ public class CustomerPage {
     private ScrollPane scrollPane;
     private VBox cardContent;
     private Label title;
+    private ConfirmationBox confirmationBox;
 
 
     public CustomerPage() throws Exception {
@@ -47,10 +50,21 @@ public class CustomerPage {
         cardContent = new VBox();
 
         customerDetailPage = new CustomerDetailPage();
+        customerDetailPage.getBackBtn().setOnAction(e -> {
+            customerDetailPage.resetPage();
+            mulscreens.getChildren().get(0).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+            try {
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         //hide
         mulscreens.getChildren().add(pageConteiner);
         mulscreens.getChildren().add(customerDetailPage.getPageContainer());
         mulscreens.getChildren().get(1).setVisible(false);
+
 
         title = new Label("MEMBER");
         title.setFont(new Font("Arial", 20));
@@ -68,18 +82,9 @@ public class CustomerPage {
         // add card
         this.updateCard();
 
-
         BorderPane.setMargin(scrollPane, new Insets(10,0,0, 300));
         BorderPane.setAlignment(scrollPane, Pos.CENTER);
         pageConteiner.setCenter(scrollPane);
-
-
-
-
-
-//        mulscreens.getChildren().add(pageConteiner);
-//        mulscreens.getChildren().add(customerDetailPage.getPageContainer());
-//        mulscreens.getChildren().get(1).setVisible(false);
 
         tab.setContent(mulscreens);
     }
@@ -94,42 +99,34 @@ public class CustomerPage {
                 "-fx-border-color: #83695A;");
 
         // get the items and iterate over them
-        List<Map<String, Object>> customers = CustomersRepository.getCustomers();
-        for (Map<String, Object> customer : customers) {
+        List<Customers> customers = CustomersRepository.getCustomers();
+        for (Customers customer : customers) {
             // create a new ItemCard
-            Double id;
-            try {
-                id = (Double) customer.get("id");
-            } catch (Exception e) {
-                id = Double.parseDouble((String) customer.get("id"));
-            }
-            CustomerCard customerCard = new CustomerCard(id);
+            Integer id = customer.getId();
+            if (!customer.getName().equals("")) {
+                CustomerCard customerCard = new CustomerCard(id);
 
-            // add the action to the view detail button
-            Double finalId = id;
-            customerCard.getViewDetailBtn().setOnAction(e -> {
-                try {
-                    // load the item detail page
-                    customerDetailPage.readData(finalId.intValue());
-                    mulscreens.getChildren().get(0).setVisible(false);
+                // add the action to the view detail button
+                customerCard.getViewDetailBtn().setOnAction(e -> {
+                    try {
+                        // load the item detail page
+                        customerDetailPage.readData(customer.getId());
+                        mulscreens.getChildren().get(0).setVisible(false);
+                        mulscreens.getChildren().get(1).setVisible(true);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
 
-                    mulscreens.getChildren().get(1).setVisible(true);
-                    mulscreens.getChildren().get(2).setVisible(false);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            // check if the search field is empty or if the item name matches the search field
-//            if (searchBar.getSearchField().getText().isEmpty() ||
-//                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
-                // add the card to the new card layout
+                // check if the search field is empty or if the item name matches the search field
+    //            if (searchBar.getSearchField().getText().isEmpty() ||
+    //                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
+                    // add the card to the new card layout
                 GridPane.setMargin(customerCard.getCardContainer(), new Insets(30));
                 newCardLayout.getChildren().add(customerCard.getCardContainer());
-            System.out.println("KONTOLLLLL");
 
             }
-//        }
+        }
 //
    // set the new card layout as the content of the scroll container
         scrollPane.setContent(newCardLayout);
