@@ -57,7 +57,6 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             this.itemsFileName = "Items";
             Object defaultData = defaultDataStore.load();
             ItemsRepository.setItemsRepository(defaultData);
-            ItemsRepository.printItems();
         } catch (Exception e) {}
         try {
             DataStore defaultDataStore = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/repository/Customers.json", "json");

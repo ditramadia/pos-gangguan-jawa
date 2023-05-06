@@ -4,6 +4,7 @@ import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -195,24 +196,18 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                 "-fx-border-color: #83695A;");
 
         // get the items and iterate over them
-        List<Map<String, Object>> items = ItemsRepository.getItems();
-        for (Map<String, Object> item : items) {
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
             // create a new ItemCard
-            Double id;
-            try {
-                id = (Double) item.get("id");
-            } catch (Exception e) {
-                id = Double.parseDouble((String) item.get("id"));
-            }
-            ItemCard itemCard = new ItemCard(id.intValue());
+            Integer id = item.getId();
+            ItemCard itemCard = new ItemCard(id);
 
             // add the action to the view detail button
-            Double finalId = id;
             itemCard.getViewDetailBtn().setOnAction(e -> {
                 try {
                     // load the item detail page
                     mulscreens.getChildren().get(0).setVisible(false);
-                    itemDetailPage.readData(finalId.intValue());
+//                    itemDetailPage.readData(finalId.intValue());
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {
@@ -220,9 +215,9 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                 }
             });
 
-            // check if the search field is empty or if the item name matches the search field
+//            // check if the search field is empty or if the item name matches the search field
             if (searchBar.getSearchField().getText().isEmpty() ||
-                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
+                    item.getName().toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())){
                 // add the card to the new card layout
                 GridPane.setMargin(itemCard.getCardContainer(), new Insets(30));
                 newCardLayout.add(itemCard.getCardContainer(), column++, row);
