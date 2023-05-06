@@ -58,6 +58,52 @@ public class ItemsRepository {
         }
     }
 
+    public static void addItems(String name, Integer price, Integer buyPrice,
+                                Integer stock, String category, String image) throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        Integer id = getLastIdItems() + 1;
+        Items newItem = new Items(id, name, price, buyPrice, stock, category, image);
+        items.add(newItem);
+    }
+
+    public static void deleteItems(Integer id) throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            if (item.getId() == id) {
+                items.remove(item);
+                break;
+            }
+        }
+    }
+
+    public static void updateItems(Integer id, String name, Integer price, Integer buyPrice,
+                                   Integer stock, String category) throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            if (item.getId() == id) {
+                item.setName(name);
+                item.setPrice(price);
+                item.setBuyPrice(buyPrice);
+                item.setStock(stock);
+                item.setCategory(category);
+                break;
+            }
+        }
+    }
+
+    public static void updateItems(Items items) {
+        for (Items item : ItemsRepository.items) {
+            if (item.getId() == items.getId()) {
+                item.setName(items.getName());
+                item.setPrice(items.getPrice());
+                item.setBuyPrice(items.getBuyPrice());
+                item.setStock(items.getStock());
+                item.setCategory(items.getCategory());
+                break;
+            }
+        }
+    }
+
     public static Object saveItems() {
         // convert List of Items to hashmap
         List<Map<String, Object>> itemsList = new ArrayList<>();
@@ -75,5 +121,16 @@ public class ItemsRepository {
         }
         Map<String, List<Map<String, Object>>> data = Map.of("items", itemsList);
         return data;
+    }
+
+    public static Integer getLastIdItems() throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        Integer lastId = 0;
+        for (Items item : items) {
+            if (item.getId() > lastId) {
+                lastId = item.getId();
+            }
+        }
+        return lastId;
     }
 }

@@ -4,6 +4,7 @@ import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -98,16 +99,6 @@ public class CustomerDetailPage {
         pageContainer.getChildren().add(backBtn);
     }
 
-//    public void readData(Integer id) throws Exception {
-//        Map<String, Object> item = CustomerController.getCustomer(id);
-//        this.itemId = id;
-//        nameForm.setValue(item.get("name").toString());
-//        priceForm.setValue(item.get("noTelp").toString());
-//        buyPriceForm.setValue(item.get("active").toString());
-//        stockForm.setValue(item.get("vip").toString());
-//
-//    }
-
     public void resetPage() {
         nameForm.setValue("");
         categoryForm.setValue("");
@@ -121,6 +112,7 @@ public class CustomerDetailPage {
             isEditMode = false;
             saveBtn.setText(new String("Edit"));
             try {
+                System.out.println("update data");
                 this.updateData();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -156,7 +148,7 @@ public class CustomerDetailPage {
     }
 
     public void updateData() throws Exception {
-        ItemController.updateItems(itemId, nameForm.getValue(), Integer.parseInt(priceForm.getValue()), Integer.parseInt(buyPriceForm.getValue()), Integer.parseInt(stockForm.getValue()), categoryForm.getValue());
+        ItemsRepository.updateItems(itemId, nameForm.getValue(), Integer.parseInt(priceForm.getValue()), Integer.parseInt(buyPriceForm.getValue()), Integer.parseInt(stockForm.getValue()), categoryForm.getValue());
     }
 }
 

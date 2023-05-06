@@ -71,7 +71,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                 confirmationBox = new ConfirmationBox(1);
                 Optional<ButtonType> result =confirmationBox.getAlertBox().showAndWait();
                 if (result.get() == ButtonType.OK){
-                    ItemController.deleteItems(itemDetailPage.getItemId());
+                    ItemsRepository.deleteItems(itemDetailPage.getItemId());
                     itemDetailPage.resetPage();
                     mulscreens.getChildren().get(0).setVisible(true);
                     mulscreens.getChildren().get(1).setVisible(false);
@@ -100,7 +100,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             try {
                 if (newItemPage.isComplete()){
                     System.out.println("KONTOL");
-                    ItemController.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
+                    ItemsRepository.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
                     newItemPage.resetPage();
                     mulscreens.getChildren().get(0).setVisible(true);
                     mulscreens.getChildren().get(1).setVisible(false);
@@ -207,7 +207,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                 try {
                     // load the item detail page
                     mulscreens.getChildren().get(0).setVisible(false);
-//                    itemDetailPage.readData(finalId.intValue());
+                    itemDetailPage.readData(id);
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {
