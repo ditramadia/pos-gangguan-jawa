@@ -34,6 +34,12 @@ public class CustomersRepository {
                 }
                 String name = (String) customer.get("name");
                 String noTelp = (String) customer.get("noTelp");
+                Double points;
+                try {
+                    points = (Double) customer.get("points");
+                } catch (Exception e) {
+                    points = Double.parseDouble((String) customer.get("points"));
+                }
                 Boolean vip;
                 Boolean active;
                 try {
@@ -44,7 +50,7 @@ public class CustomersRepository {
                     vip = (Boolean) customer.get("vip");
                     active = (Boolean) customer.get("active");
                 }
-                Customers newCustomer = new Customers(id.intValue(), name, noTelp, vip, active);
+                Customers newCustomer = new Customers(id.intValue(), name, noTelp, points.intValue(), vip, active);
                 customers.add(newCustomer);
             }
         }
@@ -58,6 +64,7 @@ public class CustomersRepository {
                     "id", customer.getId(),
                     "name", customer.getName(),
                     "noTelp", customer.getNoTelp(),
+                    "points", customer.getPoints(),
                     "vip", customer.getVip(),
                     "active", customer.getActive()
             );
@@ -65,5 +72,18 @@ public class CustomersRepository {
         }
         Map<String, List<Map<String, Object>>> data = Map.of("customers", customersList);
         return data;
+    }
+
+    public static void updateCustomer(Customers customers) {
+        for (Customers customer : CustomersRepository.customers) {
+            if (customer.getId() == customers.getId()) {
+                customer.setName(customers.getName());
+                customer.setNoTelp(customers.getNoTelp());
+                customer.setPoints(customers.getPoints());
+                customer.setVip(customers.getVip());
+                customer.setActive(customers.getActive());
+                break;
+            }
+        }
     }
 }

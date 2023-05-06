@@ -1,16 +1,16 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.CustomerCard;
 import com.example.if2210_tb2_nge.components.ItemCard;
+import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -23,6 +23,7 @@ import org.json.simple.JSONObject;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CustomerPage {
     @Getter
@@ -34,6 +35,7 @@ public class CustomerPage {
     private ScrollPane scrollPane;
     private VBox cardContent;
     private Label title;
+    private ConfirmationBox confirmationBox;
 
 
     public CustomerPage() throws Exception {
@@ -48,10 +50,21 @@ public class CustomerPage {
         cardContent = new VBox();
 
         customerDetailPage = new CustomerDetailPage();
+        customerDetailPage.getBackBtn().setOnAction(e -> {
+            customerDetailPage.resetPage();
+            mulscreens.getChildren().get(0).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+            try {
+                updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         //hide
         mulscreens.getChildren().add(pageConteiner);
         mulscreens.getChildren().add(customerDetailPage.getPageContainer());
         mulscreens.getChildren().get(1).setVisible(false);
+
 
         title = new Label("MEMBER");
         title.setFont(new Font("Arial", 20));
@@ -69,18 +82,9 @@ public class CustomerPage {
         // add card
         this.updateCard();
 
-
         BorderPane.setMargin(scrollPane, new Insets(10,0,0, 300));
         BorderPane.setAlignment(scrollPane, Pos.CENTER);
         pageConteiner.setCenter(scrollPane);
-
-
-
-
-
-//        mulscreens.getChildren().add(pageConteiner);
-//        mulscreens.getChildren().add(customerDetailPage.getPageContainer());
-//        mulscreens.getChildren().get(1).setVisible(false);
 
         tab.setContent(mulscreens);
     }
@@ -99,18 +103,16 @@ public class CustomerPage {
         for (Customers customer : customers) {
             // create a new ItemCard
             Integer id = customer.getId();
-            if (customer.getName() != "") {
+            if (!customer.getName().equals("")) {
                 CustomerCard customerCard = new CustomerCard(id);
 
                 // add the action to the view detail button
                 customerCard.getViewDetailBtn().setOnAction(e -> {
                     try {
                         // load the item detail page
-    //                    customerDetailPage.readData(finalId.intValue());
+                        customerDetailPage.readData(customer.getId());
                         mulscreens.getChildren().get(0).setVisible(false);
-
                         mulscreens.getChildren().get(1).setVisible(true);
-                        mulscreens.getChildren().get(2).setVisible(false);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }

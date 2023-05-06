@@ -21,15 +21,19 @@ public class Customers {
     private String noTelp;
     @Getter
     @Setter
+    private Integer points;
+    @Getter
+    @Setter
     private Boolean vip;
     @Getter
     @Setter
     private Boolean active;
 
-    public Customers(Integer id, String name, String noTelp, Boolean vip, Boolean active) {
+    public Customers(Integer id, String name, String noTelp, Integer points, Boolean vip, Boolean active) {
         this.id = id;
         this.name = name;
         this.noTelp = noTelp;
+        this.points = points;
         this.vip = vip;
         this.active = active;
     }

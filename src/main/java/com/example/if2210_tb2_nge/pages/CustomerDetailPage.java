@@ -1,11 +1,16 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.entity.Customers;
+import com.example.if2210_tb2_nge.entity.Items;
+import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,33 +18,32 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CustomerDetailPage {
     @Getter
     private VBox pageContainer;
     private Label header;
     @Getter
-    private ImageForm itemImage;
-    @Getter
     private TextFieldForm nameForm;
     @Getter
-    private TextFieldForm categoryForm;
+    private TextFieldForm noTelpForm;
     private HBox horizontalTextFormContainer;
     @Getter
-    private TextFieldForm priceForm;
+    private TextFieldForm pointsForm;
     @Getter
-    private TextFieldForm buyPriceForm;
-    @Getter
-    private TextFieldForm stockForm;
+    private TextFieldForm vipForm;
     private Button saveBtn;
     @Getter
-    private Button deleteBtn;
+    private Button deactivateBtn;
     @Getter
     private Button backBtn;
     private Boolean isEditMode;
     @Getter
-    private Integer itemId;
+    private Integer customerId;
+    private ConfirmationBox confirmationBox;
 
     public CustomerDetailPage() {
         isEditMode = false;
@@ -48,51 +52,69 @@ public class CustomerDetailPage {
         pageContainer = new VBox();
 
         // header
-        header = new Label("ITEM DETAILS");
+        header = new Label("CUSTOMER DETAILS");
         pageContainer.getChildren().add(header);
-
-        // images
-        itemImage = new ImageForm("https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/01/28/2114811954.jpg");
-        itemImage.setIsDisable(true);
-        pageContainer.getChildren().add(itemImage.getImageContainer());
 
         // name form
         nameForm = new TextFieldForm("Name", "", 200);
         nameForm.setIsDisable(true);
         pageContainer.getChildren().add(nameForm.getFormContainer());
 
-        // category form
-        categoryForm = new TextFieldForm("Category", "", 200);
-        categoryForm.setIsDisable(true);
-        pageContainer.getChildren().add(categoryForm.getFormContainer());
+        // no telp form
+        noTelpForm = new TextFieldForm("Phone Number", "", 200);
+        noTelpForm.setIsDisable(true);
+        pageContainer.getChildren().add(noTelpForm.getFormContainer());
 
         // horizontal text form container
         horizontalTextFormContainer = new HBox();
         pageContainer.getChildren().add(horizontalTextFormContainer);
 
-        // price form
-        priceForm = new TextFieldForm("Price", "", 266);
-        priceForm.setIsDisable(true);
-        horizontalTextFormContainer.getChildren().add(priceForm.getFormContainer());
+        // points form
+        pointsForm = new TextFieldForm("Points", "", 266);
+        pointsForm.setIsDisable(true);
+        horizontalTextFormContainer.getChildren().add(pointsForm.getFormContainer());
 
-        // buy price form
-        buyPriceForm = new TextFieldForm("Buy Price", "", 266);
-        buyPriceForm.setIsDisable(true);
-        horizontalTextFormContainer.getChildren().add(buyPriceForm.getFormContainer());
-
-        // stock form
-        stockForm = new TextFieldForm("Stock", "", 266);
-        stockForm.setIsDisable(true);
-        horizontalTextFormContainer.getChildren().add(stockForm.getFormContainer());
+        // vip form
+        vipForm = new TextFieldForm("VIP", "", 266);
+        vipForm.setIsDisable(true);
+        horizontalTextFormContainer.getChildren().add(vipForm.getFormContainer());
 
         // save edit button
         saveBtn = new Button("Edit");
         saveBtn.setOnAction(e -> toggleEditMode());
         pageContainer.getChildren().add(saveBtn);
 
-        // delete button
-        deleteBtn = new Button("Delete");
-        pageContainer.getChildren().add(deleteBtn);
+        // deactivate button
+        deactivateBtn = new Button("Deactivate");
+        deactivateBtn.setOnAction(e -> {
+            try {
+                if (CustomerController.getCustomerInstance().getActive()) {
+                    confirmationBox = new ConfirmationBox(2);
+                } else {
+                    confirmationBox = new ConfirmationBox(3);
+                }
+                Optional<ButtonType> result = confirmationBox.getAlertBox().showAndWait();
+                if (result.get() == ButtonType.OK){
+                    if (CustomerController.getCustomerInstance().getActive()) {
+                        CustomerController.getCustomerInstance().setActive(false);
+                        deactivateBtn.setText(new String("Activate"));
+                    } else {
+                        CustomerController.getCustomerInstance().setActive(false);
+                        deactivateBtn.setText(new String("Deactivate"));
+                    }
+
+                    try {
+                        this.updateData();
+                    } catch (Exception err) {
+                        throw new RuntimeException(err);
+                    }
+                    CustomersRepository.updateCustomer(CustomerController.getCustomerInstance());
+                }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        pageContainer.getChildren().add(deactivateBtn);
 
         // back button
         backBtn = new Button("Back");
@@ -101,10 +123,9 @@ public class CustomerDetailPage {
 
     public void resetPage() {
         nameForm.setValue("");
-        categoryForm.setValue("");
-        priceForm.setValue("");
-        buyPriceForm.setValue("");
-        stockForm.setValue("");
+        noTelpForm.setValue("");
+        pointsForm.setValue("");
+        vipForm.setValue("");
     }
 
     public void toggleEditMode() {
@@ -112,43 +133,45 @@ public class CustomerDetailPage {
             isEditMode = false;
             saveBtn.setText(new String("Edit"));
             try {
-                System.out.println("update data");
                 this.updateData();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            itemImage.getImageContainer().setOnMouseEntered(e -> {
-
-            });
-            itemImage.getImageContainer().setOnMouseExited(e -> {
-
-            });
             nameForm.setIsDisable(true);
-            categoryForm.setIsDisable(true);
-            priceForm.setIsDisable(true);
-            buyPriceForm.setIsDisable(true);
-            stockForm.setIsDisable(true);
+            noTelpForm.setIsDisable(true);
+            pointsForm.setIsDisable(true);
+            vipForm.setIsDisable(true);
         } else {
             isEditMode = true;
             saveBtn.setText(new String("Save"));
-            itemImage.getImageContainer().setOnMouseEntered(e -> {
-                itemImage.setIsDisable(false);
-            });
-            itemImage.getImageContainer().setOnMouseExited(e -> {
-
-                itemImage.setIsDisable(true);
-            });
-
             nameForm.setIsDisable(false);
-            categoryForm.setIsDisable(false);
-            priceForm.setIsDisable(false);
-            buyPriceForm.setIsDisable(false);
-            stockForm.setIsDisable(false);
+            noTelpForm.setIsDisable(false);
+            pointsForm.setIsDisable(false);
+            vipForm.setIsDisable(false);
         }
     }
 
     public void updateData() throws Exception {
-        ItemsRepository.updateItems(itemId, nameForm.getValue(), Integer.parseInt(priceForm.getValue()), Integer.parseInt(buyPriceForm.getValue()), Integer.parseInt(stockForm.getValue()), categoryForm.getValue());
+        CustomerController.getCustomerInstance().setName(nameForm.getValue());
+        CustomerController.getCustomerInstance().setNoTelp(noTelpForm.getValue());
+        CustomerController.getCustomerInstance().setPoints(Integer.parseInt(pointsForm.getValue()));
+        CustomerController.getCustomerInstance().setVip(Boolean.parseBoolean(vipForm.getValue()));
+        CustomersRepository.updateCustomer(CustomerController.getCustomerInstance());
+    }
+
+    public void readData(Integer id) throws Exception {
+        customerId = id;
+        List<Customers> customers = CustomersRepository.getCustomers();
+        for (Customers customer : customers) {
+            if (customer.getId() == id) {
+                CustomerController.setCustomerInstance(customerId);
+                nameForm.setValue(customer.getName());
+                noTelpForm.setValue(customer.getNoTelp());
+                pointsForm.setValue(customer.getPoints().toString());
+                vipForm.setValue(customer.getVip().toString());
+                break;
+            }
+        }
     }
 }
 
