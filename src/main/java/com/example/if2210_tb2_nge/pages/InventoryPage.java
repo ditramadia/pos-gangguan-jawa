@@ -1,5 +1,6 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.controller.ItemController;
@@ -20,6 +21,7 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class InventoryPage implements EventHandler<ActionEvent> {
     @Getter
@@ -34,6 +36,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
     private SearchBar searchBar;
     private Button newItemBtn;
     private ScrollPane scrollContainer;
+    private ConfirmationBox confirmationBox;
 
     private int column = 0;
     private int row = 1;
@@ -64,12 +67,16 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         });
         itemDetailPage.getDeleteBtn().setOnAction(e -> {
             try {
-                ItemController.deleteItems(itemDetailPage.getItemId());
-                itemDetailPage.resetPage();
-                mulscreens.getChildren().get(0).setVisible(true);
-                mulscreens.getChildren().get(1).setVisible(false);
-                mulscreens.getChildren().get(2).setVisible(false);
-                updateCard();
+                confirmationBox = new ConfirmationBox(1);
+                Optional<ButtonType> result =confirmationBox.getAlertBox().showAndWait();
+                if (result.get() == ButtonType.OK){
+                    ItemController.deleteItems(itemDetailPage.getItemId());
+                    itemDetailPage.resetPage();
+                    mulscreens.getChildren().get(0).setVisible(true);
+                    mulscreens.getChildren().get(1).setVisible(false);
+                    mulscreens.getChildren().get(2).setVisible(false);
+                    updateCard();
+                }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -90,12 +97,19 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         });
         newItemPage.getSaveBtn().setOnAction(e -> {
             try {
-                ItemController.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
-                newItemPage.resetPage();
-                mulscreens.getChildren().get(0).setVisible(true);
-                mulscreens.getChildren().get(1).setVisible(false);
-                mulscreens.getChildren().get(2).setVisible(false);
-                updateCard();
+                if (newItemPage.isComplete()){
+                    System.out.println("KONTOL");
+                    ItemController.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
+                    newItemPage.resetPage();
+                    mulscreens.getChildren().get(0).setVisible(true);
+                    mulscreens.getChildren().get(1).setVisible(false);
+                    mulscreens.getChildren().get(2).setVisible(false);
+                    updateCard();
+                }
+                else {
+                    confirmationBox = new ConfirmationBox(1);
+                    Optional<ButtonType> result =confirmationBox.getErrorBox().showAndWait();
+                }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

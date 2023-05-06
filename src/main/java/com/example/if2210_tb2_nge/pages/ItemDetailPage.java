@@ -124,7 +124,12 @@ public class ItemDetailPage {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            itemImage.setIsDisable(true);
+            itemImage.getImageContainer().setOnMouseEntered(e -> {
+
+            });
+            itemImage.getImageContainer().setOnMouseExited(e -> {
+
+            });
             nameForm.setIsDisable(true);
             categoryForm.setIsDisable(true);
             priceForm.setIsDisable(true);
@@ -133,7 +138,14 @@ public class ItemDetailPage {
         } else {
             isEditMode = true;
             saveBtn.setText(new String("Save"));
-            itemImage.setIsDisable(false);
+            itemImage.getImageContainer().setOnMouseEntered(e -> {
+                itemImage.setIsDisable(false);
+            });
+            itemImage.getImageContainer().setOnMouseExited(e -> {
+
+                itemImage.setIsDisable(true);
+            });
+
             nameForm.setIsDisable(false);
             categoryForm.setIsDisable(false);
             priceForm.setIsDisable(false);

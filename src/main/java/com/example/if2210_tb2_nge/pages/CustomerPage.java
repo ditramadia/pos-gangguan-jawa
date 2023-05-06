@@ -3,6 +3,7 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.CustomerCard;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -19,6 +20,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Map;
 
 public class CustomerPage {
     @Getter
@@ -65,18 +68,9 @@ public class CustomerPage {
         // add card
         this.updateCard();
 
-//        for (int i = 0; i < 10; i++){
-//            CustomerCard newCustomerCard = new CustomerCard();
-//            cardContent.getChildren().add(newCustomerCard.getCardContainer());
-//            newCustomerCard.getViewDetailBtn().setOnAction(e -> {
-//                mulscreens.getChildren().get(0).setVisible(false);
-//                mulscreens.getChildren().get(1).setVisible(true);
-//            });
-//            ;
-//        }
+
         BorderPane.setMargin(scrollPane, new Insets(10,0,0, 300));
         BorderPane.setAlignment(scrollPane, Pos.CENTER);
-        scrollPane.setContent(cardContent);
         pageConteiner.setCenter(scrollPane);
 
 
@@ -91,31 +85,56 @@ public class CustomerPage {
     }
 
     public void updateCard() throws Exception {
-//        JSONObject jsonObj = ItemController.readItemsJSON("src/main/java/com/example/if2210_tb2_nge/database/Customers.json");
-//        JSONArray itemsArray = (JSONArray) jsonObj.get("customers");
-//        for (Object itemsObj : itemsArray) {
-//            JSONObject product = (JSONObject) itemsObj;
-//            if (product.get("name") == null) {
-//                continue;
-//            }
-//            Long id = (Long) product.get("id");
-//            CustomerCard newCustomerCard = new CustomerCard();
-//            cardContent.getChildren().add(newCustomerCard.getCardContainer());
-//            newCustomerCard.getCustomerName().setText((String) product.get("name"));
-//
-//            newCustomerCard.getViewDetailBtn().setOnAction(e -> {
-//                try {
-//                    customerDetailPage.loadData(id.intValue());
-//                } catch (Exception ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                mulscreens.getChildren().get(0).setVisible(false);
-//                mulscreens.getChildren().get(1).setVisible(true);
-//            });
-//
-////            GridPane.setMargin(newCustomerCard.getCardContainer(), new Insets(30));
-////            cardLayout.add(newCustomerCard.getCardContainer(), column++, row);
+      VBox newCardLayout = new VBox();
+      newCardLayout.setStyle("-fx-padding: 10;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: #83695A;");
+
+        // get the items and iterate over them
+        List<Map<String, Object>> customers = CustomersRepository.getCustomers();
+        for (Map<String, Object> customer : customers) {
+            // create a new ItemCard
+            Double id;
+            try {
+                id = (Double) customer.get("id");
+            } catch (Exception e) {
+                id = Double.parseDouble((String) customer.get("id"));
+            }
+            CustomerCard customerCard = new CustomerCard(id);
+
+            // add the action to the view detail button
+            Double finalId = id;
+            customerCard.getViewDetailBtn().setOnAction(e -> {
+                try {
+                    // load the item detail page
+                    customerDetailPage.readData(finalId.intValue());
+                    mulscreens.getChildren().get(0).setVisible(false);
+
+                    mulscreens.getChildren().get(1).setVisible(true);
+                    mulscreens.getChildren().get(2).setVisible(false);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            // check if the search field is empty or if the item name matches the search field
+//            if (searchBar.getSearchField().getText().isEmpty() ||
+//                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
+                // add the card to the new card layout
+                GridPane.setMargin(customerCard.getCardContainer(), new Insets(30));
+                newCardLayout.getChildren().add(customerCard.getCardContainer());
+            System.out.println("KONTOLLLLL");
+
+            }
 //        }
+//
+   // set the new card layout as the content of the scroll container
+        scrollPane.setContent(newCardLayout);
+
+        // reset the column and row counts
     }
 
 }

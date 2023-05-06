@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
+import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
@@ -33,6 +34,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
     TabPane tabPane;
     String itemsFileName;
+    String CustomerFileName;
     String customersFileName;
     String transactionsFileName;
 
@@ -56,6 +58,13 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             Object defaultData = defaultDataStore.load();
             ItemsRepository.setItemsRepository(defaultData);
             ItemsRepository.printItems();
+        } catch (Exception e) {}
+        try {
+            DataStore defaultDataStore = DataStoreFactory.getDataStore("src/main/java/com/example/if2210_tb2_nge/repository/Customers.json", "json");
+            this.CustomerFileName = "Customers";
+            Object defaultData = defaultDataStore.load();
+            CustomersRepository.setCustomersRepository(defaultData);
+            CustomersRepository.printCustomers();
         } catch (Exception e) {}
 
         // Menu Bar
@@ -96,6 +105,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             } catch (JsonProcessingException ex) {
                                 throw new RuntimeException(ex);
                             }
+                            try {
+                                CustomersRepository.setCustomersRepository(data);
+                            } catch (JsonProcessingException ex){
+                                throw new RuntimeException(ex);
+                            }
                         }
                         else if (file.getName().endsWith(".xml")) {
                             System.out.println("XML file: " + file.getAbsolutePath());
@@ -108,6 +122,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             } catch (JsonProcessingException ex) {
                                 throw new RuntimeException(ex);
                             }
+                            try {
+                                CustomersRepository.setCustomersRepository(data);
+                            } catch (JsonProcessingException ex){
+                                throw new RuntimeException(ex);
+                            }
                         }
                         else {
                             System.out.println("OBJ file: " + file.getAbsolutePath());
@@ -118,6 +137,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             try {
                                 ItemsRepository.setItemsRepository(data);
                             } catch (JsonProcessingException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            try {
+                                CustomersRepository.setCustomersRepository(data);
+                            } catch (JsonProcessingException ex){
                                 throw new RuntimeException(ex);
                             }
                         }

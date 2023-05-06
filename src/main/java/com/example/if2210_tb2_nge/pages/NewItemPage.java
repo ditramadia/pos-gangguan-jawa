@@ -85,4 +85,14 @@ public class NewItemPage {
         buyPriceForm.setValue("");
         stockForm.setValue("");
     }
+
+    public Boolean isComplete(){
+        System.out.println(nameForm.getValue());
+        if (!nameForm.getValue().isEmpty()&& !categoryForm.getValue().isEmpty() && !priceForm.getValue().isEmpty() && !buyPriceForm.getValue().isEmpty() && !stockForm.getValue().isEmpty()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

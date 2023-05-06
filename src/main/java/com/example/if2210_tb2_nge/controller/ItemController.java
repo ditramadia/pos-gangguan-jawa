@@ -1,13 +1,7 @@
 package com.example.if2210_tb2_nge.controller;
 
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import org.json.simple.parser.JSONParser;
-import java.io.FileReader;
+
 import java.util.List;
 import java.util.Map;
 
