@@ -118,7 +118,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         // page container
         pageContainer = new BorderPane();
 
-        // content container
+        // t container
         contentContainer = new VBox();
         pageContainer.setCenter(contentContainer);
         mulscreens.getChildren().add(pageContainer);

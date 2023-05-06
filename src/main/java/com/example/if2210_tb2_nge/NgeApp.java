@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
+import com.example.if2210_tb2_nge.pages.MenuPage;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
@@ -45,6 +46,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         homePage.getHomeNavBtn().setOnAction(this);
         homePage.getInventoryNavBtn().setOnAction(this);
         homePage.getCustomerNavBtn().setOnAction(this);
+        homePage.getTransactionNavBtn().setOnAction(this);
 
         // app
         stage.setTitle("Gangguan Jawa");
@@ -258,8 +260,28 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                CustomerPage finalNewCustomerPage = newCustomerPage;
+                newCustomerPage.getTab().setOnSelectionChanged(event -> {
+                    if (finalNewCustomerPage.getTab().isSelected()) {
+                        // Call a function from MenuPage
+                        try {
+                            finalNewCustomerPage.updateCard();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
                 tabPane.getTabs().add(newCustomerPage.getTab());
                 tabPane.getSelectionModel().select(newCustomerPage.getTab());
+            } else if (button.getText().trim().equals("Transaction")) {
+                MenuPage newMenuPage = null;
+                try {
+                    newMenuPage = new MenuPage();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                tabPane.getTabs().add(newMenuPage.getTab());
+                tabPane.getSelectionModel().select(newMenuPage.getTab());
             }
         }
     }
