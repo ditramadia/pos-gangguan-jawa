@@ -98,15 +98,15 @@ public class CustomerDetailPage {
         pageContainer.getChildren().add(backBtn);
     }
 
-    public void readData(Integer id) throws Exception {
-        Map<String, Object> item = CustomerController.getCustomer(id);
-        this.itemId = id;
-        nameForm.setValue(item.get("name").toString());
-        priceForm.setValue(item.get("noTelp").toString());
-        buyPriceForm.setValue(item.get("active").toString());
-        stockForm.setValue(item.get("vip").toString());
-
-    }
+//    public void readData(Integer id) throws Exception {
+//        Map<String, Object> item = CustomerController.getCustomer(id);
+//        this.itemId = id;
+//        nameForm.setValue(item.get("name").toString());
+//        priceForm.setValue(item.get("noTelp").toString());
+//        buyPriceForm.setValue(item.get("active").toString());
+//        stockForm.setValue(item.get("vip").toString());
+//
+//    }
 
     public void resetPage() {
         nameForm.setValue("");

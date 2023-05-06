@@ -1,5 +1,6 @@
 package com.example.if2210_tb2_nge.components;
 
+import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
@@ -31,18 +32,12 @@ public class CustomerCard {
         cardContainer.setPrefHeight(50);
 
 
-        List<Map<String, Object>> items = CustomersRepository.getCustomers();
-        for (Map<String, Object> item : items) {
-            Double id;
-            try {
-                id = (Double) item.get("id");
-            } catch (Exception e) {
-                id = Double.parseDouble((String) item.get("id"));
-            }
-            String image = (String) item.get("image");
-            if (id.intValue() == i) {
+        List<Customers> customers = CustomersRepository.getCustomers();
+        for (Customers customer : customers) {
+            Integer id = customer.getId();
+            if (id == i) {
                 // item name
-                customerName = new Label((String) item.get("name"));
+                customerName = new Label(customer.getName());
                 cardContainer.getChildren().add(customerName);
                 customerName.setFont(new Font("Arial", 20));
                 cardContainer.setAlignment(Pos.TOP_CENTER);

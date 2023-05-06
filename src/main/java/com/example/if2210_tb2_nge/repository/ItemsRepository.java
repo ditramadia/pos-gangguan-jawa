@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ItemsRepository {
     @Getter
-    private static List<Items> items = new ArrayList<>();
+    private static List<Items> items;
 
     public static void setItemsRepository(Object obj) throws JsonProcessingException {
         String json = null;
@@ -23,6 +23,7 @@ public class ItemsRepository {
         if (itemsList == null) {
         }
         else {
+            items = new ArrayList<>();
             for (Map<String, Object> item : itemsList) {
                 Double id;
                 try {
@@ -58,6 +59,21 @@ public class ItemsRepository {
     }
 
     public static Object saveItems() {
-        return Map.of("items", items);
+        // convert List of Items to hashmap
+        List<Map<String, Object>> itemsList = new ArrayList<>();
+        for (Items item : items) {
+            Map<String, Object> itemMap = Map.of(
+                    "id", item.getId(),
+                    "name", item.getName(),
+                    "price", item.getPrice(),
+                    "buyPrice", item.getBuyPrice(),
+                    "stock", item.getStock(),
+                    "category", item.getCategory(),
+                    "image", item.getImage()
+            );
+            itemsList.add(itemMap);
+        }
+        Map<String, List<Map<String, Object>>> data = Map.of("items", itemsList);
+        return data;
     }
 }

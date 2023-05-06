@@ -63,7 +63,6 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             this.CustomerFileName = "Customers";
             Object defaultData = defaultDataStore.load();
             CustomersRepository.setCustomersRepository(defaultData);
-            CustomersRepository.printCustomers();
         } catch (Exception e) {}
 
         // Menu Bar
