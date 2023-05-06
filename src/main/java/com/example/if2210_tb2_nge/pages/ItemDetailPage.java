@@ -3,6 +3,7 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.entity.Items;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
 
 public class ItemDetailPage {
@@ -97,15 +99,10 @@ public class ItemDetailPage {
         pageContainer.getChildren().add(backBtn);
     }
 
-    public void readData(Integer id) throws Exception {
-        Map<String, Object> item = ItemController.getItem(id);
-        this.itemId = id;
-        nameForm.setValue(item.get("name").toString());
-        priceForm.setValue(item.get("price").toString().substring(0, item.get("price").toString().length() - 2));
-        buyPriceForm.setValue(item.get("buyPrice").toString().substring(0, item.get("buyPrice").toString().length() - 2));
-        stockForm.setValue(item.get("stock").toString().substring(0, item.get("stock").toString().length() - 2));
-        categoryForm.setValue(item.get("category").toString());
-    }
+//    public void readData(Integer id) throws Exception {
+//        itemId = id;
+//        List<Items> items = ItemController.getItems(id);
+//    }
 
     public void resetPage() {
         nameForm.setValue("");
