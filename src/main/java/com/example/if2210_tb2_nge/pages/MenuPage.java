@@ -44,21 +44,52 @@ public class MenuPage {
     private CartPage cartPage;
 
     public MenuPage() throws MalformedURLException {
+        // Cart Items
+        cartItems = new ArrayList<>();
+
+        // Tab
         tab = new Tab("Menu");
+
+        // Tab Container
         tabContainer = new StackPane();
+        tab.setContent(tabContainer);
+
+        // Page Container
         pageContainer = new BorderPane();
+        tabContainer.getChildren().add(pageContainer);
+
+        // Cart page
+        cartPage = new CartPage();
+        cartPage.getBackBtn().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+        });
+        tabContainer.getChildren().add(cartPage.getPageContainer());
+        tabContainer.getChildren().get(1).setVisible(false);
+
+        // Content Container
         contentContainer = new VBox();
+        pageContainer.setCenter(contentContainer);
+
+        // Search bar
+        searchBar = new SearchBar();
+        contentContainer.getChildren().add(searchBar);
+
+        // Scroll Pane
         scrollPane = new ScrollPane();
+        contentContainer.getChildren().add(scrollPane);
+
+        // Card Container
         cardContainer = new GridPane();
+        scrollPane.setContent(cardContainer);
+
+        // Title
         title = new Label("MENU");
         title.setFont(new Font(30));
-        searchBar = new SearchBar();
-        cart = new Button("Cart");
-        cartItems = new ArrayList<>();
+        pageContainer.setTop(title);
+
+        // Menu cards
         menuCards = new ArrayList<>();
-        cartPage = new CartPage();
-
-
         List<Items> items = ItemsRepository.getItems();
         for (Items item : items) {
             Integer id = item.getId();
@@ -73,22 +104,8 @@ public class MenuPage {
             }
         }
 
-        contentContainer.getChildren().addAll(searchBar.getSearchBarContainer(), scrollPane);
-        scrollPane.setContent(cardContainer);
-        pageContainer.setCenter(contentContainer);
-
-        pageContainer.setTop(title);
-        pageContainer.setBottom(cart);
-
-        tabContainer.getChildren().add(pageContainer);
-        tabContainer.getChildren().add(cartPage.getPageContainer());
-        tabContainer.getChildren().get(1).setVisible(false);
-
-        cartPage.getBackBtn().setOnAction(e -> {
-            tabContainer.getChildren().get(0).setVisible(true);
-            tabContainer.getChildren().get(1).setVisible(false);
-        });
-
+        // Cart button
+        cart = new Button("Cart");
         cart.setOnAction(e -> {
             tabContainer.getChildren().get(0).setVisible(false);
             tabContainer.getChildren().get(1).setVisible(true);
@@ -99,17 +116,11 @@ public class MenuPage {
                     CartItem item = new CartItem(ItemController.getItemInstance(), Integer.parseInt(menuCard.getQuantity().getText()));
                     cartItems.add(item);
                 }
-
-
             }
             TransactionController.setBillInstance(new Bill(cartItems));
             cartPage.setCart();
-
-            System.out.println(cartItems);
-            System.out.println(menuCards.size());
         });
-
-        tab.setContent(tabContainer);
+        pageContainer.setBottom(cart);
     }
 
 }

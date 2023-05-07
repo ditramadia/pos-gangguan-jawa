@@ -11,19 +11,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import lombok.Getter;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
 public class AnimatedToggleButton extends StackPane {
 
+    @Getter
     private ToggleButton button;
     private Rectangle buttonBackground;
     private Circle backgroundCircle;
     private ScaleTransition scaleTransition;
     private TranslateTransition translateTransition;
+    @Getter
+    private Boolean active;
 
     public AnimatedToggleButton() {
+        active = false;
+
         button = new ToggleButton();
         button.getStyleClass().add("animated-toggle-button");
 
@@ -45,12 +51,11 @@ public class AnimatedToggleButton extends StackPane {
         scaleTransition.setAutoReverse(true);
         scaleTransition.setCycleCount(2);
 
-
-
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (button.isSelected()) {
+                    active = false;
                     scaleTransition.setRate(1);
                     scaleTransition.play();
                     backgroundCircle.setFill(Color.web("#478660"));
@@ -59,6 +64,7 @@ public class AnimatedToggleButton extends StackPane {
                     translateTransition.setToX(10);
                     translateTransition.play();
                 } else {
+                    active = true;
                     scaleTransition.setRate(-1);
                     scaleTransition.play();
                     backgroundCircle.setFill(Color.GRAY);
@@ -67,6 +73,7 @@ public class AnimatedToggleButton extends StackPane {
                     translateTransition.setToX(-10);
                     translateTransition.play();
                 }
+                fireEvent(new TogglePointsEvent());
             }
         });
 
