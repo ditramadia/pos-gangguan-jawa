@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.MenuCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.entity.CartItem;
 import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
@@ -49,7 +50,7 @@ public class MenuPage {
         title = new Label("MENU");
         title.setFont(new Font(30));
         searchBar = new SearchBar();
-        checkout = new Button("Checkout");
+        checkout = new Button("Cart");
         cartItems = new ArrayList<>();
         menuCards = new ArrayList<>();
         cartPage = new CartPage(cartItems);
@@ -91,7 +92,8 @@ public class MenuPage {
             cartItems = new ArrayList<>();
             for (MenuCard menuCard : menuCards) {
                 if (!menuCard.getQuantity().getText().isEmpty()) {
-                    CartItem item = new CartItem(menuCard.getCurrentID(), Integer.parseInt(menuCard.getQuantity().getText()));
+                    ItemController.setItemInstance(menuCard.getCurrentID());
+                    CartItem item = new CartItem(ItemController.getItemInstance(), Integer.parseInt(menuCard.getQuantity().getText()));
                     cartItems.add(item);
                 }
 
