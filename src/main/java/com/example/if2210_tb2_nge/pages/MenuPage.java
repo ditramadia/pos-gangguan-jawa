@@ -2,6 +2,9 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.MenuCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.controller.TransactionController;
+import com.example.if2210_tb2_nge.entity.Bill;
 import com.example.if2210_tb2_nge.entity.CartItem;
 import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
@@ -17,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,29 +36,60 @@ public class MenuPage {
     private GridPane cardContainer;
     private Label title;
     private SearchBar searchBar;
-    private Button checkout;
+    private Button cart;
     private int row = 1;
     private int column = 0;
     private List<MenuCard> menuCards;
     List<CartItem> cartItems;
     private CartPage cartPage;
 
-    public MenuPage() {
+    public MenuPage() throws MalformedURLException {
+        // Cart Items
+        cartItems = new ArrayList<>();
+
+        // Tab
         tab = new Tab("Menu");
+
+        // Tab Container
         tabContainer = new StackPane();
+        tab.setContent(tabContainer);
+
+        // Page Container
         pageContainer = new BorderPane();
+        tabContainer.getChildren().add(pageContainer);
+
+        // Cart page
+        cartPage = new CartPage();
+        cartPage.getBackBtn().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+        });
+        tabContainer.getChildren().add(cartPage.getPageContainer());
+        tabContainer.getChildren().get(1).setVisible(false);
+
+        // Content Container
         contentContainer = new VBox();
+        pageContainer.setCenter(contentContainer);
+
+        // Search bar
+        searchBar = new SearchBar();
+        contentContainer.getChildren().add(searchBar);
+
+        // Scroll Pane
         scrollPane = new ScrollPane();
+        contentContainer.getChildren().add(scrollPane);
+
+        // Card Container
         cardContainer = new GridPane();
+        scrollPane.setContent(cardContainer);
+
+        // Title
         title = new Label("MENU");
         title.setFont(new Font(30));
-        searchBar = new SearchBar();
-        checkout = new Button("Checkout");
-        cartItems = new ArrayList<>();
+        pageContainer.setTop(title);
+
+        // Menu cards
         menuCards = new ArrayList<>();
-        cartPage = new CartPage(cartItems);
-
-
         List<Items> items = ItemsRepository.getItems();
         for (Items item : items) {
             Integer id = item.getId();
@@ -69,40 +104,23 @@ public class MenuPage {
             }
         }
 
-        contentContainer.getChildren().addAll(searchBar.getSearchBarContainer(), scrollPane);
-        scrollPane.setContent(cardContainer);
-        pageContainer.setCenter(contentContainer);
-
-        pageContainer.setTop(title);
-        pageContainer.setBottom(checkout);
-
-        tabContainer.getChildren().add(pageContainer);
-        tabContainer.getChildren().add(cartPage.getPageContainer());
-        tabContainer.getChildren().get(1).setVisible(false);
-
-        cartPage.getBackBtn().setOnAction(e -> {
-            tabContainer.getChildren().get(0).setVisible(true);
-            tabContainer.getChildren().get(1).setVisible(false);
-        });
-
-        checkout.setOnAction(e -> {
+        // Cart button
+        cart = new Button("Cart");
+        cart.setOnAction(e -> {
             tabContainer.getChildren().get(0).setVisible(false);
             tabContainer.getChildren().get(1).setVisible(true);
             cartItems = new ArrayList<>();
             for (MenuCard menuCard : menuCards) {
                 if (!menuCard.getQuantity().getText().isEmpty()) {
-                    CartItem item = new CartItem(menuCard.getCurrentID(), Integer.parseInt(menuCard.getQuantity().getText()));
+                    ItemController.setItemInstance(menuCard.getCurrentID());
+                    CartItem item = new CartItem(ItemController.getItemInstance(), Integer.parseInt(menuCard.getQuantity().getText()));
                     cartItems.add(item);
                 }
-
-
             }
-            cartPage.setCart(cartItems);
-            System.out.println(cartItems);
-            System.out.println(menuCards.size());
+            TransactionController.setBillInstance(new Bill(cartItems));
+            cartPage.setCart();
         });
-
-        tab.setContent(tabContainer);
+        pageContainer.setBottom(cart);
     }
 
 }
