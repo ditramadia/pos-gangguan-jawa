@@ -2,8 +2,11 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.CustomerCard;
+import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import javafx.animation.PauseTransition;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import lombok.Getter;
 
 import java.util.List;
@@ -20,12 +24,13 @@ public class CustomerPage {
     @Getter
     private Tab tab;
     private StackPane mulscreens;
-    private BorderPane pageConteiner;
+    private BorderPane pageContainer;
     private CustomerDetailPage customerDetailPage;
-
+    private SearchBar searchBar;
     private ScrollPane scrollPane;
     private VBox cardContent;
-    private Label title;
+    private VBox contentContainer;
+    private Label header;
     private ConfirmationBox confirmationBox;
 
 
@@ -36,9 +41,12 @@ public class CustomerPage {
         tabPane.getTabs().add(tab);
 
         mulscreens = new StackPane();
-        pageConteiner = new BorderPane();
+        pageContainer = new BorderPane();
         scrollPane = new ScrollPane();
         cardContent = new VBox();
+
+        contentContainer = new VBox();
+        pageContainer.setCenter(contentContainer);
 
         customerDetailPage = new CustomerDetailPage();
         customerDetailPage.getBackBtn().setOnAction(e -> {
@@ -52,42 +60,51 @@ public class CustomerPage {
             }
         });
         //hide
-        mulscreens.getChildren().add(pageConteiner);
+        mulscreens.getChildren().add(pageContainer);
         mulscreens.getChildren().add(customerDetailPage.getPageContainer());
         mulscreens.getChildren().get(1).setVisible(false);
 
+        header = new Label("MEMBER");
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
+        header.setFont(fontTitle);
+        header.setStyle("-fx-text-fill: #478660;");
+        header.setAlignment(Pos.CENTER);
+        header.setPrefHeight(100);
+        header.setPrefWidth(500);
+        pageContainer.setAlignment(header, Pos.CENTER);
+        pageContainer.setTop(header);
 
-        title = new Label("MEMBER");
-        title.setFont(new Font("Arial", 20));
-        title.setPrefHeight(100);
-        title.setPrefWidth(300);
-        pageConteiner.setTop(title);
-        BorderPane.setAlignment(title, Pos.CENTER);
-        cardContent.setStyle("-fx-padding: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: #83695A;");
+        //search bar
+        searchBar = new SearchBar();
+        contentContainer.getChildren().add(searchBar.getSearchBarContainer());
+        searchBar.getSearchField().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if the text field has lost focus
+            PauseTransition pause = new PauseTransition(Duration.millis(10));
+            pause.setOnFinished(event -> {
+                try {
+                    this.updateCard();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            pause.play();
+        });
 
         // add card
         this.updateCard();
-
-        BorderPane.setMargin(scrollPane, new Insets(10,0,0, 300));
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        scrollPane.setFitToWidth(true);
+        contentContainer.setMargin(scrollPane, new Insets(25, 0, 0, 0));
         BorderPane.setAlignment(scrollPane, Pos.CENTER);
-        pageConteiner.setCenter(scrollPane);
+        contentContainer.getChildren().add(scrollPane);
 
         tab.setContent(mulscreens);
     }
 
     public void updateCard() throws Exception {
-      VBox newCardLayout = new VBox();
-      newCardLayout.setStyle("-fx-padding: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: #83695A;");
+        VBox newCardLayout = new VBox();
+        newCardLayout.setSpacing(15);
+        newCardLayout.setAlignment(Pos.CENTER);
 
         // get the items and iterate over them
         List<Members> customers = CustomersRepository.getMembersOnly();
@@ -109,20 +126,12 @@ public class CustomerPage {
                     }
                 });
 
-                // check if the search field is empty or if the item name matches the search field
-    //            if (searchBar.getSearchField().getText().isEmpty() ||
-    //                    ((String) item.get("name")).toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
-                    // add the card to the new card layout
-                GridPane.setMargin(customerCard.getCardContainer(), new Insets(30));
-                newCardLayout.getChildren().add(customerCard.getCardContainer());
-
+                if (searchBar.getSearchField().getText().isEmpty() ||
+                        customer.getName().toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())) {
+                    newCardLayout.getChildren().add(customerCard.getCustomerContainer());
+                }
             }
         }
-//
-   // set the new card layout as the content of the scroll container
         scrollPane.setContent(newCardLayout);
-
-        // reset the column and row counts
     }
-
 }
