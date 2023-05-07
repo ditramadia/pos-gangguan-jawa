@@ -2,12 +2,8 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.CustomerCard;
-import com.example.if2210_tb2_nge.components.ItemCard;
-import com.example.if2210_tb2_nge.controller.CustomerController;
-import com.example.if2210_tb2_nge.controller.ItemController;
-import com.example.if2210_tb2_nge.entity.Customers;
+import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
-import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -17,13 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
-import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class CustomerPage {
     @Getter
@@ -99,8 +90,8 @@ public class CustomerPage {
                 "-fx-border-color: #83695A;");
 
         // get the items and iterate over them
-        List<Customers> customers = CustomersRepository.getCustomers();
-        for (Customers customer : customers) {
+        List<Members> customers = CustomersRepository.getMembersOnly();
+        for (Members customer : customers) {
             // create a new ItemCard
             Integer id = customer.getId();
             if (!customer.getName().equals("")) {

@@ -1,25 +1,18 @@
 package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ConfirmationBox;
-import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.CustomerController;
-import com.example.if2210_tb2_nge.controller.ItemController;
-import com.example.if2210_tb2_nge.entity.Customers;
-import com.example.if2210_tb2_nge.entity.Items;
+import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
-import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class CustomerDetailPage {
@@ -162,8 +155,8 @@ public class CustomerDetailPage {
 
     public void readData(Integer id) throws Exception {
         customerId = id;
-        List<Customers> customers = CustomersRepository.getCustomers();
-        for (Customers customer : customers) {
+        List<Members> customers = CustomersRepository.getMembersOnly();
+        for (Members customer : customers) {
             if (customer.getId() == id) {
                 CustomerController.setCustomerInstance(customerId);
                 nameForm.setValue(customer.getName());

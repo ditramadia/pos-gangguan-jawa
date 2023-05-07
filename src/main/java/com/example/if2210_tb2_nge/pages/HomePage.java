@@ -181,22 +181,25 @@ public class HomePage {
         clock.setClock();
         VBox.setMargin(clock.getClockLabelH(), new Insets(0,0,0,0));
         //set font
-        clock.getClockLabelH().setFont(new Font(130));
-        clock.getClockLabelM().setFont(new Font(130));
-        clock.getDate().setFont(new Font(20));
+        Font fontClock = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 130);
+        clock.getClockLabelH().setFont(fontClock);
+        clock.getClockLabelM().setFont(fontClock);
+        Font fontDate = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 20);
+        clock.getDate().setFont(fontDate);
         //set spacing
         clock.getClockLabelH().setPadding(new Insets(0,0,0,0));
         clock.getClockLabelM().setPadding(new Insets(-50,0,0,0));
         //set color
-        clock.getClockLabelH().setStyle("-fx-text-fill: #8C7466;");
+        clock.getClockLabelH().setStyle("-fx-text-fill: #8C7466; ");
         clock.getClockLabelM().setStyle("-fx-text-fill: #8C7466;");
         clock.getDate().setStyle("-fx-text-fill: #8C7466;");
 
 
         // title
         Label kel = new Label("GANGGUAN JAWA");
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 30);
+        kel.setFont(fontTitle);
         VBox.setMargin(kel,new Insets(80, 0 ,0 ,0));
-        kel.setFont(new Font(30));
         kel.setStyle("-fx-text-fill: #478660;");
 
         Label kel1 = new Label("Kelvin Rayhan A.");
@@ -206,12 +209,14 @@ public class HomePage {
         Label kel5 = new Label("Raditya Naufal A.");
         Label kel6 = new Label("Kenny Benaya N.");
 
-        kel1.setFont(new Font(20));
-        kel2.setFont(new Font(20));
-        kel3.setFont(new Font(20));
-        kel4.setFont(new Font(20));
-        kel5.setFont(new Font(20));
-        kel6.setFont(new Font(20));
+        Font fontKel = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 20);
+
+        kel1.setFont(fontKel);
+        kel2.setFont(fontKel);
+        kel3.setFont(fontKel);
+        kel4.setFont(fontKel);
+        kel5.setFont(fontKel);
+        kel6.setFont(fontKel);
 
         VBox.setMargin(kel1, new Insets(20,0,0,0));
         VBox.setMargin(kel2, new Insets(10,0,0,0));
@@ -227,12 +232,12 @@ public class HomePage {
         Label nim5 = new Label("13521022");
         Label nim6 = new Label("13521023");
 
-        nim1.setFont(new Font(20));
-        nim2.setFont(new Font(20));
-        nim3.setFont(new Font(20));
-        nim4.setFont(new Font(20));
-        nim5.setFont(new Font(20));
-        nim6.setFont(new Font(20));
+        nim1.setFont(fontKel);
+        nim2.setFont(fontKel);
+        nim3.setFont(fontKel);
+        nim4.setFont(fontKel);
+        nim5.setFont(fontKel);
+        nim6.setFont(fontKel);
 
         VBox.setMargin(nim1, new Insets(20,0,0,0));
         VBox.setMargin(nim2, new Insets(10,0,0,0));

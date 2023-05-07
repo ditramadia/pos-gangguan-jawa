@@ -133,9 +133,12 @@ public class InventoryPage implements EventHandler<ActionEvent> {
 
         // header
         header = new Label("INVENTORY");
-        header.setFont(new Font(30));
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 50);
+        header.setFont(fontTitle);
+        header.setStyle("-fx-text-fill: #478660;");
+        header.setAlignment(Pos.CENTER);
         header.setPrefHeight(100);
-        header.setPrefWidth(300);
+        header.setPrefWidth(500);
         pageContainer.setAlignment(header, Pos.CENTER);
         pageContainer.setTop(header);
 
@@ -161,12 +164,6 @@ public class InventoryPage implements EventHandler<ActionEvent> {
 
         // cards container
         cardLayout = new GridPane();
-        cardLayout.setStyle("-fx-padding: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: #83695A;");
         scrollContainer.setContent(cardLayout);
         this.updateCard();
 
@@ -191,12 +188,6 @@ public class InventoryPage implements EventHandler<ActionEvent> {
     public void updateCard() throws Exception {
         // create a new GridPane
         GridPane newCardLayout = new GridPane();
-        newCardLayout.setStyle("-fx-padding: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: #83695A;");
 
         // get the items and iterate over them
         List<Items> items = ItemsRepository.getItems();

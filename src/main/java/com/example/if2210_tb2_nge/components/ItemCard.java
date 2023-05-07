@@ -48,25 +48,31 @@ public class ItemCard extends Control{
                 }
                 itemName = new Label(item.getName());
                 cardContainer.getChildren().add(itemName);
-                itemName.setFont(new Font("Arial", 20));
+                Font fontItem = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 25);
+                itemName.setFont(fontItem);
+                itemName.setStyle("-fx-text-fill: #8C7466 ;-fx-font-weight: bold;");
                 cardContainer.setAlignment(Pos.TOP_CENTER);
-                VBox.setMargin(itemName, new Insets(20,0,0,0));
+                VBox.setMargin(itemName, new Insets(10,0,0,0));
             }
         }
 
         // image
         image = new Image(imageUrl);
         imageView = new ImageView(image);
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setFitHeight(130);
+        imageView.setFitWidth(130);
         imageView.setStyle("-fx-background-radius: 8;");
         cardContainer.getChildren().add(imageView);
-        VBox.setMargin(imageView, new Insets(20,0,0,0));
+        VBox.setMargin(imageView, new Insets(10,0,0,0));
 
 
         // view detail button
         viewDetailBtn = new Button("View details");
-        VBox.setMargin(viewDetailBtn, new Insets(30, 0,0,0));
+        // set font on button
+        Font font = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 15);
+        viewDetailBtn.setFont(font);
+        viewDetailBtn.setStyle("-fx-background-color: #8C7466; -fx-text-fill: #F0F0F0; -fx-background-radius: 8;");
+        VBox.setMargin(viewDetailBtn, new Insets(10, 0,0,0));
 //        viewDetailBtn.setSkin(new MyButtonSkin(viewDetailBtn));
         File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style/buttonstyle.css");
         String cssUrl = cssFile.toURI().toURL().toExternalForm();
