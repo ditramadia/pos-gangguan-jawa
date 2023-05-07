@@ -1,11 +1,14 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.MenuCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.controller.TransactionController;
 import com.example.if2210_tb2_nge.entity.Bill;
 import com.example.if2210_tb2_nge.entity.CartItem;
+import com.example.if2210_tb2_nge.entity.FixedBill;
 import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
@@ -42,6 +45,8 @@ public class MenuPage {
     private List<MenuCard> menuCards;
     List<CartItem> cartItems;
     private CartPage cartPage;
+    private CheckoutPage checkoutPage;
+    private RegistrationPage registrationPage;
 
     public MenuPage() throws MalformedURLException {
         // Cart Items
@@ -66,6 +71,22 @@ public class MenuPage {
         });
         tabContainer.getChildren().add(cartPage.getPageContainer());
         tabContainer.getChildren().get(1).setVisible(false);
+
+        // Checkout page
+        checkoutPage = new CheckoutPage();
+        tabContainer.getChildren().add(checkoutPage);
+        tabContainer.getChildren().get(2).setVisible(false);
+
+        // Regis page
+        registrationPage = new RegistrationPage();
+        registrationPage.getBackBtn().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(false);
+        });
+        tabContainer.getChildren().add(registrationPage);
+        tabContainer.getChildren().get(3).setVisible(false);
 
         // Content Container
         contentContainer = new VBox();
@@ -104,21 +125,53 @@ public class MenuPage {
             }
         }
 
+        cartPage.getCheckoutBtn().setOnAction(e -> {
+            Bill tempBill = TransactionController.getBillInstance();
+            Integer points;
+            if (cartPage.getCustomerLayout().getToggleButton().getActive()){
+                points = CustomerController.getCustomerInstance().getPoints();
+            }
+            else {
+                points = 0;
+            }
+            FixedBill fixedBill = new FixedBill(tempBill, cartPage.getCustomer(), points);
+            TransactionController.setbillInstance(fixedBill, true);
+
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(true);
+
+        });
+
+        checkoutPage.getRegistration().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(true);
+        });
+
         // Cart button
         cart = new Button("Cart");
         cart.setOnAction(e -> {
-            tabContainer.getChildren().get(0).setVisible(false);
-            tabContainer.getChildren().get(1).setVisible(true);
+
             cartItems = new ArrayList<>();
             for (MenuCard menuCard : menuCards) {
-                if (!menuCard.getQuantity().getText().isEmpty()) {
+                if (!menuCard.getQuantity().getText().equals("0")) {
                     ItemController.setItemInstance(menuCard.getCurrentID());
                     CartItem item = new CartItem(ItemController.getItemInstance(), Integer.parseInt(menuCard.getQuantity().getText()));
                     cartItems.add(item);
                 }
             }
-            TransactionController.setBillInstance(new Bill(cartItems));
-            cartPage.setCart();
+            if (cartItems.size() > 0) {
+                TransactionController.setBillInstance(new Bill(cartItems));
+                cartPage.setCart();
+                tabContainer.getChildren().get(0).setVisible(false);
+                tabContainer.getChildren().get(1).setVisible(true);
+            }
+            else {
+                ConfirmationBox confirmationBox = new ConfirmationBox(4);
+                confirmationBox.getErrorBox().showAndWait();
+            }
         });
         pageContainer.setBottom(cart);
     }

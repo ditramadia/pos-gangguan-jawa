@@ -8,5 +8,10 @@ public class TransactionController {
     @Getter
     @Setter
     private static Bill billInstance;
+
+    public static void setbillInstance(Bill billInstance, Boolean check){
+        setBillInstance(billInstance);
+
+    }
 }
 

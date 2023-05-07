@@ -2,9 +2,11 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.components.TogglePointsEvent;
+import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.controller.TransactionController;
 import com.example.if2210_tb2_nge.entity.CartItem;
+import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
@@ -34,6 +36,7 @@ public class CartPage {
     private ScrollPane scrollPane;
     private HBox cartLayout;
     private VBox customerPrice;
+    @Getter
     private CustomerSelectionCard customerLayout;
     private HBox priceLayout;
     private VBox priceLabelLayout;
@@ -50,6 +53,8 @@ public class CartPage {
     @Getter
     private Button checkoutBtn;
     private List<Members> membersList;
+    @Getter
+    private Customers customer;
 
     public CartPage() throws MalformedURLException {
         // Values
@@ -89,6 +94,8 @@ public class CartPage {
             // Find the selected member and add their attributes to the card container
             for (Members member : membersList) {
                 if (member.getName().equals(newValue)) {
+                    CustomerController.setCustomerInstance(member.getId());
+                    customer = CustomerController.getCustomerInstance();
                     Label noTelp = new Label(member.getNoTelp());
                     Label points = new Label(Integer.toString(member.getPoints()) + " pts");
                     customerLayout.setMember(member);
