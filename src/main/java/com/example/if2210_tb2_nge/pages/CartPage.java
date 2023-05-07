@@ -1,5 +1,6 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.entity.CartItem;
 import javafx.geometry.Insets;
@@ -21,6 +22,10 @@ public class CartPage {
     @Getter
     private BorderPane pageContainer;
     private ScrollPane scrollPane;
+    private HBox cartLayout;
+    private VBox customerPrice;
+    private CustomerSelectionCard customerLayout;
+    private VBox priceLayout;
     private Label title;
     private VBox contentContainer;
     private HBox itemContainer;
@@ -34,15 +39,22 @@ public class CartPage {
         pageContainer = new BorderPane();
         scrollPane = new ScrollPane();
         contentContainer = new VBox();
+        cartLayout = new HBox();
+        customerPrice = new VBox();
+        customerLayout = new CustomerSelectionCard();
+        priceLayout = new VBox();
         title = new Label("CART");
         title.setFont(new Font(30));
         backBtn = new Button("Back");
 
+        cartLayout.getChildren().addAll(scrollPane, customerPrice);
 
         scrollPane.setContent(contentContainer);
 
+        customerPrice.getChildren().addAll(customerLayout.getCardContainer(), priceLayout);
+
         pageContainer.setTop(title);
-        pageContainer.setCenter(scrollPane);
+        pageContainer.setCenter(cartLayout);
         pageContainer.setBottom(backBtn);
         for (CartItem item : cartItems){
             if (item.getQuantity() != 0) {
@@ -52,7 +64,7 @@ public class CartPage {
                 newitemContainer.setPrefWidth(800);
                 newitemContainer.setPrefHeight(50);
                 Label newitemName = new Label(ItemController.getItemInstance().getName());
-                Label newitemPrice = new Label(Integer.toString(ItemController.getItemInstance().getBuyPrice()));
+                Label newitemPrice = new Label(Integer.toString(ItemController.getItemInstance().getPrice()));
                 Label newquantity = new Label(Integer.toString(item.getQuantity()));
 
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
