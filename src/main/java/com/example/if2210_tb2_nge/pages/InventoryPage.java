@@ -1,6 +1,7 @@
 package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ConfirmationBox;
+import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.ItemCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.controller.ItemController;
@@ -102,7 +103,6 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         newItemPage.getSaveBtn().setOnAction(e -> {
             try {
                 if (newItemPage.isComplete()){
-                    System.out.println("KONTOL");
                     ItemsRepository.addItems(newItemPage.getNameForm().getValue(), Integer.parseInt(newItemPage.getPriceForm().getValue()), Integer.parseInt(newItemPage.getBuyPriceForm().getValue()), Integer.parseInt(newItemPage.getStockForm().getValue()), newItemPage.getCategoryForm().getValue(), newItemPage.getItemImage().getImgUrl());
                     newItemPage.resetPage();
                     mulscreens.getChildren().get(0).setVisible(true);
@@ -133,7 +133,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
 
         // header
         header = new Label("INVENTORY");
-        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 50);
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
         header.setFont(fontTitle);
         header.setStyle("-fx-text-fill: #478660;");
         header.setAlignment(Pos.CENTER);
@@ -165,6 +165,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         // cards container
         cardLayout = new GridPane();
         scrollContainer.setContent(cardLayout);
+        scrollContainer.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
         this.updateCard();
 
         // new item button
@@ -174,6 +175,10 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(true);
         });
+        newItemBtn.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        newItemBtn.setPrefWidth(200);
+        newItemBtn.setPrefHeight(50);
+        BorderPane.setMargin(newItemBtn, new Insets(10, 85, 10, 0));
         BorderPane.setAlignment(newItemBtn, Pos.BOTTOM_RIGHT);
         pageContainer.setBottom(newItemBtn);
     }
@@ -200,11 +205,12 @@ public class InventoryPage implements EventHandler<ActionEvent> {
             itemCard.getViewDetailBtn().setOnAction(e -> {
                 try {
                     // load the item detail page
-                    mulscreens.getChildren().get(0).setVisible(false);
                     itemDetailPage.readData(id);
+                    ItemController.setItemInstance(id);
 
                     currentID = id;
-                    
+
+                    mulscreens.getChildren().get(0).setVisible(false);
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {

@@ -102,8 +102,8 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
 * projectlombok.lombok
 * google.code.gson
 * googlecode.json.simple
-* jackson.dataformat.xml
-* itests.json.simple.parser
+* itest.json.simple.parser
+* jackson-dataformat-xml
 
 ### Installation
 1. Clone the repo
@@ -127,16 +127,22 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
 ### Inventory Management
 1. Inventory
    <br/>
-   <br/> <img src="public/inventory-page.jpg" alt="Inventory page" width="1280">
+   <br/> <img src="public/inventory-page.png" alt="Inventory page" width="1280">
    <br/>
    <br/>
-2. view, add, edit, and delete item
+2. View item detail
    <br/>
-   <br/> <img src="public/view-item-detail.jpg" alt="Item detail page" width="1280">
+   <br/> <img src="public/view-item-detail.png" alt="Item detail page" width="1280">
    <br/>
-   <br/> <img src="public/add-item.jpg" alt="Add item page" width="1280">
    <br/>
-   <br/> <img src="public/edit-item.jpg" alt="Edit item page" width="1280">
+3. Edit item detail
+   <br/>
+   <br/> <img src="public/edit-item.png" alt="Add item page" width="1280">
+   <br/>
+   <br/>
+4. Add Item
+   <br/>
+   <br/> <img src="public/add-item.png" alt="Edit item page" width="1280">
    <br/>
    <br/>
 

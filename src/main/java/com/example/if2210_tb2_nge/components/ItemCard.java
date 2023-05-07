@@ -48,9 +48,9 @@ public class ItemCard extends Control{
                 }
                 itemName = new Label(item.getName());
                 cardContainer.getChildren().add(itemName);
-                Font fontItem = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 25);
+                Font fontItem = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 25);
                 itemName.setFont(fontItem);
-                itemName.setStyle("-fx-text-fill: #8C7466 ;-fx-font-weight: bold;");
+                itemName.setStyle("-fx-text-fill: #8C7466 ;");
                 cardContainer.setAlignment(Pos.TOP_CENTER);
                 VBox.setMargin(itemName, new Insets(10,0,0,0));
             }
@@ -69,8 +69,6 @@ public class ItemCard extends Control{
         // view detail button
         viewDetailBtn = new Button("View details");
         // set font on button
-        Font font = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 15);
-        viewDetailBtn.setFont(font);
         viewDetailBtn.setStyle("-fx-background-color: #8C7466; -fx-text-fill: #F0F0F0; -fx-background-radius: 8;");
         VBox.setMargin(viewDetailBtn, new Insets(10, 0,0,0));
 //        viewDetailBtn.setSkin(new MyButtonSkin(viewDetailBtn));

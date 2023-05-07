@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,6 +27,7 @@ public class ItemDetailPage {
     private VBox pageContainer;
     private Label header;
     @Getter
+    @Setter
     private ImageForm itemImage;
     @Getter
     private TextFieldForm nameForm;
@@ -54,27 +56,26 @@ public class ItemDetailPage {
 
         // page container
         pageContainer = new VBox();
-        pageContainer.setAlignment(Pos.TOP_CENTER);
+        pageContainer.setAlignment(Pos.CENTER);
 
         // header
         header = new Label("ITEM DETAILS");
-        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 50);
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
         header.setFont(fontTitle);
         header.setStyle("-fx-text-fill: #478660;");
-        header.setPrefHeight(200);
+        header.setPrefHeight(100);
         header.setAlignment(Pos.CENTER);
         pageContainer.getChildren().add(header);
 
 
         // images
-        itemImage = new ImageForm("https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/01/28/2114811954.jpg");
+        itemImage = new ImageForm(null);
         itemImage.setIsDisable(true);
-        itemImage.getImageContainer().prefHeight(300);
         pageContainer.getChildren().add(itemImage.getImageContainer());
 
         // name form
         horizontalTextFormContainer1 = new HBox();
-        nameForm = new TextFieldForm("Name", "", 900);
+        nameForm = new TextFieldForm("Name", "", 940);
         nameForm.setIsDisable(true);
         pageContainer.getChildren().add(horizontalTextFormContainer1);
         horizontalTextFormContainer1.setAlignment(Pos.CENTER);
@@ -83,7 +84,7 @@ public class ItemDetailPage {
 
         // category form
         horizontalTextFormContainer2 = new HBox();
-        categoryForm = new TextFieldForm("Category", "", 900);
+        categoryForm = new TextFieldForm("Category", "", 940);
         categoryForm.setIsDisable(true);
         pageContainer.getChildren().add(horizontalTextFormContainer2);
         horizontalTextFormContainer2.setAlignment(Pos.CENTER);
@@ -93,6 +94,7 @@ public class ItemDetailPage {
         horizontalTextFormContainer3 = new HBox();
         pageContainer.getChildren().add(horizontalTextFormContainer3);
         horizontalTextFormContainer3.setAlignment(Pos.CENTER);
+        horizontalTextFormContainer3.setSpacing(20);
 
         // price form
         priceForm = new TextFieldForm("Price", "", 300);
@@ -200,6 +202,10 @@ public class ItemDetailPage {
                 priceForm.setValue(item.getPrice().toString());
                 buyPriceForm.setValue(item.getBuyPrice().toString());
                 stockForm.setValue(item.getStock().toString());
+                this.itemImage = new ImageForm(ItemController.getItemInstance().getImage());
+                pageContainer.getChildren().clear();
+                pageContainer.getChildren().addAll(header, this.itemImage.getImageContainer(), horizontalTextFormContainer1, horizontalTextFormContainer2, horizontalTextFormContainer3, saveBtn, deleteBtn, backBtn);
+                System.out.println(this.itemImage.getImgUrl());
                 break;
             }
         }

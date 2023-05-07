@@ -4,6 +4,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import lombok.Getter;
 
 public class TextFieldForm extends Control {
@@ -19,13 +20,19 @@ public class TextFieldForm extends Control {
 
         // label
         label = new Label(labelStr);
+        Font labelFont = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 20);
+        label.setFont(labelFont);
+        VBox.setMargin(label, new javafx.geometry.Insets(20, 0, 10, 0));
         formContainer.getChildren().add(label);
 
         // input field
         inputField = new TextField();
+        Font fieldFont = Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 15);
         inputField.setPromptText(placeholderStr);
-        inputField.setPrefHeight(30);
+        inputField.setPrefHeight(50);
         inputField.setPrefWidth(width);
+        inputField.setFont(fieldFont);
+        inputField.setStyle("-fx-text-fill: black; -fx-font-size: 20; -fx-background-color: #E1E1E1;");
         formContainer.getChildren().add(inputField);
     }
 

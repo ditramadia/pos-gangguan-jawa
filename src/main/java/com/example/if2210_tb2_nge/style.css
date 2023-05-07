@@ -6,7 +6,7 @@
 }
 
 .tab-header-area .tab-header-background {
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: #8C7466;
 }
 .tab-pane .tab:selected {
     -fx-background-color: -fx-secondary-color;
@@ -33,7 +33,7 @@
     -fx-tab-max-height: 66px;
 }
 .tab-pane .tab {
-    -fx-background-color: transparent;
+    -fx-background-color: #83695A;
 }
 .tab-pane:focused .tab-header-area .headers-region .tab:selected .focus-indicator {
     -fx-border-width: 0;
