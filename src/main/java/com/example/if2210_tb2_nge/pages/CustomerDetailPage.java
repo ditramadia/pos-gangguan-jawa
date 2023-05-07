@@ -133,6 +133,7 @@ public class CustomerDetailPage {
             isEditMode = false;
             saveBtn.setText(new String("Edit"));
             try {
+                System.out.println("update data");
                 this.updateData();
             } catch (Exception e) {
                 throw new RuntimeException(e);

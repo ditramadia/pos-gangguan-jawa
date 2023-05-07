@@ -252,6 +252,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 }
                 Tab newTab = newMenuPage.getTab();
                 InventoryPage finalNewMenuPage = newMenuPage;
+                InventoryPage finalNewMenuPage1 = newMenuPage;
                 newTab.setOnSelectionChanged(event -> {
                     if (newTab.isSelected()) {
                         // Call a function from MenuPage
@@ -259,6 +260,9 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                             finalNewMenuPage.updateCard();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
+                        }
+                        if (finalNewMenuPage1.getCurrentID() != 0) {
+                            ItemController.setItemInstance(finalNewMenuPage1.getCurrentID());
                         }
                     }
                 });
