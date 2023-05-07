@@ -3,6 +3,9 @@ package com.example.if2210_tb2_nge.pages;
 import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.entity.CartItem;
+import com.example.if2210_tb2_nge.entity.Members;
+import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +39,17 @@ public class CartPage {
     private int totalPrice;
     @Getter
     private Button backBtn;
+    private List<Members> membersList;
 
     public CartPage(List<CartItem> cartItems) {
+        membersList = new ArrayList<>();
+        membersList =CustomersRepository.getMembersOnly();
         pageContainer = new BorderPane();
         scrollPane = new ScrollPane();
         contentContainer = new VBox();
         cartLayout = new HBox();
         customerPrice = new VBox();
-        customerLayout = new CustomerSelectionCard();
+        customerLayout = new CustomerSelectionCard(membersList);
         priceLayout = new VBox();
         title = new Label("CART");
         title.setFont(new Font(30));
