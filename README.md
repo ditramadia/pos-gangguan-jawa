@@ -99,10 +99,11 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
 ### Dependencies
 * JVM
 * JavaFX
-* Lombok
-* GSON
-* JSON.simple
-* Jackson dataformat XML
+* projectlombok.lombok
+* google.code.gson
+* googlecode.json.simple
+* itest.json.simple.parser
+* jackson-dataformat-xml
 
 ### Installation
 1. Clone the repo
