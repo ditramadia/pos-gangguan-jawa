@@ -32,6 +32,7 @@ public class CartPage {
     private Label itemName;
     private Label itemPrice;
     private Label quantity;
+    private int totalPrice;
     @Getter
     private Button backBtn;
 
@@ -69,6 +70,8 @@ public class CartPage {
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
                 VBox.setMargin(newitemContainer, new Insets(30));
                 contentContainer.getChildren().add(newitemContainer);
+
+                totalPrice += item.getItem().getPrice() * item.getQuantity();
             }
         }
 
@@ -76,6 +79,7 @@ public class CartPage {
     }
 
     public void setCart (List<CartItem> cartItems){
+        totalPrice = 0;
         contentContainer = new VBox();
         for (CartItem item : cartItems){
             if (item.getQuantity() != 0) {
@@ -91,8 +95,14 @@ public class CartPage {
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
                 VBox.setMargin(newitemContainer, new Insets(30));
                 contentContainer.getChildren().add(newitemContainer);
+                totalPrice += item.getItem().getPrice() * item.getQuantity();
             }
         }
+        Label totalpricelabel = new Label(Integer.toString(totalPrice));
+
+        totalpricelabel.setFont(new Font(20));
+
+        priceLayout.getChildren().add(totalpricelabel);
         scrollPane.setContent(contentContainer);
     }
 }
