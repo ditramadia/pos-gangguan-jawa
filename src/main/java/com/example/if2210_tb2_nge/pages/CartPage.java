@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.controller.TransactionController;
 import com.example.if2210_tb2_nge.entity.CartItem;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +34,15 @@ public class CartPage {
     private VBox priceLayout;
     private Label title;
     private VBox contentContainer;
-    private HBox itemContainer;
-    private Label itemName;
-    private Label itemPrice;
-    private Label quantity;
-    private int totalPrice;
+    private HBox buttonLayout;
+    private Double totalPrice;
     @Getter
     private Button backBtn;
+    @Getter
+    private Button checkoutBtn;
     private List<Members> membersList;
 
-    public CartPage(List<CartItem> cartItems) {
+    public CartPage() throws MalformedURLException {
         membersList = new ArrayList<>();
         membersList =CustomersRepository.getMembersOnly();
         pageContainer = new BorderPane();
@@ -51,9 +52,11 @@ public class CartPage {
         customerPrice = new VBox();
         customerLayout = new CustomerSelectionCard(membersList);
         priceLayout = new VBox();
+        buttonLayout = new HBox();
         title = new Label("CART");
         title.setFont(new Font(30));
         backBtn = new Button("Back");
+        checkoutBtn = new Button("Checkout");
 
         cartLayout.getChildren().addAll(scrollPane, customerPrice);
 
@@ -61,32 +64,16 @@ public class CartPage {
 
         customerPrice.getChildren().addAll(customerLayout.getCardContainer(), priceLayout);
 
+        buttonLayout.getChildren().addAll(backBtn, checkoutBtn);
+
         pageContainer.setTop(title);
         pageContainer.setCenter(cartLayout);
-        pageContainer.setBottom(backBtn);
-        for (CartItem item : cartItems){
-            if (item.getQuantity() != 0) {
-                HBox newitemContainer = new HBox();
-                newitemContainer.setStyle("-fx-background-color: #D7CDC7; -fx-background-radius: 20");
-                newitemContainer.setPrefWidth(800);
-                newitemContainer.setPrefHeight(50);
-                Label newitemName = new Label(item.getItem().getName());
-                Label newitemPrice = new Label(Integer.toString(item.getItem().getPrice()));
-                Label newquantity = new Label(Integer.toString(item.getQuantity()));
-
-                newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
-                VBox.setMargin(newitemContainer, new Insets(30));
-                contentContainer.getChildren().add(newitemContainer);
-
-                totalPrice += item.getItem().getPrice() * item.getQuantity();
-            }
-        }
-
+        pageContainer.setBottom(buttonLayout);
 
     }
 
-    public void setCart (List<CartItem> cartItems){
-        totalPrice = 0;
+    public void setCart (){
+        List<CartItem> cartItems = TransactionController.getBillInstance().getCart();
         contentContainer = new VBox();
         for (CartItem item : cartItems){
             if (item.getQuantity() != 0) {
@@ -102,10 +89,11 @@ public class CartPage {
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
                 VBox.setMargin(newitemContainer, new Insets(30));
                 contentContainer.getChildren().add(newitemContainer);
-                totalPrice += item.getItem().getPrice() * item.getQuantity();
             }
         }
-        Label totalpricelabel = new Label(Integer.toString(totalPrice));
+
+        totalPrice = TransactionController.getBillInstance().getSubtotal();
+        Label totalpricelabel = new Label(Double.toString(totalPrice));
 
         totalpricelabel.setFont(new Font(20));
 

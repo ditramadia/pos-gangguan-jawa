@@ -10,6 +10,8 @@ import lombok.Getter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 
 public class CustomerSelectionCard {
@@ -19,15 +21,21 @@ public class CustomerSelectionCard {
     private VBox dataLayout;
     @Getter
     private TextField customerSelection;
+    private AnimatedToggleButton toggleButton;
     private AutoCompletionBinding<String> autoCompletionBinding;
     private String[] suggestions ;
 
-    public CustomerSelectionCard (List<Members> membersList) {
+    public CustomerSelectionCard (List<Members> membersList) throws MalformedURLException {
         cardContainer = new VBox();
         title = new Label("CUSTOMER");
         suggestions = new String[membersList.size()];
         dataLayout = new VBox();
+        toggleButton = new AnimatedToggleButton();
 
+
+        File cssFile = new File("src/main/java/com/example/if2210_tb2_nge/style/togglebuttonstyle.css");
+        String cssUrl = cssFile.toURI().toURL().toExternalForm();
+        dataLayout.getStylesheets().add(cssUrl);
 
         // Iterate through the membersList and add each name to the suggestions array
         for (int i = 0; i < membersList.size(); i++) {
@@ -54,6 +62,7 @@ public class CustomerSelectionCard {
                         if (member.getVip()){
                             Label vip = new Label("VIP");
                             dataLayout.getChildren().add(vip);
+                            dataLayout.getChildren().add(toggleButton);
                         }
                         else {
                             Label vip = new Label();

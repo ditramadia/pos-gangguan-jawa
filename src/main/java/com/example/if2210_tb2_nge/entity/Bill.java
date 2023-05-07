@@ -14,12 +14,12 @@ public class Bill {
     @Setter
     protected Double subtotal;
 
-    public void Bill() {
+    public Bill() {
         this.cart = new ArrayList<CartItem>();
         this.subtotal = 0.0;
     }
 
-    public void Bill(List<CartItem> cart) {
+    public Bill(List<CartItem> cart) {
         this.cart = cart;
         this.subtotal = 0.0;
         for (CartItem cartItem: cart) {
