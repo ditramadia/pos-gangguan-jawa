@@ -2,6 +2,7 @@ package com.example.if2210_tb2_nge;
 
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
+import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.pages.MenuPage;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;

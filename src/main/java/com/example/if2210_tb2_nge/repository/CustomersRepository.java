@@ -84,7 +84,5 @@ public class CustomersRepository {
                 break;
             }
         }
-        Map<String, List<Map<String, Object>>> data = Map.of("customers", customersList);
-        return data;
     }
 }
