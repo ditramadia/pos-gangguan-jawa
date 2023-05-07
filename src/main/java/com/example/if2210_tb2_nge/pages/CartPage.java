@@ -58,13 +58,12 @@ public class CartPage {
         pageContainer.setBottom(backBtn);
         for (CartItem item : cartItems){
             if (item.getQuantity() != 0) {
-                ItemController.setItemInstance(item.getId());
                 HBox newitemContainer = new HBox();
                 newitemContainer.setStyle("-fx-background-color: #D7CDC7; -fx-background-radius: 20");
                 newitemContainer.setPrefWidth(800);
                 newitemContainer.setPrefHeight(50);
-                Label newitemName = new Label(ItemController.getItemInstance().getName());
-                Label newitemPrice = new Label(Integer.toString(ItemController.getItemInstance().getPrice()));
+                Label newitemName = new Label(item.getItem().getName());
+                Label newitemPrice = new Label(Integer.toString(item.getItem().getPrice()));
                 Label newquantity = new Label(Integer.toString(item.getQuantity()));
 
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
@@ -80,13 +79,13 @@ public class CartPage {
         contentContainer = new VBox();
         for (CartItem item : cartItems){
             if (item.getQuantity() != 0) {
-                ItemController.setItemInstance(item.getId());
+                ItemController.setItemInstance(item.getItem().getId());
                 HBox newitemContainer = new HBox();
                 newitemContainer.setStyle("-fx-background-color: #D7CDC7; -fx-background-radius: 20");
                 newitemContainer.setPrefWidth(800);
                 newitemContainer.setPrefHeight(50);
-                Label newitemName = new Label(ItemController.getItemInstance().getName());
-                Label newitemPrice = new Label(Integer.toString(ItemController.getItemInstance().getBuyPrice()));
+                Label newitemName = new Label(item.getItem().getName());
+                Label newitemPrice = new Label(Integer.toString(item.getItem().getPrice()));
                 Label newquantity = new Label(Integer.toString(item.getQuantity()));
 
                 newitemContainer.getChildren().addAll(newitemName, newquantity, newitemPrice);
