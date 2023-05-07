@@ -38,6 +38,8 @@ public class InventoryPage implements EventHandler<ActionEvent> {
     private Button newItemBtn;
     private ScrollPane scrollContainer;
     private ConfirmationBox confirmationBox;
+    @Getter
+    private int currentID;
 
     private int column = 0;
     private int row = 1;
@@ -57,6 +59,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
         itemDetailPage = new ItemDetailPage();
         itemDetailPage.getBackBtn().setOnAction(e -> {
             itemDetailPage.resetPage();
+            currentID = 0;
             mulscreens.getChildren().get(0).setVisible(true);
             mulscreens.getChildren().get(1).setVisible(false);
             mulscreens.getChildren().get(2).setVisible(false);
@@ -208,6 +211,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                     // load the item detail page
                     mulscreens.getChildren().get(0).setVisible(false);
                     itemDetailPage.readData(id);
+                    currentID = id;
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {
