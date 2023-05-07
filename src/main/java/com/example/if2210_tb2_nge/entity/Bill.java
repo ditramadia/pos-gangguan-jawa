@@ -26,4 +26,8 @@ public class Bill {
             subtotal += cartItem.getItem().getPrice() * cartItem.getQuantity();
         }
     }
+
+    public Customers getCustomer() {
+        return null;
+    }
 }

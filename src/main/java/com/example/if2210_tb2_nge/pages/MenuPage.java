@@ -1,6 +1,7 @@
 package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.ConfirmationBox;
+import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.components.MenuCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
 import com.example.if2210_tb2_nge.controller.CustomerController;
@@ -68,12 +69,60 @@ public class MenuPage {
         cartPage.getBackBtn().setOnAction(e -> {
             tabContainer.getChildren().get(0).setVisible(true);
             tabContainer.getChildren().get(1).setVisible(false);
+            cartPage.resetPage();
+        });
+        cartPage.getCheckoutBtn().setOnAction(e -> {
+            Bill tempBill = TransactionController.getBillInstance();
+            Integer points;
+            if (cartPage.getCustomerLayout().getToggleButton().getActive()){
+                points = CustomerController.getCustomerInstance().getPoints();
+            }
+            else {
+                points = 0;
+            }
+
+            // Convert Bill to Fixed Bill
+            FixedBill fixedBill = new FixedBill(tempBill, CustomerController.getCustomerInstance(), points);
+            TransactionController.setbillInstance(fixedBill, true);
+
+            checkoutPage.reloadPage();
+            checkoutPage.getRegistration().setOnAction(e2 -> {
+                tabContainer.getChildren().get(0).setVisible(false);
+                tabContainer.getChildren().get(1).setVisible(false);
+                tabContainer.getChildren().get(2).setVisible(false);
+                tabContainer.getChildren().get(3).setVisible(true);
+            });
+            checkoutPage.getBackBtn().setOnAction(e3 -> {
+                tabContainer.getChildren().get(0).setVisible(true);
+                tabContainer.getChildren().get(1).setVisible(false);
+                tabContainer.getChildren().get(2).setVisible(false);
+                tabContainer.getChildren().get(3).setVisible(false);
+            });
+            cartItems.clear();
+            cartPage.resetPage();
+
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(true);
         });
         tabContainer.getChildren().add(cartPage.getPageContainer());
         tabContainer.getChildren().get(1).setVisible(false);
 
         // Checkout page
         checkoutPage = new CheckoutPage();
+        checkoutPage.getRegistration().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(true);
+        });
+        checkoutPage.getBackBtn().setOnAction(e -> {
+            System.out.println("back");
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(false);
+        });
         tabContainer.getChildren().add(checkoutPage);
         tabContainer.getChildren().get(2).setVisible(false);
 
@@ -125,35 +174,9 @@ public class MenuPage {
             }
         }
 
-        cartPage.getCheckoutBtn().setOnAction(e -> {
-            Bill tempBill = TransactionController.getBillInstance();
-            Integer points;
-            if (cartPage.getCustomerLayout().getToggleButton().getActive()){
-                points = CustomerController.getCustomerInstance().getPoints();
-            }
-            else {
-                points = 0;
-            }
-            FixedBill fixedBill = new FixedBill(tempBill, cartPage.getCustomer(), points);
-            TransactionController.setbillInstance(fixedBill, true);
-
-            tabContainer.getChildren().get(0).setVisible(false);
-            tabContainer.getChildren().get(1).setVisible(false);
-            tabContainer.getChildren().get(2).setVisible(true);
-
-        });
-
-        checkoutPage.getRegistration().setOnAction(e -> {
-            tabContainer.getChildren().get(0).setVisible(false);
-            tabContainer.getChildren().get(1).setVisible(false);
-            tabContainer.getChildren().get(2).setVisible(false);
-            tabContainer.getChildren().get(3).setVisible(true);
-        });
-
         // Cart button
         cart = new Button("Cart");
         cart.setOnAction(e -> {
-
             cartItems = new ArrayList<>();
             for (MenuCard menuCard : menuCards) {
                 if (!menuCard.getQuantity().getText().equals("0")) {

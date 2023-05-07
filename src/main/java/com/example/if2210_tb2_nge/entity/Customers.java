@@ -12,9 +12,7 @@ public class Customers {
     public Customers(Integer id) {
         this.id = id;
     }
-
     public String getName() {return "";}
-
     public void setName(String name) {}
     public String getNoTelp() {return "";}
     public void setNoTelp(String noTelp) {}

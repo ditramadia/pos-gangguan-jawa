@@ -38,6 +38,7 @@ public class CartPage {
     private VBox customerPrice;
     @Getter
     private CustomerSelectionCard customerLayout;
+    @Getter
     private HBox priceLayout;
     private VBox priceLabelLayout;
     private VBox priceValueLayout;
@@ -92,6 +93,7 @@ public class CartPage {
             customerLayout.getDataLayout().getChildren().clear();
             // Remove the previously added labels
             // Find the selected member and add their attributes to the card container
+            CustomerController.setCustomerInstance(null);
             for (Members member : membersList) {
                 if (member.getName().equals(newValue)) {
                     CustomerController.setCustomerInstance(member.getId());
@@ -100,6 +102,17 @@ public class CartPage {
                     Label points = new Label(Integer.toString(member.getPoints()) + " pts");
                     customerLayout.setMember(member);
                     customerLayout.getDataLayout().getChildren().addAll(noTelp,points);
+
+                    priceLabelLayout.getChildren().clear();
+                    priceValueLayout.getChildren().clear();
+
+                    // add subtotal label
+                    Label subTotalLabel = new Label("Subtotal");
+                    priceLabelLayout.getChildren().add(subTotalLabel);
+
+                    subTotal = TransactionController.getBillInstance().getSubtotal();
+                    Label subTotalValueLabel = new Label(Double.toString(subTotal));
+                    priceValueLayout.getChildren().add(subTotalValueLabel);
 
                     // add vip discount
                     if (member.getVip() && member.getActive()){
@@ -114,11 +127,6 @@ public class CartPage {
                         priceValueLayout.getChildren().add(discountValueLabel);
                     }
 
-                    // add use points toggle
-                    if (member.getPoints() > 0 && member.getActive()) {
-                        customerLayout.getDataLayout().getChildren().add(customerLayout.getToggleButton());
-                    }
-
                     // add total label
                     total = subTotal - usePoints - discount;
                     Label totalLabel = new Label("TOTAL");
@@ -129,13 +137,18 @@ public class CartPage {
                     totalValueLabel.setFont(new Font(20));
                     priceValueLayout.getChildren().add(totalValueLabel);
 
+                    // add use points toggle
+                    if (member.getPoints() > 0 && member.getActive()) {
+                        customerLayout.getDataLayout().getChildren().add(customerLayout.getToggleButton());
+                    }
+
                     customerLayout.getToggleButton().addEventHandler(TogglePointsEvent.TOGGLE_BUTTON_CLICKED, new EventHandler<TogglePointsEvent>() {
                         @Override
                         public void handle(TogglePointsEvent event) {
                             priceLabelLayout.getChildren().clear();
                             priceValueLayout.getChildren().clear();
 
-                            // add sub total
+                            // add subtotal
                             Label subTotalLabel = new Label("Subtotal");
                             priceLabelLayout.getChildren().add(subTotalLabel);
 
@@ -168,7 +181,6 @@ public class CartPage {
 
                             // add total label
                             total = subTotal - usePoints - discount;
-                            System.out.println(total);
                             Label totalLabel = new Label("TOTAL");
                             totalLabel.setFont(new Font(20));
                             priceLabelLayout.getChildren().add(totalLabel);
@@ -233,6 +245,7 @@ public class CartPage {
             }
         }
 
+        // add subtotal label
         Label subTotalLabel = new Label("Subtotal");
         priceLabelLayout.getChildren().add(subTotalLabel);
 
@@ -240,6 +253,24 @@ public class CartPage {
         Label subTotalValueLabel = new Label(Double.toString(subTotal));
         priceValueLayout.getChildren().add(subTotalValueLabel);
 
+        // add total label
+        total = subTotal - usePoints - discount;
+        Label totalLabel = new Label("TOTAL");
+        totalLabel.setFont(new Font(20));
+        priceLabelLayout.getChildren().add(totalLabel);
+
+        Label totalValueLabel = new Label(Double.toString(total));
+        totalValueLabel.setFont(new Font(20));
+        priceValueLayout.getChildren().add(totalValueLabel);
+
         scrollPane.setContent(contentContainer);
+    }
+
+    public void resetPage() {
+        contentContainer.getChildren().clear();
+        customerLayout.getCustomerSelection().setText("");
+        customerLayout.getDataLayout().getChildren().clear();
+        priceValueLayout.getChildren().clear();
+        priceLabelLayout.getChildren().clear();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.controller.CustomerController;
+import com.example.if2210_tb2_nge.entity.Members;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,16 +16,51 @@ public class CheckoutPage extends BorderPane {
     private Label title;
     @Getter
     private Button registration;
+    @Getter
     private Button backBtn;
 
     public CheckoutPage() {
+        // Content container
         contentContainer = new VBox();
-        image = new ImageView(new Image("File:src/assets/check.jpeg"));
-        title = new Label("Purchase Successful");
-        registration = new Button("Become A Member");
-        backBtn = new Button("Back");
-        contentContainer.getChildren().addAll(image,title,registration,backBtn);
         setCenter(contentContainer);
+
+        // Check Image
+        image = new ImageView(new Image("File:src/assets/check.jpeg"));
+        contentContainer.getChildren().add(image);
+
+        // Title
+        title = new Label("Purchase Successful");
+        contentContainer.getChildren().add(title);
+
+        // Registration button
+        registration = new Button("Become A Member");
+        contentContainer.getChildren().add(registration);
+
+        // Back button
+        backBtn = new Button("Back");
+        contentContainer.getChildren().add(backBtn);
     }
 
+    public void reloadPage() {
+        // Content container
+        contentContainer.getChildren().clear();
+
+        // Check Image
+        image = new ImageView(new Image("File:src/assets/check.jpeg"));
+        contentContainer.getChildren().add(image);
+
+        // Title
+        title = new Label("Purchase Successful");
+        contentContainer.getChildren().add(title);
+
+        // Registration button
+        registration = new Button("Become A Member");
+        if (CustomerController.getCustomerInstance() == null || CustomerController.getCustomerInstance().getName() == "") {
+            contentContainer.getChildren().add(registration);
+        }
+
+        // Back button
+        backBtn = new Button("Back");
+        contentContainer.getChildren().add(backBtn);
+    }
 }
