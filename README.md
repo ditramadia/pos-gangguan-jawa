@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ditramadia/IF2210_TB2_NGE">
-    <img src="public/gj-logo.png" alt="Logo" width="80" height="80">
+    <img src="public/gj-logo.png" alt="Logo" width="80"/>
   </a>
 
 <h3 align="center">GANGGUAN JAWA</h3>
@@ -151,6 +151,8 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
    <br/>
    <br/> <img src="public/edit-customer.jpg" alt="Edit customer page" width="1280">
    <br/>
+   <br/> <img src="public/customer-history.jpg" alt="History page" width="1280">
+   <br/>
    <br/> <img src="public/add-customer.jpg" alt="Add new customer page" width="1280">
    <br/>
    <p>*You can only add customer after adding a transaction record. See Transaction Records Management</p>
@@ -180,7 +182,7 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
 
 <!-- AUTHOR -->
 
-### Authors
+## Authors
 
 |   NIM    |          Name          |
 |:--------:|:----------------------:|
