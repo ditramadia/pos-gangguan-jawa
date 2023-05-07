@@ -211,7 +211,9 @@ public class InventoryPage implements EventHandler<ActionEvent> {
                     // load the item detail page
                     mulscreens.getChildren().get(0).setVisible(false);
                     itemDetailPage.readData(id);
+
                     currentID = id;
+                    
                     mulscreens.getChildren().get(1).setVisible(true);
                     mulscreens.getChildren().get(2).setVisible(false);
                 } catch (Exception ex) {

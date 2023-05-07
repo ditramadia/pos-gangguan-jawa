@@ -3,7 +3,6 @@
     -fx-background-insets: 0 -20 0 0;
     -fx-background-color: #83695A;
     -fx-text-fill: #c4d8de;
-
 }
 .tab:selected {
     -fx-border-color:#8C7466;

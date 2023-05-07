@@ -51,7 +51,6 @@ public class MenuPage {
         searchBar = new SearchBar();
         checkout = new Button("Checkout");
         cartItems = new ArrayList<>();
-
         menuCards = new ArrayList<>();
         cartPage = new CartPage(cartItems);
 
@@ -104,8 +103,6 @@ public class MenuPage {
         });
 
         tab.setContent(tabContainer);
-
-
     }
 
 }

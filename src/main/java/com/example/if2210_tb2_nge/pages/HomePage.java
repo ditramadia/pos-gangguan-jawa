@@ -31,6 +31,12 @@ public class HomePage {
     @Getter
     private VBox sideMenu;
     @Getter
+    private VBox leftVBox;
+    @Getter
+    private VBox rightVBox;
+    @Getter
+    private HBox mainHBox;
+    @Getter
     private Button homeNavBtn;
     @Getter
     private Button transactionNavBtn;
@@ -221,29 +227,42 @@ public class HomePage {
         Label nim5 = new Label("13521022");
         Label nim6 = new Label("13521023");
 
-// create left VBox to contain names
-        VBox leftVBox = new VBox();
+        nim1.setFont(new Font(20));
+        nim2.setFont(new Font(20));
+        nim3.setFont(new Font(20));
+        nim4.setFont(new Font(20));
+        nim5.setFont(new Font(20));
+        nim6.setFont(new Font(20));
+
+        VBox.setMargin(nim1, new Insets(20,0,0,0));
+        VBox.setMargin(nim2, new Insets(10,0,0,0));
+        VBox.setMargin(nim3, new Insets(10,0,0,0));
+        VBox.setMargin(nim4, new Insets(10,0,0,0));
+        VBox.setMargin(nim5, new Insets(10,0,0,0));
+        VBox.setMargin(nim6, new Insets(10,0,0,0));
+
+        // create left VBox to contain names
+        leftVBox = new VBox();
         leftVBox.getChildren().addAll(kel1, kel2, kel3, kel4, kel5, kel6);
 
-// create right VBox to contain NIMs
-        VBox rightVBox = new VBox();
+        // create right VBox to contain NIMs
+        rightVBox = new VBox();
         rightVBox.getChildren().addAll(nim1, nim2, nim3, nim4, nim5, nim6);
 
-// create main HBox to contain both VBoxes
-        HBox mainHBox = new HBox();
+        // create main HBox to contain both VBoxes
+        mainHBox = new HBox();
         mainHBox.setSpacing(20); // set spacing between the two VBoxes
         mainHBox.getChildren().addAll(leftVBox, rightVBox);
 
-// set alignment of left VBox to left
+        // set alignment of left VBox to left
         VBox.setMargin(leftVBox, new Insets(50, 0, 0, 0));
         leftVBox.setAlignment(Pos.TOP_LEFT);
 
-// set alignment of right VBox to right
+        // set alignment of right VBox to right
         VBox.setMargin(rightVBox, new Insets(50, 0, 0, 0));
         rightVBox.setAlignment(Pos.TOP_RIGHT);
 
-
-
+        mainHBox.setAlignment(Pos.CENTER);
 
         String imageUrl = "file:src/main/java/com/example/if2210_tb2_nge/pages/gangguan-jawa-logo 1.png";
         // add component to layout
@@ -257,7 +276,7 @@ public class HomePage {
         timeDate.getChildren().add(clock.getDate());
         container.getChildren().add(logoTime);
         container.getChildren().add(kel);
-        container.getChildren().addAll(kel1,kel2,kel3,kel4,kel5,kel6);
+        container.getChildren().addAll(mainHBox);
         layout.setCenter(container);
         layout.setLeft(sideMenu);
         tab.setContent(layout);
