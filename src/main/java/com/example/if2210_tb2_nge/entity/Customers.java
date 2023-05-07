@@ -9,10 +9,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Map;
 
-public class Customers {
-    @Getter
-    @Setter
-    private Integer id;
+public class Customers extends Guests {
+
     @Getter
     @Setter
     private String name;
@@ -29,8 +27,8 @@ public class Customers {
     @Setter
     private Boolean active;
 
-    public Customers(Integer id, String name, String noTelp, Integer points, Boolean vip, Boolean active) {
-        this.id = id;
+    public Customers( Integer id,String name, String noTelp, Integer points, Boolean vip, Boolean active) {
+        super(id);
         this.name = name;
         this.noTelp = noTelp;
         this.points = points;
