@@ -1,13 +1,11 @@
 package com.example.if2210_tb2_nge.controller;
 
 import com.example.if2210_tb2_nge.entity.Customers;
-import com.example.if2210_tb2_nge.entity.Items;
+import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
-import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
 
 public class CustomerController {
 

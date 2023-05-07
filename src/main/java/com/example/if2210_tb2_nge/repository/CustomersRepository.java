@@ -1,7 +1,7 @@
 package com.example.if2210_tb2_nge.repository;
 
+import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.entity.Customers;
-import com.example.if2210_tb2_nge.entity.Items;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -14,6 +14,16 @@ import java.util.Map;
 public class CustomersRepository {
     @Getter
     private static List<Customers> customers;
+
+    public static List<Members> getMembersOnly() {
+        List<Members> members = new ArrayList<>();
+        for (Customers customer : customers) {
+            if (customer instanceof Members) {
+                members.add((Members) customer);
+            }
+        }
+        return members;
+    }
 
     public static void setCustomersRepository(Object obj) throws JsonProcessingException {
         String json = null;
@@ -50,8 +60,14 @@ public class CustomersRepository {
                     vip = (Boolean) customer.get("vip");
                     active = (Boolean) customer.get("active");
                 }
-                Customers newCustomer = new Customers(id.intValue(), name, noTelp, points.intValue(), vip, active);
-                customers.add(newCustomer);
+                if (!name.equals("")) {
+                    Members newMember = new Members(id.intValue(), name, noTelp, points.intValue(), vip, active);
+                    customers.add(newMember);
+                }
+                else {
+                    Customers newCustomers = new Customers(id.intValue());
+                    customers.add(newCustomers);
+                }
             }
         }
     }
@@ -75,7 +91,7 @@ public class CustomersRepository {
 
     public static void updateCustomer(Customers customers) {
         for (Customers customer : CustomersRepository.customers) {
-            if (customer.getId() == customers.getId()) {
+            if (customer.getId() == customers.getId() && customers.getName() != "") {
                 customer.setName(customers.getName());
                 customer.setNoTelp(customers.getNoTelp());
                 customer.setPoints(customers.getPoints());

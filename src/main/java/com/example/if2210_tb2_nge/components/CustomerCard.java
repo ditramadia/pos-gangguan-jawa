@@ -1,21 +1,17 @@
 package com.example.if2210_tb2_nge.components;
 
-import com.example.if2210_tb2_nge.entity.Customers;
+import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
-import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import lombok.Getter;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Map;
 
 public class CustomerCard {
     @Getter
@@ -32,8 +28,8 @@ public class CustomerCard {
         cardContainer.setPrefHeight(50);
 
 
-        List<Customers> customers = CustomersRepository.getCustomers();
-        for (Customers customer : customers) {
+        List<Members> customers = CustomersRepository.getMembersOnly();
+        for (Members customer : customers) {
             Integer id = customer.getId();
             if (id == i) {
                 // item name
