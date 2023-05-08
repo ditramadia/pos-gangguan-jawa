@@ -10,9 +10,7 @@ public class PluginFactory {
     @Setter
     private static List<BasePlugin> basePlugins;
 
-    public String getPluginName() {
-        return "Base Plugin";
-    }
+
     public static void addPlugin(BasePlugin basePluginClass) {
         basePlugins.add(basePluginClass);
     }
