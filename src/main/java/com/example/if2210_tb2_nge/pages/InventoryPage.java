@@ -133,7 +133,7 @@ public class InventoryPage implements EventHandler<ActionEvent> {
 
         // header
         header = new Label("INVENTORY");
-        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
+        Font fontTitle = Font.loadFont("File:src/assets/Montserrat-Bold.ttf", 50);
         header.setFont(fontTitle);
         header.setStyle("-fx-text-fill: #478660;");
         header.setAlignment(Pos.CENTER);
