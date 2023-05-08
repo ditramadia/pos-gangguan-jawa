@@ -4,6 +4,7 @@ import com.example.if2210_tb2_nge.components.ConfirmationBox;
 import com.example.if2210_tb2_nge.components.ImageForm;
 import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.CustomerController;
+import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import javafx.geometry.Insets;
@@ -81,7 +82,7 @@ public class RegistrationPage extends VBox {
         saveBtn = new Button("Register");
         saveBtn.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
         saveBtn.setPrefWidth(400);
-        saveBtn.setOnAction(e -> save());
+        saveBtn.setOnAction(e -> this.save());
         VBox.setMargin(saveBtn, new Insets(50, 0, 0, 0));
         getChildren().add(saveBtn);
 
@@ -102,6 +103,14 @@ public class RegistrationPage extends VBox {
     }
 
     public void save() {
-
+        Members newMember = new Members(CustomersRepository.getLastIdCustomers(), nameForm.getValue(), noTelpForm.getValue(), 0, vipForm.isSelected(), true);
+        try {
+            CustomersRepository.addCustomer(newMember);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        for (Customers customer : CustomersRepository.getCustomers()) {
+            System.out.println(customer.getName());
+        }
     }
 }

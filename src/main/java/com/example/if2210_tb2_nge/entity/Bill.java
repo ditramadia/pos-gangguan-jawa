@@ -30,4 +30,12 @@ public class Bill {
     public Customers getCustomer() {
         return null;
     }
+
+    public Integer getPointsUsed() {
+        return -1;
+    }
+
+    public Double getTotal() {
+        return -1.0;
+    }
 }
