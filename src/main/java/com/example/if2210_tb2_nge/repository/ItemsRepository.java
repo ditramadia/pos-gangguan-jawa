@@ -147,4 +147,13 @@ public class ItemsRepository {
         }
         return lastId;
     }
+    public static Items getItemsById(Integer id) throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

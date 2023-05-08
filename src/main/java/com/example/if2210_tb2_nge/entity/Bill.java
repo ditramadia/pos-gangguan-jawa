@@ -27,6 +27,11 @@ public class Bill {
         }
     }
 
+    public Bill(List<CartItem> cart, Double subtotal) {
+        this.cart = cart;
+        this.subtotal = subtotal;
+    }
+
     public Customers getCustomer() {
         return null;
     }
