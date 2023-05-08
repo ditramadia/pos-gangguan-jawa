@@ -127,6 +127,11 @@ public class CartPage {
                         priceValueLayout.getChildren().add(discountValueLabel);
                     }
 
+                    // add use points toggle
+                    if (member.getPoints() > 0 && member.getActive()) {
+                        customerLayout.getDataLayout().getChildren().add(customerLayout.getToggleButton());
+                    }
+
                     // add total label
                     total = subTotal - usePoints - discount;
                     Label totalLabel = new Label("TOTAL");
@@ -137,18 +142,13 @@ public class CartPage {
                     totalValueLabel.setFont(new Font(20));
                     priceValueLayout.getChildren().add(totalValueLabel);
 
-                    // add use points toggle
-                    if (member.getPoints() > 0 && member.getActive()) {
-                        customerLayout.getDataLayout().getChildren().add(customerLayout.getToggleButton());
-                    }
-
                     customerLayout.getToggleButton().addEventHandler(TogglePointsEvent.TOGGLE_BUTTON_CLICKED, new EventHandler<TogglePointsEvent>() {
                         @Override
                         public void handle(TogglePointsEvent event) {
                             priceLabelLayout.getChildren().clear();
                             priceValueLayout.getChildren().clear();
 
-                            // add subtotal
+                            // add sub total
                             Label subTotalLabel = new Label("Subtotal");
                             priceLabelLayout.getChildren().add(subTotalLabel);
 

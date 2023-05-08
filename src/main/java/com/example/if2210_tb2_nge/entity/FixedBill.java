@@ -29,6 +29,8 @@ public class FixedBill extends Bill{
 
     public FixedBill(Bill temporaryBill, Customers customer, Integer pointsUsed) {
         super(temporaryBill.getCart());
+        FixedBill retFixedBill = new FixedBill();
+        retFixedBill.setCart(temporaryBill.getCart());
         this.customer = customer;
         this.pointsUsed = pointsUsed;
         this.discount = 0.0;
