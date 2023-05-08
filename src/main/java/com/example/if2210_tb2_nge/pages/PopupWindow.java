@@ -1,6 +1,7 @@
 package com.example.if2210_tb2_nge.pages;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -38,6 +39,7 @@ public class PopupWindow {
         title.setFont(new Font(50));
 
         HBox folderSelection = new HBox();
+        folderSelection.setAlignment(Pos.CENTER);
         folderField = new TextField();
         folderField.setDisable(true);
         Button folderButton = new Button("Select Folder");
@@ -58,6 +60,10 @@ public class PopupWindow {
         comboBox.setValue("JSON");
 
         VBox layout = new VBox();
+        layout.setAlignment(Pos.CENTER);
+        VBox.setMargin(folderSelection, new Insets(50, 0,0,0));
+        VBox.setMargin(comboBox, new Insets(30, 0,0,0));
+        VBox.setMargin(closeButton, new Insets(30, 0,0,0));
         layout.getChildren().addAll(title,folderSelection,comboBox, closeButton);
 
         Scene scene = new Scene(layout, 700, 400);
