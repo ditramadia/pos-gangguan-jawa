@@ -154,7 +154,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         MenuItem exportDb = new MenuItem("Export Database");
         exportDb.setOnAction(e -> {
             try {
-                DataStore dataStore = DataStoreFactory.getDataStore("saves/Items.xml", "xml");
+                DataStore dataStore = DataStoreFactory.getDataStore( settings.getFolderField().getText() + "/Items." + settings.getComboBox().getValue().toLowerCase(), settings.getComboBox().getValue());
                 Object data = ItemsRepository.saveItems();
                 dataStore.save(data);
             }
@@ -162,7 +162,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 throw new RuntimeException(ex);
             }
             try {
-                DataStore dataStore1 = DataStoreFactory.getDataStore("saves/Customers.xml", "xml");
+                DataStore dataStore1 = DataStoreFactory.getDataStore(settings.getFolderField().getText() + "/Customers." + settings.getComboBox().getValue().toLowerCase(), settings.getComboBox().getValue());
                 Object data1 = CustomersRepository.saveCustomers();
                 dataStore1.save(data1);
             } catch (Exception ex) {

@@ -10,14 +10,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lombok.Getter;
 
 import java.io.File;
 
 public class PopupWindow {
+    @Getter
+    private TextField folderField;
+    @Getter
+    private ComboBox<String> comboBox;
+
 
     public void display(String message) {
         Stage popupWindow = new Stage();
@@ -31,7 +38,8 @@ public class PopupWindow {
         title.setFont(new Font(50));
 
         HBox folderSelection = new HBox();
-        TextField folderField = new TextField();
+        folderField = new TextField();
+        folderField.setDisable(true);
         Button folderButton = new Button("Select Folder");
 
         folderButton.setOnAction(e -> {
@@ -45,8 +53,9 @@ public class PopupWindow {
         folderSelection.getChildren().addAll(folderField,folderButton);
         folderSelection.setPadding(new Insets(10));
 
-        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox = new ComboBox<>();
         comboBox.getItems().addAll("JSON", "XML", "OBJ");
+        comboBox.setValue("JSON");
 
         VBox layout = new VBox();
         layout.getChildren().addAll(title,folderSelection,comboBox, closeButton);
