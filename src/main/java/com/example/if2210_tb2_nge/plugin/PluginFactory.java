@@ -17,7 +17,7 @@ public class PluginFactory {
         basePlugins.add(basePluginClass);
     }
 
-    public void removePlugin(String pluginClassName) {
+    public static void removePlugin(String pluginClassName) {
         for (BasePlugin basePlugin : basePlugins) {
             if (basePlugin.getClass().getName().equals(pluginClassName)) {
                 basePlugins.remove(basePlugin);
@@ -30,7 +30,7 @@ public class PluginFactory {
         basePlugins.clear();
     }
 
-    private void run() {
+    private void runAll() {
         for (BasePlugin basePlugin : basePlugins) {
             basePlugin.run();
         }

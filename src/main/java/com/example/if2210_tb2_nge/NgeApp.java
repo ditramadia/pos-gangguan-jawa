@@ -3,7 +3,6 @@ package com.example.if2210_tb2_nge;
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
 import com.example.if2210_tb2_nge.controller.ItemController;
-
 import com.example.if2210_tb2_nge.pages.*;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
@@ -173,15 +172,15 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         Menu plugin = new Menu ("Plugin");
         MenuItem importPlugin = new MenuItem("Import Plugin");
         MenuItem removePlugin = new MenuItem("Remove Plugin");
-        for (BasePlugin p : PluginFactory.getBasePlugins()) {
-            String pluginName = p.getClass().getName();
-
-            MenuItem pluginItem = new MenuItem(pluginName);
-            pluginItem.setOnAction(e -> {
-
-            });
-            plugin.getItems().add(pluginItem);
-        }
+//        for (BasePlugin p : PluginFactory.getBasePlugins()) {
+//            String pluginName = p.getClass().getName();
+//
+//            MenuItem pluginItem = new MenuItem(pluginName);
+//            pluginItem.setOnAction(e -> {
+//
+//            });
+//            plugin.getItems().add(pluginItem);
+//        }
         plugin.getItems().addAll(importPlugin, removePlugin);
         importPlugin.setOnAction(e -> {
             PluginWindow pluginWindow = new PluginWindow();

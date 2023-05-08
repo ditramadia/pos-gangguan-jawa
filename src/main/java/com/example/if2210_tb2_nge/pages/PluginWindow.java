@@ -1,5 +1,6 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.plugin.PluginLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,7 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.Getter;
 
 import java.io.File;
@@ -50,6 +54,16 @@ public class PluginWindow extends PopupWindow {
         folderSelection.setPadding(new Insets(10));
 
         Button apply = new Button("Apply");
+        apply.setOnAction(event -> {
+            if (comboBox.getValue() != null && folderField.getText() != null) {
+                try {
+                    PluginLoader.loadJarFile(folderField.getText());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                popupWindow.close();
+            }
+        });
 
         VBox layout = new VBox();
         layout.getChildren().addAll(title,folderSelection,apply, closeButton);

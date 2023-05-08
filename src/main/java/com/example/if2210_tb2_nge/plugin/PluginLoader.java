@@ -15,8 +15,7 @@ public class PluginLoader {
      * @param jarFile        JarInputStream of the jar file
      * @return classNames    arraylist of class names
      */
-    // Returns an arraylist of class names in a JarInputStream
-    private ArrayList<String> getClassNamesFromJar(JarInputStream jarFile) throws Exception {
+    private static ArrayList<String> getClassNamesFromJar(JarInputStream jarFile) throws Exception {
         ArrayList<String> classNames = new ArrayList<>();
         try {
             JarEntry jar;
@@ -47,7 +46,7 @@ public class PluginLoader {
      * @param jarPath               path to the jar file
      * @return className            main plugin class (implements Plugin and has override run method
      */
-    private String getPluginClass(String jarPath) throws Exception {
+    private static String getPluginClass(String jarPath) throws Exception {
         ArrayList<String> classNames = getClassNamesFromJar(new JarInputStream(new FileInputStream(jarPath)));
         for (String className : classNames) {
             Class<?> cc = Class.forName(className);
@@ -59,7 +58,7 @@ public class PluginLoader {
     }
 
     // get an arraylist of all the loaded classes in a jar file
-    private void loadJarFile(String filePath) throws Exception {
+    public static void loadJarFile(String filePath) throws Exception {
         String pluginClass = getPluginClass(filePath);
         if (pluginClass == null) {
             throw new Exception("Plugin class not found or not annotated with @PluginMainClass");
