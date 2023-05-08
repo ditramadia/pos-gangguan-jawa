@@ -3,6 +3,8 @@ package com.example.if2210_tb2_nge.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class FixedBill extends Bill{
     @Getter
     @Setter
@@ -35,4 +37,12 @@ public class FixedBill extends Bill{
         }
         this.total = this.subtotal - this.discount - this.pointsUsed;
     }
+
+    public FixedBill(List<CartItem> cart, Double subtotal, Double discount, Integer PointsUsed, Double total) {
+        super(cart, subtotal);
+        this.discount = discount;
+        this.pointsUsed = PointsUsed;
+        this.total = total;
+    }
+
 }
