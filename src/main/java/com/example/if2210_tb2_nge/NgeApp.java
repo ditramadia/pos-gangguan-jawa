@@ -179,6 +179,10 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         MenuItem importPlugin = new MenuItem("Import Plugin");
         MenuItem removePlugin = new MenuItem("Remove Plugin");
         plugin.getItems().addAll(importPlugin, removePlugin);
+        importPlugin.setOnAction(e -> {
+            PluginWindow pluginWindow = new PluginWindow();
+            pluginWindow.display("HELL");
+        });
 
         Menu setting = new Menu("Setting");
         MenuItem datastore = new MenuItem("Data Store");
