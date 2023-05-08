@@ -140,25 +140,34 @@ Tubes 2 of Object Oriented Programming (IF2210). A point of sales desktop applic
    <br/> <img src="public/edit-item.png" alt="Add item page" width="1280">
    <br/>
    <br/>
-4. Add Item
+4. Add item
    <br/>
    <br/> <img src="public/add-item.png" alt="Edit item page" width="1280">
    <br/>
    <br/>
 
 ### Customer Management
-1. Customers List
+1. Customers list
    <br/>
-   <br/> <img src="public/customer-list.jpg" alt="Customers list page" width="1280">
+   <br/> <img src="public/customer-list.png" alt="Customers list page" width="1280">
    <br/>
    <br/>
-2. View, add, edit, and deactivate customer
+2. View customer profile
    <br/>
-   <br/> <img src="public/view-customer-detail.jpg" alt="View customer detail" width="1280">
+   <br/> <img src="public/view-customer-detail.png" alt="View customer detail" width="1280">
    <br/>
-   <br/> <img src="public/edit-customer.jpg" alt="Edit customer page" width="1280">
+   <br/>
+3. Edit customer profile
+   <br/>
+   <br/> <img src="public/edit-customer.png" alt="Edit customer page" width="1280">
+   <br/>
+   <br/>
+4. View customer purchase history
    <br/>
    <br/> <img src="public/customer-history.jpg" alt="History page" width="1280">
+   <br/>
+   <br/>
+5. Add new customer
    <br/>
    <br/> <img src="public/add-customer.jpg" alt="Add new customer page" width="1280">
    <br/>

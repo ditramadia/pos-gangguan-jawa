@@ -4,12 +4,12 @@ import lombok.Getter;
 
 public class CartItem {
     @Getter
-    private int id;
+    private Items item;
     @Getter
     private int quantity;
 
-    public CartItem(int id, int quantity) {
-        this.id = id;
+    public CartItem(Items item, int quantity) {
+        this.item = new Items(item);
         this.quantity = quantity;
     }
 

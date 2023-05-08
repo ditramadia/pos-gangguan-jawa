@@ -3,12 +3,8 @@ package com.example.if2210_tb2_nge;
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
 import com.example.if2210_tb2_nge.controller.ItemController;
-import com.example.if2210_tb2_nge.pages.CustomerPage;
-import com.example.if2210_tb2_nge.pages.HomePage;
-import com.example.if2210_tb2_nge.pages.InventoryPage;
-import com.example.if2210_tb2_nge.pages.MenuPage;
-import com.example.if2210_tb2_nge.plugin.BasePlugin;
-import com.example.if2210_tb2_nge.plugin.PluginFactory;
+
+import com.example.if2210_tb2_nge.pages.*;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +26,7 @@ import java.io.IOException;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
+    PopupWindow settings;
     TabPane tabPane;
     String itemsFileName;
     String customersFileName;
@@ -152,7 +149,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         MenuItem exportDb = new MenuItem("Export Database");
         exportDb.setOnAction(e -> {
             try {
-                DataStore dataStore = DataStoreFactory.getDataStore("saves/Items.xml", "xml");
+                DataStore dataStore = DataStoreFactory.getDataStore( settings.getFolderField().getText() + "/Items." + settings.getComboBox().getValue().toLowerCase(), settings.getComboBox().getValue());
                 Object data = ItemsRepository.saveItems();
                 dataStore.save(data);
             }
@@ -160,7 +157,7 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
                 throw new RuntimeException(ex);
             }
             try {
-                DataStore dataStore1 = DataStoreFactory.getDataStore("saves/Customers.xml", "xml");
+                DataStore dataStore1 = DataStoreFactory.getDataStore(settings.getFolderField().getText() + "/Customers." + settings.getComboBox().getValue().toLowerCase(), settings.getComboBox().getValue());
                 Object data1 = CustomersRepository.saveCustomers();
                 dataStore1.save(data1);
             } catch (Exception ex) {
@@ -186,10 +183,19 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
             plugin.getItems().add(pluginItem);
         }
         plugin.getItems().addAll(importPlugin, removePlugin);
+        importPlugin.setOnAction(e -> {
+            PluginWindow pluginWindow = new PluginWindow();
+            pluginWindow.display("HELL");
+        });
 
         Menu setting = new Menu("Setting");
         MenuItem datastore = new MenuItem("Data Store");
         setting.getItems().addAll(datastore);
+        datastore.setOnAction(e -> {
+            settings= new PopupWindow();
+            settings.display("Hello, world!");
+
+        });
 
         Menu help = new Menu("Help");
         MenuItem about = new MenuItem("About");

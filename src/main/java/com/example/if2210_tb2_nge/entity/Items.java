@@ -35,4 +35,13 @@ public class Items {
         this.category = category;
         this.image = image;
     }
+    public Items(Items item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.price = item.getPrice();
+        this.buyPrice = item.getBuyPrice();
+        this.stock = item.getStock();
+        this.category = item.getCategory();
+        this.image = item.getImage();
+    }
 }

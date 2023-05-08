@@ -13,12 +13,16 @@ public class CustomerController {
     private static Customers customerInstance;
 
     public static void setCustomerInstance(Integer id) {
-        List<Customers> customers = CustomersRepository.getCustomers();
-        for (Customers customer : customers) {
-            if (customer.getId().equals(id)) {
-                customerInstance = customer;
-                break;
+        if (id != null) {
+            List<Customers> customers = CustomersRepository.getCustomers();
+            for (Customers customer : customers) {
+                if (customer.getId().equals(id)) {
+                    customerInstance = customer;
+                    break;
+                }
             }
+        } else {
+            customerInstance = new Customers(CustomersRepository.getCustomers().size());
         }
     }
 }

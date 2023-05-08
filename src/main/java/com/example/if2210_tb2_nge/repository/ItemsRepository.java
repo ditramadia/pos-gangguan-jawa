@@ -104,6 +104,20 @@ public class ItemsRepository {
         }
     }
 
+    public static void updateItems(Items items, Integer quantitySold) {
+        for (Items item : ItemsRepository.items) {
+            if (item.getId() == items.getId()) {
+                item.setName(items.getName());
+                item.setPrice(items.getPrice());
+                item.setBuyPrice(items.getBuyPrice());
+                item.setStock(items.getStock() - quantitySold);
+                item.setCategory(items.getCategory());
+                break;
+            }
+        }
+    }
+
+
     public static Object saveItems() {
         // convert List of Items to hashmap
         List<Map<String, Object>> itemsList = new ArrayList<>();
@@ -132,5 +146,14 @@ public class ItemsRepository {
             }
         }
         return lastId;
+    }
+    public static Items getItemsById(Integer id) throws Exception {
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
     }
 }

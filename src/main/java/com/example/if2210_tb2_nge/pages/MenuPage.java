@@ -1,22 +1,30 @@
 package com.example.if2210_tb2_nge.pages;
 
+import com.example.if2210_tb2_nge.components.ConfirmationBox;
+import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.components.MenuCard;
 import com.example.if2210_tb2_nge.components.SearchBar;
+import com.example.if2210_tb2_nge.controller.CustomerController;
+import com.example.if2210_tb2_nge.controller.ItemController;
+import com.example.if2210_tb2_nge.controller.TransactionController;
+import com.example.if2210_tb2_nge.entity.Bill;
 import com.example.if2210_tb2_nge.entity.CartItem;
+import com.example.if2210_tb2_nge.entity.FixedBill;
 import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import lombok.Getter;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,79 +38,216 @@ public class MenuPage {
     private VBox contentContainer;
     private ScrollPane scrollPane;
     private GridPane cardContainer;
-    private Label title;
+    private Label header;
     private SearchBar searchBar;
-    private Button checkout;
+    private Button cart;
     private int row = 1;
     private int column = 0;
     private List<MenuCard> menuCards;
     List<CartItem> cartItems;
     private CartPage cartPage;
+    private CheckoutPage checkoutPage;
+    private RegistrationPage registrationPage;
 
-    public MenuPage() {
-        tab = new Tab("Menu");
-        tabContainer = new StackPane();
-        pageContainer = new BorderPane();
-        contentContainer = new VBox();
-        scrollPane = new ScrollPane();
-        cardContainer = new GridPane();
-        title = new Label("MENU");
-        title.setFont(new Font(30));
-        searchBar = new SearchBar();
-        checkout = new Button("Checkout");
+    public MenuPage() throws MalformedURLException {
+        // Cart Items
         cartItems = new ArrayList<>();
-        menuCards = new ArrayList<>();
-        cartPage = new CartPage(cartItems);
 
+        // Tab
+        tab = new Tab("Menu");
+        tab.setStyle("-fx-background-radius: 10 10 0 0;");
+        TabPane tabPane = new TabPane();
+        tabPane.getTabs().add(tab);
 
-        List<Items> items = ItemsRepository.getItems();
-        for (Items item : items) {
-            Integer id = item.getId();
-            MenuCard card = new MenuCard(id);
-            menuCards.add(card);
-            GridPane.setMargin(card.getCardContainer(), new Insets(30));
-            cardContainer.add(card.getCardContainer(), column, row);
-            column++;
-            if (column == 6) {
-                column = 0;
-                row++;
-            }
-        }
+        // Tab Container
+        tabContainer = new StackPane();
+        tab.setContent(tabContainer);
 
-        contentContainer.getChildren().addAll(searchBar.getSearchBarContainer(), scrollPane);
-        scrollPane.setContent(cardContainer);
-        pageContainer.setCenter(contentContainer);
-
-        pageContainer.setTop(title);
-        pageContainer.setBottom(checkout);
-
+        // Page Container
+        pageContainer = new BorderPane();
         tabContainer.getChildren().add(pageContainer);
-        tabContainer.getChildren().add(cartPage.getPageContainer());
-        tabContainer.getChildren().get(1).setVisible(false);
 
+        // Cart page
+        cartPage = new CartPage();
         cartPage.getBackBtn().setOnAction(e -> {
             tabContainer.getChildren().get(0).setVisible(true);
             tabContainer.getChildren().get(1).setVisible(false);
+            cartPage.resetPage();
+        });
+        cartPage.getCheckoutBtn().setOnAction(e -> {
+            Bill tempBill = TransactionController.getBillInstance();
+            Integer points;
+            if (cartPage.getCustomerLayout().getToggleButton().getActive()){
+                points = CustomerController.getCustomerInstance().getPoints();
+            }
+            else {
+                points = 0;
+            }
+
+            // Convert Bill to Fixed Bill
+            FixedBill fixedBill = new FixedBill(tempBill, CustomerController.getCustomerInstance(), points);
+            TransactionController.setbillInstance(fixedBill, true);
+
+            checkoutPage.reloadPage();
+            checkoutPage.getRegistration().setOnAction(e2 -> {
+                tabContainer.getChildren().get(0).setVisible(false);
+                tabContainer.getChildren().get(1).setVisible(false);
+                tabContainer.getChildren().get(2).setVisible(false);
+                tabContainer.getChildren().get(3).setVisible(true);
+            });
+            checkoutPage.getBackBtn().setOnAction(e3 -> {
+                tabContainer.getChildren().get(0).setVisible(true);
+                tabContainer.getChildren().get(1).setVisible(false);
+                tabContainer.getChildren().get(2).setVisible(false);
+                tabContainer.getChildren().get(3).setVisible(false);
+            });
+            cartItems.clear();
+            cartPage.resetPage();
+
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(true);
+        });
+        tabContainer.getChildren().add(cartPage.getPageContainer());
+        tabContainer.getChildren().get(1).setVisible(false);
+
+        // Checkout page
+        checkoutPage = new CheckoutPage();
+        checkoutPage.getRegistration().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(false);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(true);
+        });
+        checkoutPage.getBackBtn().setOnAction(e -> {
+            System.out.println("back");
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(false);
+        });
+        tabContainer.getChildren().add(checkoutPage);
+        tabContainer.getChildren().get(2).setVisible(false);
+
+        // Regis page
+        registrationPage = new RegistrationPage();
+        registrationPage.getBackBtn().setOnAction(e -> {
+            tabContainer.getChildren().get(0).setVisible(true);
+            tabContainer.getChildren().get(1).setVisible(false);
+            tabContainer.getChildren().get(2).setVisible(false);
+            tabContainer.getChildren().get(3).setVisible(false);
+        });
+        tabContainer.getChildren().add(registrationPage);
+        tabContainer.getChildren().get(3).setVisible(false);
+
+        // Content Container
+        contentContainer = new VBox();
+        pageContainer.setCenter(contentContainer);
+
+        //
+
+        // Title
+        header = new Label("MENU");
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
+        header.setFont(fontTitle);
+        header.setStyle("-fx-text-fill: #478660;");
+        header.setAlignment(Pos.CENTER);
+        header.setPrefHeight(100);
+        header.setPrefWidth(500);
+        pageContainer.setAlignment(header, Pos.CENTER);
+        pageContainer.setTop(header);
+
+        // search bar
+        searchBar = new SearchBar();
+        contentContainer.getChildren().add(searchBar.getSearchBarContainer());
+        searchBar.getSearchField().textProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if the text field has lost focus
+            PauseTransition pause = new PauseTransition(Duration.millis(10));
+            pause.setOnFinished(event -> {
+                try {
+                    this.updateCard();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            pause.play();
         });
 
-        checkout.setOnAction(e -> {
+        // scroll container
+        scrollPane = new ScrollPane();
+        contentContainer.getChildren().add(scrollPane);
+
+        // cards container
+        cardContainer = new GridPane();
+        scrollPane.setContent(cardContainer);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        this.updateCard();
+
+        // Cart button
+        cart = new Button("Cart");
+        cart.setOnAction(e -> {
             tabContainer.getChildren().get(0).setVisible(false);
             tabContainer.getChildren().get(1).setVisible(true);
             cartItems = new ArrayList<>();
             for (MenuCard menuCard : menuCards) {
                 if (!menuCard.getQuantity().getText().isEmpty()) {
-                    CartItem item = new CartItem(menuCard.getCurrentID(), Integer.parseInt(menuCard.getQuantity().getText()));
+                    ItemController.setItemInstance(menuCard.getCurrentID());
+                    CartItem item = new CartItem(ItemController.getItemInstance(), Integer.parseInt(menuCard.getQuantity().getText()));
                     cartItems.add(item);
                 }
-
-
             }
-            cartPage.setCart(cartItems);
-            System.out.println(cartItems);
-            System.out.println(menuCards.size());
+            if (cartItems.size() > 0) {
+                TransactionController.setBillInstance(new Bill(cartItems));
+                cartPage.setCart();
+                tabContainer.getChildren().get(0).setVisible(false);
+                tabContainer.getChildren().get(1).setVisible(true);
+            }
+            else {
+                ConfirmationBox confirmationBox = new ConfirmationBox(4);
+                confirmationBox.getErrorBox().showAndWait();
+            }
         });
-
-        tab.setContent(tabContainer);
+        cart.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        cart.setPrefWidth(200);
+        cart.setPrefHeight(50);
+        BorderPane.setMargin(cart, new Insets(10, 85, 10, 0));
+        BorderPane.setAlignment(cart, Pos.BOTTOM_RIGHT);
+        pageContainer.setBottom(cart);
     }
+
+    public void updateCard() {
+        // create a new GridPane
+        GridPane newCardLayout = new GridPane();
+        menuCards = new ArrayList<>();
+
+        // get the items and iterate over them
+        List<Items> items = ItemsRepository.getItems();
+        for (Items item : items) {
+            // create a new ItemCard
+            Integer id = item.getId();
+            MenuCard itemCard = new MenuCard(id);
+            menuCards.add(itemCard);
+
+//            // check if the search field is empty or if the item name matches the search field
+            if (searchBar.getSearchField().getText().isEmpty() ||
+                    item.getName().toLowerCase().contains(searchBar.getSearchField().getText().toLowerCase())){
+                // add the card to the new card layout
+                GridPane.setMargin(itemCard.getCardContainer(), new Insets(30));
+                newCardLayout.add(itemCard.getCardContainer(), column++, row);
+                if (column == 6) {
+                    row++;
+                    column = 0;
+                }
+            }
+        }
+
+        // set the new card layout as the content of the scroll container
+        scrollPane.setContent(newCardLayout);
+
+        // reset the column and row counts
+        column = 0;
+        row = 1;
+    }
+
 
 }

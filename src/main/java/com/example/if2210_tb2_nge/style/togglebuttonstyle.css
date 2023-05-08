@@ -1,0 +1,9 @@
+.animated-toggle-button {
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.animated-toggle-button:selected {
+    -fx-text-fill: black;
+}

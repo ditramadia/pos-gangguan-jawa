@@ -269,7 +269,7 @@ public class HomePage {
 
         mainHBox.setAlignment(Pos.CENTER);
 
-        String imageUrl = "file:src/main/java/com/example/if2210_tb2_nge/pages/gangguan-jawa-logo 1.png";
+        String imageUrl = "file:src/assets/gangguan-jawa-logo.png";
         // add component to layout
         Image image = new Image(imageUrl);
         ImageView imageView = new ImageView(image);

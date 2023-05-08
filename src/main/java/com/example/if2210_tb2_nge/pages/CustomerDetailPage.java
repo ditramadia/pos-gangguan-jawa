@@ -5,11 +5,15 @@ import com.example.if2210_tb2_nge.components.TextFieldForm;
 import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import lombok.Getter;
 
 import java.util.List;
@@ -23,14 +27,18 @@ public class CustomerDetailPage {
     private TextFieldForm nameForm;
     @Getter
     private TextFieldForm noTelpForm;
-    private HBox horizontalTextFormContainer;
+    private HBox horizontalTextFormContainer1;
+    private HBox horizontalTextFormContainer2;
+    private HBox horizontalTextFormContainer3;
     @Getter
     private TextFieldForm pointsForm;
     @Getter
-    private TextFieldForm vipForm;
+    private CheckBox vipForm;
     private Button saveBtn;
     @Getter
     private Button deactivateBtn;
+    @Getter
+    private Button historyBtn;
     @Getter
     private Button backBtn;
     private Boolean isEditMode;
@@ -43,42 +51,63 @@ public class CustomerDetailPage {
 
         // page container
         pageContainer = new VBox();
+        pageContainer.setAlignment(Pos.CENTER);
 
         // header
         header = new Label("CUSTOMER DETAILS");
+        Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
+        header.setFont(fontTitle);
+        header.setStyle("-fx-text-fill: #478660;");
+        header.setPrefHeight(100);
+        header.setAlignment(Pos.CENTER);
         pageContainer.getChildren().add(header);
 
         // name form
-        nameForm = new TextFieldForm("Name", "", 200);
+        horizontalTextFormContainer1 = new HBox();
+        nameForm = new TextFieldForm("Name", "", 940);
         nameForm.setIsDisable(true);
-        pageContainer.getChildren().add(nameForm.getFormContainer());
-
-        // no telp form
-        noTelpForm = new TextFieldForm("Phone Number", "", 200);
-        noTelpForm.setIsDisable(true);
-        pageContainer.getChildren().add(noTelpForm.getFormContainer());
+        pageContainer.getChildren().add(horizontalTextFormContainer1);
+        horizontalTextFormContainer1.setAlignment(Pos.CENTER);
+        horizontalTextFormContainer1.getChildren().add(nameForm.getFormContainer());
 
         // horizontal text form container
-        horizontalTextFormContainer = new HBox();
-        pageContainer.getChildren().add(horizontalTextFormContainer);
+        horizontalTextFormContainer2 = new HBox();
+        pageContainer.getChildren().add(horizontalTextFormContainer2);
+        horizontalTextFormContainer2.setAlignment(Pos.CENTER);
+        horizontalTextFormContainer2.setSpacing(20);
+
+        //no telp form
+        noTelpForm = new TextFieldForm("Phone Number", "", 460);
+        noTelpForm.setIsDisable(true);
+        horizontalTextFormContainer2.getChildren().add(noTelpForm.getFormContainer());
 
         // points form
-        pointsForm = new TextFieldForm("Points", "", 266);
+        pointsForm = new TextFieldForm("Points", "", 460);
         pointsForm.setIsDisable(true);
-        horizontalTextFormContainer.getChildren().add(pointsForm.getFormContainer());
+        horizontalTextFormContainer2.getChildren().add(pointsForm.getFormContainer());
 
         // vip form
-        vipForm = new TextFieldForm("VIP", "", 266);
-        vipForm.setIsDisable(true);
-        horizontalTextFormContainer.getChildren().add(vipForm.getFormContainer());
+        horizontalTextFormContainer3 = new HBox();
+        vipForm = new CheckBox("VIP");
+        vipForm.setFont(Font.loadFont("file:src/assets/Montserrat-Regular.ttf", 20));
+        vipForm.setDisable(true);
+        pageContainer.getChildren().add(horizontalTextFormContainer3);
+        HBox.setMargin(vipForm, new Insets(40, 0, 0, 0));
+        horizontalTextFormContainer3.setAlignment(Pos.CENTER);
+        horizontalTextFormContainer3.getChildren().add(vipForm);
 
         // save edit button
         saveBtn = new Button("Edit");
+        saveBtn.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        saveBtn.setPrefWidth(400);
         saveBtn.setOnAction(e -> toggleEditMode());
+        VBox.setMargin(saveBtn, new Insets(50, 0, 0, 0));
         pageContainer.getChildren().add(saveBtn);
 
         // deactivate button
-        deactivateBtn = new Button("Deactivate");
+        deactivateBtn = new Button("");
+        deactivateBtn.setPrefWidth(400);
+        VBox.setMargin(deactivateBtn, new Insets(20, 0, 0, 0));
         deactivateBtn.setOnAction(e -> {
             try {
                 if (CustomerController.getCustomerInstance().getActive()) {
@@ -91,9 +120,11 @@ public class CustomerDetailPage {
                     if (CustomerController.getCustomerInstance().getActive()) {
                         CustomerController.getCustomerInstance().setActive(false);
                         deactivateBtn.setText(new String("Activate"));
+                        deactivateBtn.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
                     } else {
-                        CustomerController.getCustomerInstance().setActive(false);
+                        CustomerController.getCustomerInstance().setActive(true);
                         deactivateBtn.setText(new String("Deactivate"));
+                        deactivateBtn.setStyle("-fx-background-color: #D86262; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
                     }
 
                     try {
@@ -109,8 +140,18 @@ public class CustomerDetailPage {
         });
         pageContainer.getChildren().add(deactivateBtn);
 
+        // history button
+        historyBtn = new Button("History");
+        historyBtn.setStyle("-fx-background-color: #8C7466; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        historyBtn.setPrefWidth(400);
+        VBox.setMargin(historyBtn, new Insets(20, 0, 0, 0));
+        pageContainer.getChildren().add(historyBtn);
+
         // back button
         backBtn = new Button("Back");
+        backBtn.setStyle("-fx-background-color: #8C7466; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        backBtn.setPrefWidth(400);
+        VBox.setMargin(backBtn, new Insets(20, 0, 0, 0));
         pageContainer.getChildren().add(backBtn);
     }
 
@@ -118,7 +159,7 @@ public class CustomerDetailPage {
         nameForm.setValue("");
         noTelpForm.setValue("");
         pointsForm.setValue("");
-        vipForm.setValue("");
+        vipForm.setSelected(false);
     }
 
     public void toggleEditMode() {
@@ -134,14 +175,14 @@ public class CustomerDetailPage {
             nameForm.setIsDisable(true);
             noTelpForm.setIsDisable(true);
             pointsForm.setIsDisable(true);
-            vipForm.setIsDisable(true);
+            vipForm.setDisable(true);
         } else {
             isEditMode = true;
             saveBtn.setText(new String("Save"));
             nameForm.setIsDisable(false);
             noTelpForm.setIsDisable(false);
             pointsForm.setIsDisable(false);
-            vipForm.setIsDisable(false);
+            vipForm.setDisable(false);
         }
     }
 
@@ -149,7 +190,7 @@ public class CustomerDetailPage {
         CustomerController.getCustomerInstance().setName(nameForm.getValue());
         CustomerController.getCustomerInstance().setNoTelp(noTelpForm.getValue());
         CustomerController.getCustomerInstance().setPoints(Integer.parseInt(pointsForm.getValue()));
-        CustomerController.getCustomerInstance().setVip(Boolean.parseBoolean(vipForm.getValue()));
+        CustomerController.getCustomerInstance().setVip(vipForm.isSelected());
         CustomersRepository.updateCustomer(CustomerController.getCustomerInstance());
     }
 
@@ -162,7 +203,18 @@ public class CustomerDetailPage {
                 nameForm.setValue(customer.getName());
                 noTelpForm.setValue(customer.getNoTelp());
                 pointsForm.setValue(customer.getPoints().toString());
-                vipForm.setValue(customer.getVip().toString());
+                if (customer.getVip()) {
+                    vipForm.setSelected(true);
+                } else {
+                    vipForm.setSelected(false);
+                }
+                if (customer.getActive()) {
+                    deactivateBtn.setText(new String("Deactivate"));
+                    deactivateBtn.setStyle("-fx-background-color: #D86262; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+                } else {
+                    deactivateBtn.setText(new String("Activate"));
+                    deactivateBtn.setStyle("-fx-background-color: #478660; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+                }
                 break;
             }
         }
