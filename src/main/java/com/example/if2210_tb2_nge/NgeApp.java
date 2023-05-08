@@ -3,12 +3,9 @@ package com.example.if2210_tb2_nge;
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
 import com.example.if2210_tb2_nge.controller.ItemController;
-import com.example.if2210_tb2_nge.pages.MenuPage;
+import com.example.if2210_tb2_nge.pages.*;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
-import com.example.if2210_tb2_nge.pages.CustomerPage;
-import com.example.if2210_tb2_nge.pages.HomePage;
-import com.example.if2210_tb2_nge.pages.InventoryPage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -34,6 +31,7 @@ import java.util.Map;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
+    PopupWindow settings;
     TabPane tabPane;
     String itemsFileName;
     String customersFileName;
@@ -185,6 +183,11 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         Menu setting = new Menu("Setting");
         MenuItem datastore = new MenuItem("Data Store");
         setting.getItems().addAll(datastore);
+        datastore.setOnAction(e -> {
+            settings= new PopupWindow();
+            settings.display("Hello, world!");
+
+        });
 
         Menu help = new Menu("Help");
         MenuItem about = new MenuItem("About");
