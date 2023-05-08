@@ -1,5 +1,7 @@
 package com.example.if2210_tb2_nge.repository;
 
+import com.example.if2210_tb2_nge.controller.CustomerController;
+import com.example.if2210_tb2_nge.entity.Items;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.entity.Customers;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -89,6 +91,13 @@ public class CustomersRepository {
         return data;
     }
 
+    public static void addCustomer(Customers customer) throws Exception {
+        List<Customers> customers = CustomersRepository.getCustomers();
+        Integer id = getLastIdCustomers() + 1;
+        Customers newCustomer = new Members(id, customer.getName(), customer.getNoTelp(), customer.getPoints(), customer.getVip(), customer.getActive());
+        customers.add(newCustomer);
+    }
+
     public static void updateCustomer(Customers customers) {
         for (Customers customer : CustomersRepository.customers) {
             if (customer.getId() == customers.getId() && customers.getName() != "") {
@@ -100,5 +109,16 @@ public class CustomersRepository {
                 break;
             }
         }
+    }
+
+    public static Integer getLastIdCustomers() {
+        List<Customers> customers = CustomersRepository.getCustomers();
+        Integer lastId = 0;
+        for (Customers customer : customers) {
+            if (customer.getId() > lastId) {
+                lastId = customer.getId();
+            }
+        }
+        return lastId;
     }
 }

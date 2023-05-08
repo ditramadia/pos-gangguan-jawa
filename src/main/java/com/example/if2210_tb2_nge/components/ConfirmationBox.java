@@ -28,6 +28,11 @@ public class ConfirmationBox {
             alertBox.setContentText("Do you want to activate this customer?");
             errorBox.setTitle("Save Failed!!!");
             errorBox.setContentText("Please fill all the attribute");
+        } else if (type == 4) {
+            alertBox.setTitle("Checkout Confirmation");
+            alertBox.setContentText("Do you want to checkout this transaction?");
+            errorBox.setTitle("Empty Cart!!!");
+            errorBox.setContentText("Please add something first");
         }
 
     }

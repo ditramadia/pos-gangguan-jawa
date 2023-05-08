@@ -57,6 +57,5 @@ public class CustomerSelectionCard {
         autoCompletionBinding.setPrefWidth(customerSelection.getPrefWidth());
 
         cardContainer.getChildren().addAll(title, customerSelection, dataLayout);
-
     }
 }

@@ -2,9 +2,11 @@ package com.example.if2210_tb2_nge.pages;
 
 import com.example.if2210_tb2_nge.components.CustomerSelectionCard;
 import com.example.if2210_tb2_nge.components.TogglePointsEvent;
+import com.example.if2210_tb2_nge.controller.CustomerController;
 import com.example.if2210_tb2_nge.controller.ItemController;
 import com.example.if2210_tb2_nge.controller.TransactionController;
 import com.example.if2210_tb2_nge.entity.CartItem;
+import com.example.if2210_tb2_nge.entity.Customers;
 import com.example.if2210_tb2_nge.entity.Members;
 import com.example.if2210_tb2_nge.repository.CustomersRepository;
 import com.example.if2210_tb2_nge.repository.ItemsRepository;
@@ -34,7 +36,9 @@ public class CartPage {
     private ScrollPane scrollPane;
     private HBox cartLayout;
     private VBox customerPrice;
+    @Getter
     private CustomerSelectionCard customerLayout;
+    @Getter
     private HBox priceLayout;
     private VBox priceLabelLayout;
     private VBox priceValueLayout;
@@ -50,6 +54,8 @@ public class CartPage {
     @Getter
     private Button checkoutBtn;
     private List<Members> membersList;
+    @Getter
+    private Customers customer;
 
     public CartPage() throws MalformedURLException {
         // Values
@@ -87,12 +93,26 @@ public class CartPage {
             customerLayout.getDataLayout().getChildren().clear();
             // Remove the previously added labels
             // Find the selected member and add their attributes to the card container
+            CustomerController.setCustomerInstance(null);
             for (Members member : membersList) {
                 if (member.getName().equals(newValue)) {
+                    CustomerController.setCustomerInstance(member.getId());
+                    customer = CustomerController.getCustomerInstance();
                     Label noTelp = new Label(member.getNoTelp());
                     Label points = new Label(Integer.toString(member.getPoints()) + " pts");
                     customerLayout.setMember(member);
                     customerLayout.getDataLayout().getChildren().addAll(noTelp,points);
+
+                    priceLabelLayout.getChildren().clear();
+                    priceValueLayout.getChildren().clear();
+
+                    // add subtotal label
+                    Label subTotalLabel = new Label("Subtotal");
+                    priceLabelLayout.getChildren().add(subTotalLabel);
+
+                    subTotal = TransactionController.getBillInstance().getSubtotal();
+                    Label subTotalValueLabel = new Label(Double.toString(subTotal));
+                    priceValueLayout.getChildren().add(subTotalValueLabel);
 
                     // add vip discount
                     if (member.getVip() && member.getActive()){
@@ -161,7 +181,6 @@ public class CartPage {
 
                             // add total label
                             total = subTotal - usePoints - discount;
-                            System.out.println(total);
                             Label totalLabel = new Label("TOTAL");
                             totalLabel.setFont(new Font(20));
                             priceLabelLayout.getChildren().add(totalLabel);
@@ -226,6 +245,7 @@ public class CartPage {
             }
         }
 
+        // add subtotal label
         Label subTotalLabel = new Label("Subtotal");
         priceLabelLayout.getChildren().add(subTotalLabel);
 
@@ -233,6 +253,24 @@ public class CartPage {
         Label subTotalValueLabel = new Label(Double.toString(subTotal));
         priceValueLayout.getChildren().add(subTotalValueLabel);
 
+        // add total label
+        total = subTotal - usePoints - discount;
+        Label totalLabel = new Label("TOTAL");
+        totalLabel.setFont(new Font(20));
+        priceLabelLayout.getChildren().add(totalLabel);
+
+        Label totalValueLabel = new Label(Double.toString(total));
+        totalValueLabel.setFont(new Font(20));
+        priceValueLayout.getChildren().add(totalValueLabel);
+
         scrollPane.setContent(contentContainer);
+    }
+
+    public void resetPage() {
+        contentContainer.getChildren().clear();
+        customerLayout.getCustomerSelection().setText("");
+        customerLayout.getDataLayout().getChildren().clear();
+        priceValueLayout.getChildren().clear();
+        priceLabelLayout.getChildren().clear();
     }
 }
