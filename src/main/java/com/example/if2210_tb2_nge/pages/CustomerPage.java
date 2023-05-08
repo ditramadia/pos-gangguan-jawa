@@ -26,6 +26,7 @@ public class CustomerPage {
     private StackPane mulscreens;
     private BorderPane pageContainer;
     private CustomerDetailPage customerDetailPage;
+    private HistoryPage historyPage;
     private SearchBar searchBar;
     private ScrollPane scrollPane;
     private VBox cardContent;
@@ -45,6 +46,7 @@ public class CustomerPage {
         scrollPane = new ScrollPane();
         cardContent = new VBox();
 
+
         contentContainer = new VBox();
         pageContainer.setCenter(contentContainer);
 
@@ -53,16 +55,36 @@ public class CustomerPage {
             customerDetailPage.resetPage();
             mulscreens.getChildren().get(0).setVisible(true);
             mulscreens.getChildren().get(1).setVisible(false);
+            mulscreens.getChildren().get(2).setVisible(false);
             try {
                 updateCard();
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         });
+        customerDetailPage.getHistoryBtn().setOnAction(e -> {
+            mulscreens.getChildren().get(2).setVisible(true);
+            mulscreens.getChildren().get(1).setVisible(false);
+            mulscreens.getChildren().get(0).setVisible(false);
+            try {
+                historyPage.updateCard();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            ;
+        });
+
+        historyPage = new HistoryPage();
+
         //hide
         mulscreens.getChildren().add(pageContainer);
         mulscreens.getChildren().add(customerDetailPage.getPageContainer());
+        mulscreens.getChildren().add(historyPage);
         mulscreens.getChildren().get(1).setVisible(false);
+        mulscreens.getChildren().get(2).setVisible(false);
+
+        historyPage = new HistoryPage();
+
 
         header = new Label("MEMBER");
         Font fontTitle = Font.loadFont("file:src/assets/Montserrat-Bold.ttf", 50);
