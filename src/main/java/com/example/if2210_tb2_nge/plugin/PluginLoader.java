@@ -59,7 +59,7 @@ public class PluginLoader {
     }
 
     // get an arraylist of all the loaded classes in a jar file
-    private Object loadJarFile(String filePath) throws Exception {
+    private void loadJarFile(String filePath) throws Exception {
         String pluginClass = getPluginClass(filePath);
         if (pluginClass == null) {
             throw new Exception("Plugin class not found or not annotated with @PluginMainClass");
@@ -68,14 +68,12 @@ public class PluginLoader {
         URLClassLoader classLoader = new URLClassLoader(new URL[]{f.toURI().toURL()});
         try {
             Class<?> cc = classLoader.loadClass(pluginClass);
-            return cc.getDeclaredConstructor().newInstance();
+            BasePlugin basePlugin = (BasePlugin) cc.getDeclaredConstructor().newInstance();
+            PluginFactory.addPlugin(basePlugin);
         } catch (ClassNotFoundException e) {
             throw new Exception("Class not found", e);
         }
     }
-
-
-
 
 
 //    public static void main(String[] args) {

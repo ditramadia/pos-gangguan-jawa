@@ -3,15 +3,15 @@ package com.example.if2210_tb2_nge;
 import com.example.if2210_tb2_nge.adapter.DataStore;
 import com.example.if2210_tb2_nge.adapter.DataStoreFactory;
 import com.example.if2210_tb2_nge.controller.ItemController;
-import com.example.if2210_tb2_nge.pages.MenuPage;
-import com.example.if2210_tb2_nge.repository.CustomersRepository;
-import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.example.if2210_tb2_nge.pages.CustomerPage;
 import com.example.if2210_tb2_nge.pages.HomePage;
 import com.example.if2210_tb2_nge.pages.InventoryPage;
+import com.example.if2210_tb2_nge.pages.MenuPage;
+import com.example.if2210_tb2_nge.plugin.BasePlugin;
+import com.example.if2210_tb2_nge.plugin.PluginFactory;
+import com.example.if2210_tb2_nge.repository.CustomersRepository;
+import com.example.if2210_tb2_nge.repository.ItemsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -27,10 +27,6 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
 
 public class NgeApp extends Application implements EventHandler<ActionEvent> {
     HomePage homePage;
@@ -180,6 +176,15 @@ public class NgeApp extends Application implements EventHandler<ActionEvent> {
         Menu plugin = new Menu ("Plugin");
         MenuItem importPlugin = new MenuItem("Import Plugin");
         MenuItem removePlugin = new MenuItem("Remove Plugin");
+        for (BasePlugin p : PluginFactory.getBasePlugins()) {
+            String pluginName = p.getClass().getName();
+
+            MenuItem pluginItem = new MenuItem(pluginName);
+            pluginItem.setOnAction(e -> {
+
+            });
+            plugin.getItems().add(pluginItem);
+        }
         plugin.getItems().addAll(importPlugin, removePlugin);
 
         Menu setting = new Menu("Setting");
